@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <groupId>org.example</groupId>
+  <artifactId>rtp-reference</artifactId>
+  <version>1.0.0.0</version>
+  <packaging>pom</packaging>
+  <modelVersion>4.0.0</modelVersion>
+
+  <name>RTP Reference:: Aggregate POM</name>
+  <description>RTP Reference Example</description>
+
+
+
+  <modules>
+    <module>rtp-message-model</module>
+    <module>rtp-debtor-domain-model</module>
+    <module>rtp-creditor-domain-model</module>
+    <module>rtp-creditor-validation-model</module>
+    <module>rtp-debtor-payment-service</module>
+    <module>rtp-mock</module>
+    <!--<module>rtp-creditor-intake-validation</module>-->
+    <!--<module>rtp-creditor-acknowledgement</module>-->
+    <module>rtp-creditor-auditing</module>
+  </modules>
+
+  <profiles>
+    <profile>
+     <!-- When built in OpenShift the 'openshift' profile will be used when invoking mvn. -->
+     <!-- Use this profile for any OpenShift specific customization your app will need. -->
+     <!-- By default that is to put the resulting archive into the 'deployments' folder. -->
+     <!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
+     <id>openshift</id>
+     <build>
+     </build>
+    </profile>
+  </profiles>
+
+</project>

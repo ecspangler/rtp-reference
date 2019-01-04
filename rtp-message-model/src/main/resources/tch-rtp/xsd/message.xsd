@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns="urn:tch"
+ xmlns:head="urn:iso:std:iso:20022:tech:xsd:head.001.001.01"
+ xmlns:ct="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.06"
+ xmlns:ps="urn:iso:std:iso:20022:tech:xsd:pacs.002.001.07"
+ xmlns:rt="urn:iso:std:iso:20022:tech:xsd:camt.056.001.05"
+ xmlns:tr="urn:iso:std:iso:20022:tech:xsd:camt.029.001.06"
+ xmlns:er="urn:iso:std:iso:20022:tech:xsd:admn.005.001.01"
+ xmlns:re="urn:iso:std:iso:20022:tech:xsd:admn.006.001.01"
+ xmlns:fr="urn:iso:std:iso:20022:tech:xsd:admn.003.001.01"
+ xmlns:rf="urn:iso:std:iso:20022:tech:xsd:admn.004.001.01"
+ xmlns:sr="urn:iso:std:iso:20022:tech:xsd:admn.001.001.01"
+ xmlns:rs="urn:iso:std:iso:20022:tech:xsd:admn.002.001.01"
+ xmlns:ne="urn:iso:std:iso:20022:tech:xsd:admi.004.001.02"
+ xmlns:mr="urn:iso:std:iso:20022:tech:xsd:admi.002.001.01"
+ xmlns:ar="urn:iso:std:iso:20022:tech:xsd:remt.001.001.02"
+ xmlns:fi="urn:iso:std:iso:20022:tech:xsd:camt.026.001.05"
+ xmlns:if="urn:iso:std:iso:20022:tech:xsd:camt.028.001.06"
+ xmlns:pr="urn:iso:std:iso:20022:tech:xsd:pain.013.001.05"
+ xmlns:rp="urn:iso:std:iso:20022:tech:xsd:pain.014.001.05"
+ xmlns:ac="urn:iso:std:iso:20022:tech:xsd:camt.035.001.03"
+ targetNamespace="urn:tch"
+ elementFormDefault="qualified">
+ <xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.06"
+schemaLocation="pacs.008.001.06.xsd"/>
+ <xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:pacs.002.001.07"
+schemaLocation="pacs.002.001.07.xsd"/>
+ <xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:remt.001.001.02"
+schemaLocation="remt.001.001.02.xsd"/>
+ <xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:camt.026.001.05"
+schemaLocation="camt.026.001.05.xsd"/>
+ <xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:camt.028.001.06"
+schemaLocation="camt.028.001.06.xsd"/>
+ <xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:camt.029.001.06"
+schemaLocation="camt.029.001.06.xsd"/>
+ <xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:camt.035.001.03"
+schemaLocation="camt.035.001.03.xsd"/>
+ <xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:camt.056.001.05"
+schemaLocation="camt.056.001.05.xsd"/>
+ <xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:pain.013.001.05"
+schemaLocation="pain.013.001.05.xsd"/>
+ <xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:pain.014.001.05"
+schemaLocation="pain.014.001.05.xsd"/>
+ <xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:admi.002.001.01"
+schemaLocation="admi.002.001.01.xsd"/>
+ <xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:admi.004.001.02"
+schemaLocation="admi.004.001.02.xsd"/>
+<!-- 
+ <xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:admn.001.001.01"
+schemaLocation="admn.001.001.01.xsd"/>
+ <xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:admn.002.001.01"
+schemaLocation="admn.002.001.01.xsd"/>
+ <xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:admn.003.001.01"
+schemaLocation="admn.003.001.01.xsd"/>
+ <xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:admn.004.001.01"
+schemaLocation="admn.004.001.01.xsd"/>
+ <xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:admn.005.001.01"
+schemaLocation="admn.005.001.01.xsd"/>
+ <xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:admn.006.001.01"
+schemaLocation="admn.006.001.01.xsd"/>  -->
+ <xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:head.001.001.01"
+schemaLocation="head.001.001.01.xsd"/>
+ <xsd:element name="Message" type="HdrAndData"/>
+ <xsd:complexType name="HdrAndData">
+ <xsd:sequence>
+ <xsd:element name="AppHdr" type="head:BusinessApplicationHeaderV01"/>
+ <xsd:choice>
+ <xsd:element name="Acknowledgement" type="ac:Document"/>
+ <xsd:element name="ResponseRequestForInformation" type="if:Document"/>
+ <xsd:element name="RequestForInformation" type="fi:Document"/>
+ <xsd:element name="CreditTransfer" type="ct:Document"/>
+ <xsd:element name="ResponseCreditTransfer" type="ps:Document"/>
+ <xsd:element name="ReturnOfFunds" type="rt:Document"/>
+ <xsd:element name="PaymentRequest" type="pr:Document"/>
+ <xsd:element name="ResponsePaymentRequest" type="rp:Document"/>
+ <xsd:element name="ResponseReturnOfFunds" type="tr:Document"/>
+ 
+ <!-- The following are non-ISO 20022 RTP types for network sign on, sign off, and heartbeat messaging -->
+ <!--  https://www.theclearinghouse.org/payment-systems/rtp/-/media/46e82eec9ad049009aa683fc15535c65.ashx  -->
+ <!-- 
+ <xsd:element name="EchoRequest" type="er:Document"/>
+ <xsd:element name="EchoResponse" type="re:Document"/>
+ <xsd:element name="SignOffRequest" type="fr:Document"/>
+ <xsd:element name="SignOffResponse" type="rf:Document"/>
+ <xsd:element name="SignOnRequest" type="sr:Document"/>
+ <xsd:element name="SignOnResponse" type="rs:Document"/> -->
+ 
+ <xsd:element name="StandaloneRemittance" type="ar:Document"/>
+ <xsd:element name="SystemNotificationEvent" type="ne:Document"/>
+ <xsd:element name="MessageReject" type="mr:Document"/>
+ </xsd:choice>
+ </xsd:sequence>
+ </xsd:complexType>
+</xsd:schema>
