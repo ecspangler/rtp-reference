@@ -1,0 +1,109 @@
+package rtp.demo.creditor.validation.rules;
+
+import rtp.demo.creditor.validation.PaymentValidationRequest;
+import rtp.demo.creditor.domain.account.Account;
+//import rtp.demo.creditor.domain.account.AccountStatus;
+import rtp.demo.creditor.domain.error.PaymentValidationError;
+import rtp.demo.creditor.domain.rtp.simplified.CreditTransferMessage;
+import rtp.demo.creditor.validation.wrappers.Accounts;
+import rtp.demo.creditor.validation.wrappers.CreditorBank;
+import rtp.demo.creditor.validation.wrappers.ProcessingDateTime;
+import java.util.HashSet;
+import java.math.BigDecimal;
+
+dialect "java"
+
+
+rule "RTP_CBPV_002 - Validate Credit Transfer Message Number of Transactions"
+  when
+	$pvr : PaymentValidationRequest( creditTransferMessage.numberOfTransactions != 1 )
+	not PaymentValidationError( errorCode == "CPVE_002" ) from $pvr.errors
+  then
+    System.out.println("INVALID NUMBER OF TRANSACTIONS: " + $pvr.getCreditTransferMessage().getNumberOfTransactions() );
+    modify( $pvr ) { getErrors().add( new PaymentValidationError( "CPVE_002", "650", "Number of transactions on message was not one" )) }
+end
+
+
+rule "RTP_CBPV_003 - Validate Credit Transfer Message Payment Amount"
+  when
+	$pvr : PaymentValidationRequest( (creditTransferMessage.paymentAmount.compareTo( new BigDecimal("0.00")) > 0 ) == false )
+	not PaymentValidationError( errorCode == "CPVE_003" ) from $pvr.errors
+  then
+    System.out.println("INVALID PAYMENT AMOUNT: " + $pvr.getCreditTransferMessage().getPaymentAmount() );
+    modify( $pvr ) { getErrors().add( new PaymentValidationError( "CPVE_003", "650", "Payment amount less than or equal to zero" )) }
+end
+
+
+rule "RTP_CBPV_004 - Validate Credit Transfer Message Payment Currency"
+  when
+	$pvr : PaymentValidationRequest( creditTransferMessage.paymentCurrency != "USD" )
+	not PaymentValidationError( errorCode == "CPVE_004" ) from $pvr.errors
+  then
+    System.out.println("INVALID PAYMENT AMOUNT: " + $pvr.getCreditTransferMessage().getPaymentCurrency() );
+    modify( $pvr ) { getErrors().add( new PaymentValidationError( "CPVE_004", "650", "Payment currency code is not valid" )) }
+end
+
+
+rule "RTP_CBPV_005 - Validate Credit Transfer Message Creditor"
+  when
+    CreditorBank( $rtn : routingAndTransitNumber )
+	$pvr : PaymentValidationRequest( creditTransferMessage.creditorId != $rtn )
+	not PaymentValidationError( errorCode == "CPVE_005" ) from $pvr.errors
+  then
+    System.out.println("INVALID CREDITOR ID: " + $pvr.getCreditTransferMessage().getCreditorId() );
+    modify( $pvr ) { getErrors().add( new PaymentValidationError( "CPVE_005", "BE17", "Creditor identification is not valid" )) }
+end
+
+
+rule "RTP_CBPV_006 - Validate Credit Transfer Message Payment Account Exists"
+  when
+  	$accts : Accounts()
+	$pvr : PaymentValidationRequest( $payAcct : creditTransferMessage.creditorAccountNumber )
+	not Account( accountNumber == $payAcct ) from $accts.accounts
+	not PaymentValidationError( errorCode == "CPVE_006" ) from $pvr.errors
+  then
+  	System.out.println("INVALID ACCOUNT NUMBER: " + $payAcct);
+    modify( $pvr ) { getErrors().add( new PaymentValidationError( "CPVE_006", "AC03", "Account number is not valid" )) }
+end
+
+
+//rule "RTP_CBPV_007 - Validate Credit Transfer Message Payment Account Is Not Closed"
+//  when
+//  	$accts : Accounts()
+//	$pvr : PaymentValidationRequest( $payAcct : creditTransferMessage.creditorAccountNumber )//
+//	Account( accountNumber == $payAcct, status == AccountStatus.fromString("CLOSED") ) from $accts.accounts
+//	not PaymentValidationError( errorCode == "CPVE_007" ) from $pvr.errors
+//  then
+//    System.out.println( "INVALID ACCOUNT STATUS: CLOSED" );
+//    modify( $pvr ) { getErrors().add( new PaymentValidationError( "CPVE_007", "AC04", "Account number specified has been closed" )) }
+//end
+
+
+//rule "RTP_CBPV_008 - Validate Credit Transfer Message Payment Account Is Not Blocked"
+//  when
+//  	$accts : Accounts()
+//	$pvr : PaymentValidationRequest( $payAcct : creditTransferMessage.creditorAccountNumber )
+//	Account( accountNumber == $payAcct, status == AccountStatus.fromString("BLOCKED") ) from $accts.accounts
+//	not PaymentValidationError( errorCode == "CPVE_008" ) from $pvr.errors
+//  then
+//    System.out.println( "INVALID ACCOUNT STATUS: BLOCKED" );
+//    modify( $pvr ) { getErrors().add( new PaymentValidationError( "CPVE_008", "AC06", "Account number specified is blocked" )) }
+//end
+
+
+rule "RTP_CBPV_009 - Validate Credit Transfer Message Settlement Method"
+  when
+	$pvr : PaymentValidationRequest( creditTransferMessage.settlementMethod != "CLRG" )
+	not PaymentValidationError( errorCode == "CPVE_009" ) from $pvr.errors
+  then
+    System.out.println( "INVALID SETTLEMENT METHOD: " + $pvr.getCreditTransferMessage().getSettlementMethod() );
+    modify( $pvr ) { getErrors().add( new PaymentValidationError( "CPVE_009", "650", "Settlement method is invalid" )) }
+end
+
+
+
+
+//rule "RTP_CBPV_001 - Validate Credit Transfer Message Creation Date and Time"
+//  when
+//  then
+//end

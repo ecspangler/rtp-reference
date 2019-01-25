@@ -7,20 +7,37 @@
   <packaging>pom</packaging>
   <modelVersion>4.0.0</modelVersion>
 
-  <name>RTP Reference:: Aggregate POM</name>
-  <description>RTP Reference Example</description>
-
-
+  <name>Real Time Payments Reference:: Aggregate POM</name>
+  <description>Real Time Payments Reference Example</description>
 
   <modules>
     <module>rtp-message-model</module>
     <module>rtp-debtor-domain-model</module>
     <module>rtp-creditor-domain-model</module>
+    <module>rtp-debtor-validation-model</module>
     <module>rtp-creditor-validation-model</module>
-    <module>rtp-debtor-payment-service</module>
+    <module>rtp-debtor-transaction-repository</module>
+    <module>rtp-debtor-transaction-repository-mysql</module>
+    <module>rtp-debtor-account-repository</module>
+    <module>rtp-debtor-account-repository-jdg</module>
+    <module>rtp-creditor-transaction-repository</module>
+    <module>rtp-creditor-transaction-repository-mysql</module>
+    <module>rtp-creditor-account-repository</module>
+    <module>rtp-creditor-account-repository-jdg</module>
+    <!--<module>rtp-debtor-payment-service</module>-->
+    <module>rtp-debtor-send-payment</module>
+    <module>rtp-debtor-payment-confirmation</module>
+    <module>rtp-debtor-complete-payment</module>
+    <module>rtp-debtor-core-banking</module>
+    <module>rtp-debtor-customer-notification</module>
+    <module>rtp-debtor-auditing</module>
     <module>rtp-mock</module>
-    <!--<module>rtp-creditor-intake-validation</module>-->
-    <!--<module>rtp-creditor-acknowledgement</module>-->
+    <module>rtp-creditor-receive-payment</module>
+    <module>rtp-creditor-payment-acknowledgement</module>
+    <module>rtp-creditor-payment-confirmation</module>
+    <module>rtp-creditor-complete-payment</module>
+    <module>rtp-creditor-core-banking</module>
+    <module>rtp-creditor-customer-notification</module>
     <module>rtp-creditor-auditing</module>
   </modules>
 

@@ -50,11 +50,11 @@ public class PaymentTypeInformation21 {
 	@XmlSchemaType(name = "string")
 	protected ClearingChannel2Code clrChanl;
 	@XmlElement(name = "SvcLvl")
-	protected ServiceLevel8Choice svcLvl;
+	protected ServiceLevel8Choice svcLvl = new ServiceLevel8Choice();
 	@XmlElement(name = "LclInstrm")
-	protected LocalInstrument2Choice lclInstrm;
+	protected LocalInstrument2Choice lclInstrm = new LocalInstrument2Choice();
 	@XmlElement(name = "CtgyPurp")
-	protected CategoryPurpose1Choice ctgyPurp;
+	protected CategoryPurpose1Choice ctgyPurp = new CategoryPurpose1Choice();
 
 	/**
 	 * Gets the value of the instrPrty property.

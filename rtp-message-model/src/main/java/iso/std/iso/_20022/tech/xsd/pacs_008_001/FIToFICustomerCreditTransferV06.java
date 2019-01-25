@@ -44,11 +44,11 @@ import javax.xml.bind.annotation.XmlType;
 public class FIToFICustomerCreditTransferV06 {
 
 	@XmlElement(name = "GrpHdr", required = true)
-	protected GroupHeader70 grpHdr;
+	protected GroupHeader70 grpHdr = new GroupHeader70();
 	@XmlElement(name = "CdtTrfTxInf", required = true)
-	protected List<CreditTransferTransaction25> cdtTrfTxInf;
+	protected List<CreditTransferTransaction25> cdtTrfTxInf = new ArrayList<CreditTransferTransaction25>();
 	@XmlElement(name = "SplmtryData")
-	protected List<SupplementaryData1> splmtryData;
+	protected List<SupplementaryData1> splmtryData = new ArrayList<SupplementaryData1>();
 
 	/**
 	 * Gets the value of the grpHdr property.

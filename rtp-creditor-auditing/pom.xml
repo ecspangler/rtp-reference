@@ -7,8 +7,8 @@
   <artifactId>rtp-creditor-auditing</artifactId>
   <version>1.0.0.0</version>
 
-  <name>RTP Creditor Auditing Service</name>
-  <description>RTP Creditor Auditing Service</description>
+  <name>Creditor Auditing Service</name>
+  <description>Creditor Auditing Service</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,9 +32,9 @@
         <version>${fuse.version}</version>
         <type>pom</type>
         <scope>import</scope>
-      </dependency> 
-      
-    </dependencies> 
+      </dependency>
+
+    </dependencies>
   </dependencyManagement>
 
   <dependencies>
@@ -42,13 +42,13 @@
     <dependency>
       <groupId>rtp.demo</groupId>
       <artifactId>rtp-creditor-domain-model</artifactId>
-      <version>1.0.0.0</version>    
+      <version>1.0.0.0</version>
     </dependency>
-    
+
     <dependency>
       <groupId>rtp.demo</groupId>
       <artifactId>rtp-message-model</artifactId>
-      <version>1.0.0.0</version>    
+      <version>1.0.0.0</version>
     </dependency>
 
 		<dependency>
@@ -63,8 +63,8 @@
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-stream</artifactId>
 		</dependency>
-    
-    
+
+
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>spring-cloud-kubernetes-core</artifactId>

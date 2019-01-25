@@ -4,27 +4,40 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "Payment")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Payment implements Serializable {
 
 	private static final long serialVersionUID = -8864097979538228811L;
 
-	private String clientId;
+	private String paymentId;
+	private String debtorAccountNumber;
 	private BigDecimal amount;
-	private LocalDateTime creationDate;
-	private String senderFirstName;
-	private String senderLastName;
 	private String receiverFirstName;
 	private String receiverLastName;
 	private String receiverEmail;
 	private String receiverCellPhone;
-	private Boolean sendPayment;
+	private String receiverRoutingNumber;
+	private String receiverAccountNumber;
 
-	public String getClientId() {
-		return clientId;
+	public String getPaymentId() {
+		return paymentId;
 	}
 
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
+	public void setPaymentId(String paymentId) {
+		this.paymentId = paymentId;
+	}
+
+	public String getDebtorAccountNumber() {
+		return debtorAccountNumber;
+	}
+
+	public void setDebtorAccountNumber(String debtorAccountNumber) {
+		this.debtorAccountNumber = debtorAccountNumber;
 	}
 
 	public BigDecimal getAmount() {
@@ -33,30 +46,6 @@ public class Payment implements Serializable {
 
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
-	}
-
-	public LocalDateTime getCreationDate() {
-		return creationDate;
-	}
-
-	public void setCreationDate(LocalDateTime creationDate) {
-		this.creationDate = creationDate;
-	}
-
-	public String getSenderFirstName() {
-		return senderFirstName;
-	}
-
-	public void setSenderFirstName(String senderFirstName) {
-		this.senderFirstName = senderFirstName;
-	}
-
-	public String getSenderLastName() {
-		return senderLastName;
-	}
-
-	public void setSenderLastName(String senderLastName) {
-		this.senderLastName = senderLastName;
 	}
 
 	public String getReceiverFirstName() {
@@ -91,12 +80,20 @@ public class Payment implements Serializable {
 		this.receiverCellPhone = receiverCellPhone;
 	}
 
-	public Boolean getSendPayment() {
-		return sendPayment;
+	public String getReceiverRoutingNumber() {
+		return receiverRoutingNumber;
 	}
 
-	public void setSendPayment(Boolean sendPayment) {
-		this.sendPayment = sendPayment;
+	public void setReceiverRoutingNumber(String receiverRoutingNumber) {
+		this.receiverRoutingNumber = receiverRoutingNumber;
+	}
+
+	public String getReceiverAccountNumber() {
+		return receiverAccountNumber;
+	}
+
+	public void setReceiverAccountNumber(String receiverAccountNumber) {
+		this.receiverAccountNumber = receiverAccountNumber;
 	}
 
 	@Override
@@ -104,15 +101,14 @@ public class Payment implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((amount == null) ? 0 : amount.hashCode());
-		result = prime * result + ((clientId == null) ? 0 : clientId.hashCode());
-		result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
+		result = prime * result + ((debtorAccountNumber == null) ? 0 : debtorAccountNumber.hashCode());
+		result = prime * result + ((paymentId == null) ? 0 : paymentId.hashCode());
+		result = prime * result + ((receiverAccountNumber == null) ? 0 : receiverAccountNumber.hashCode());
 		result = prime * result + ((receiverCellPhone == null) ? 0 : receiverCellPhone.hashCode());
 		result = prime * result + ((receiverEmail == null) ? 0 : receiverEmail.hashCode());
 		result = prime * result + ((receiverFirstName == null) ? 0 : receiverFirstName.hashCode());
 		result = prime * result + ((receiverLastName == null) ? 0 : receiverLastName.hashCode());
-		result = prime * result + ((sendPayment == null) ? 0 : sendPayment.hashCode());
-		result = prime * result + ((senderFirstName == null) ? 0 : senderFirstName.hashCode());
-		result = prime * result + ((senderLastName == null) ? 0 : senderLastName.hashCode());
+		result = prime * result + ((receiverRoutingNumber == null) ? 0 : receiverRoutingNumber.hashCode());
 		return result;
 	}
 
@@ -130,15 +126,20 @@ public class Payment implements Serializable {
 				return false;
 		} else if (!amount.equals(other.amount))
 			return false;
-		if (clientId == null) {
-			if (other.clientId != null)
+		if (debtorAccountNumber == null) {
+			if (other.debtorAccountNumber != null)
 				return false;
-		} else if (!clientId.equals(other.clientId))
+		} else if (!debtorAccountNumber.equals(other.debtorAccountNumber))
 			return false;
-		if (creationDate == null) {
-			if (other.creationDate != null)
+		if (paymentId == null) {
+			if (other.paymentId != null)
 				return false;
-		} else if (!creationDate.equals(other.creationDate))
+		} else if (!paymentId.equals(other.paymentId))
+			return false;
+		if (receiverAccountNumber == null) {
+			if (other.receiverAccountNumber != null)
+				return false;
+		} else if (!receiverAccountNumber.equals(other.receiverAccountNumber))
 			return false;
 		if (receiverCellPhone == null) {
 			if (other.receiverCellPhone != null)
@@ -160,30 +161,20 @@ public class Payment implements Serializable {
 				return false;
 		} else if (!receiverLastName.equals(other.receiverLastName))
 			return false;
-		if (sendPayment == null) {
-			if (other.sendPayment != null)
+		if (receiverRoutingNumber == null) {
+			if (other.receiverRoutingNumber != null)
 				return false;
-		} else if (!sendPayment.equals(other.sendPayment))
-			return false;
-		if (senderFirstName == null) {
-			if (other.senderFirstName != null)
-				return false;
-		} else if (!senderFirstName.equals(other.senderFirstName))
-			return false;
-		if (senderLastName == null) {
-			if (other.senderLastName != null)
-				return false;
-		} else if (!senderLastName.equals(other.senderLastName))
+		} else if (!receiverRoutingNumber.equals(other.receiverRoutingNumber))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Payment [clientId=" + clientId + ", amount=" + amount + ", creationDate=" + creationDate
-				+ ", senderFirstName=" + senderFirstName + ", senderLastName=" + senderLastName + ", receiverFirstName="
+		return "Payment [debtorAccountNumber=" + debtorAccountNumber + ", amount=" + amount + ", receiverFirstName="
 				+ receiverFirstName + ", receiverLastName=" + receiverLastName + ", receiverEmail=" + receiverEmail
-				+ ", receiverCellPhone=" + receiverCellPhone + ", sendPayment=" + sendPayment + "]";
+				+ ", receiverCellPhone=" + receiverCellPhone + ", receiverRoutingNumber=" + receiverRoutingNumber
+				+ ", receiverAccountNumber=" + receiverAccountNumber + "]";
 	}
 
 }

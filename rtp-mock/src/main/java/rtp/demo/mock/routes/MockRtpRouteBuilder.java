@@ -31,16 +31,16 @@ public class MockRtpRouteBuilder extends RouteBuilder {
 
 	private static final Logger LOG = LoggerFactory.getLogger(MockRtpRouteBuilder.class);
 
-	// private String kafkaBootstrap = System.getenv("BOOTSTRAP_SERVERS");
-	// private String kafkaProducerTopic = System.getenv("PRODUCER_TOPIC");
-	private String kafkaBootstrap = "172.30.141.118:9092";
-	private String kafkaProducerTopic = "creditor-ctms";
-
-	private String kafkaConsumerTopic = "creditor-acks";
-	private String consumerGroup = "rtp-mock-app";
-	private String consumerMaxPollRecords = "5000";
-	private String consumerCount = "1";
-	private String consumerSeekTo = "end";
+	private String kafkaBootstrap = System.getenv("BOOTSTRAP_SERVERS");
+	private String kafkaCreditTransferDebtorTopic = System.getenv("CREDIT_TRANS_DEBTOR_TOPIC");
+	private String kafkaCreditTransferCreditorTopic = System.getenv("CREDIT_TRANS_CREDITOR_TOPIC");
+	private String kafkaCreditorAcknowledgementTopic = System.getenv("CREDITOR_ACK_TOPIC");
+	private String kafkaDebtorConfirmationTopic = System.getenv("DEBTOR_CONFIRMATION_TOPIC");
+	private String kafkaCreditorConfirmationTopic = System.getenv("CREDITOR_CONFIRMATION_TOPIC");
+	private String consumerMaxPollRecords = System.getenv("CONSUMER_MAX_POLL_RECORDS");
+	private String consumerCount = System.getenv("CONSUMER_COUNT");
+	private String consumerSeekTo = System.getenv("CONSUMER_SEEK_TO");
+	private String consumerGroup = System.getenv("CONSUMER_GROUP");
 
 	@Override
 	public void configure() throws Exception {
@@ -51,14 +51,23 @@ public class MockRtpRouteBuilder extends RouteBuilder {
 
 		this.getContext().addComponent("kafka", kafka);
 
-		from("timer://foo?period=10000").setBody().constant(makeDummyRtpCreditTransferMessage())
-				.log("\\n/// Mock RTP - Sending Credit Transfer Message >>> ${body}")
-				.to("kafka:creditor-ctms?serializerClass=rtp.message.model.serde.FIToFICustomerCreditTransferV06Serializer");
+		from("kafka:" + kafkaCreditTransferDebtorTopic + "?brokers=" + kafkaBootstrap + "&maxPollRecords="
+				+ consumerMaxPollRecords + "&consumersCount=" + consumerCount + "&seekTo=" + consumerSeekTo
+				+ "&groupId=" + consumerGroup
+				+ "&valueDeserializer=rtp.message.model.serde.FIToFICustomerCreditTransferV06Deserializer")
+						.log("\\n/// Mock RTP - Sending Credit Transfer Message >>> ${body}")
+						.to("kafka:" + kafkaCreditTransferCreditorTopic
+								+ "?serializerClass=rtp.message.model.serde.FIToFICustomerCreditTransferV06Serializer");
 
-		from("kafka:" + kafkaConsumerTopic + "?brokers=" + kafkaBootstrap + "&maxPollRecords=" + consumerMaxPollRecords
-				+ "&consumersCount=" + consumerCount + "&seekTo=" + consumerSeekTo + "&groupId=" + consumerGroup
+		from("kafka:" + kafkaCreditorAcknowledgementTopic + "?brokers=" + kafkaBootstrap + "&maxPollRecords="
+				+ consumerMaxPollRecords + "&consumersCount=" + consumerCount + "&seekTo=" + consumerSeekTo
+				+ "&groupId=" + consumerGroup
 				+ "&valueDeserializer=rtp.message.model.serde.FIToFIPaymentStatusReportV07Deserializer")
-						.routeId("FromKafka").log("\n/// Mock RTP - Receiving Acknowledgements >>> ${body}");
+						.routeId("FromKafka").log("\n/// Mock RTP - Receiving Acknowledgements >>> ${body}")
+						.to("kafka:" + kafkaDebtorConfirmationTopic
+								+ "?serializerClass=rtp.message.model.serde.FIToFICustomerCreditTransferV06Serializer")
+						.to("kafka:" + kafkaCreditorConfirmationTopic
+								+ "?serializerClass=rtp.message.model.serde.FIToFICustomerCreditTransferV06Serializer");
 
 	}
 
@@ -68,22 +77,6 @@ public class MockRtpRouteBuilder extends RouteBuilder {
 
 	public void setKafkaBootstrap(String kafkaBootstrap) {
 		this.kafkaBootstrap = kafkaBootstrap;
-	}
-
-	public String getKafkaProducerTopic() {
-		return kafkaProducerTopic;
-	}
-
-	public void setKafkaProducerTopic(String kafkaProducerTopic) {
-		this.kafkaProducerTopic = kafkaProducerTopic;
-	}
-
-	public String getKafkaConsumerTopic() {
-		return kafkaConsumerTopic;
-	}
-
-	public void setKafkaConsumerTopic(String kafkaConsumerTopic) {
-		this.kafkaConsumerTopic = kafkaConsumerTopic;
 	}
 
 	public String getConsumerGroup() {

@@ -4,6 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "Payments")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Payments implements Serializable {
 
 	private static final long serialVersionUID = 6889694644841796150L;

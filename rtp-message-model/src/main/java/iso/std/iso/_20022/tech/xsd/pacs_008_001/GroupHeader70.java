@@ -65,18 +65,18 @@ public class GroupHeader70 {
 	@XmlElement(name = "CtrlSum")
 	protected BigDecimal ctrlSum;
 	@XmlElement(name = "TtlIntrBkSttlmAmt")
-	protected ActiveCurrencyAndAmount ttlIntrBkSttlmAmt;
+	protected ActiveCurrencyAndAmount ttlIntrBkSttlmAmt = new ActiveCurrencyAndAmount();
 	@XmlElement(name = "IntrBkSttlmDt")
 	@XmlSchemaType(name = "date")
 	protected XMLGregorianCalendar intrBkSttlmDt;
 	@XmlElement(name = "SttlmInf", required = true)
-	protected SettlementInstruction4 sttlmInf;
+	protected SettlementInstruction4 sttlmInf = new SettlementInstruction4();
 	@XmlElement(name = "PmtTpInf")
-	protected PaymentTypeInformation21 pmtTpInf;
+	protected PaymentTypeInformation21 pmtTpInf = new PaymentTypeInformation21();
 	@XmlElement(name = "InstgAgt")
-	protected BranchAndFinancialInstitutionIdentification5 instgAgt;
+	protected BranchAndFinancialInstitutionIdentification5 instgAgt = new BranchAndFinancialInstitutionIdentification5();
 	@XmlElement(name = "InstdAgt")
-	protected BranchAndFinancialInstitutionIdentification5 instdAgt;
+	protected BranchAndFinancialInstitutionIdentification5 instdAgt = new BranchAndFinancialInstitutionIdentification5();
 
 	/**
 	 * Gets the value of the msgId property.
