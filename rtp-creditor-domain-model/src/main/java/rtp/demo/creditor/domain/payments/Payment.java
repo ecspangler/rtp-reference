@@ -1,5 +1,7 @@
 package rtp.demo.creditor.domain.payments;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,16 +10,138 @@ import rtp.demo.creditor.domain.rtp.simplified.CreditTransferMessage;
 
 public class Payment {
 
-	private CreditTransferMessage creditTransferMessage;
+	private String creditTransferMessageId;
+
+	private String paymentInstructionId;
+
+	private String endToEndId;
+
+	private LocalDateTime creationDateTime;
+
+	private Integer numberOfTransactions;
+
+	private BigDecimal paymentAmount;
+
+	private String paymentCurrency;
+
+	private String settlementMethod;
+
+	private String debtorId;
+
+	private String debtorAccountNumber;
+
+	private String creditorId;
+
+	private String creditorAccountNumber;
+
+	private String status = "PENDING";
+
 	private Boolean isValidated = false;
+
 	private List<PaymentValidationError> errors = new ArrayList<PaymentValidationError>();
 
-	public CreditTransferMessage getCreditTransferMessage() {
-		return creditTransferMessage;
+	public String getCreditTransferMessageId() {
+		return creditTransferMessageId;
 	}
 
-	public void setCreditTransferMessage(CreditTransferMessage creditTransferMessage) {
-		this.creditTransferMessage = creditTransferMessage;
+	public void setCreditTransferMessageId(String creditTransferMessageId) {
+		this.creditTransferMessageId = creditTransferMessageId;
+	}
+
+	public String getPaymentInstructionId() {
+		return paymentInstructionId;
+	}
+
+	public void setPaymentInstructionId(String paymentInstructionId) {
+		this.paymentInstructionId = paymentInstructionId;
+	}
+
+	public String getEndToEndId() {
+		return endToEndId;
+	}
+
+	public void setEndToEndId(String endToEndId) {
+		this.endToEndId = endToEndId;
+	}
+
+	public LocalDateTime getCreationDateTime() {
+		return creationDateTime;
+	}
+
+	public void setCreationDateTime(LocalDateTime creationDateTime) {
+		this.creationDateTime = creationDateTime;
+	}
+
+	public Integer getNumberOfTransactions() {
+		return numberOfTransactions;
+	}
+
+	public void setNumberOfTransactions(Integer numberOfTransactions) {
+		this.numberOfTransactions = numberOfTransactions;
+	}
+
+	public BigDecimal getPaymentAmount() {
+		return paymentAmount;
+	}
+
+	public void setPaymentAmount(BigDecimal paymentAmount) {
+		this.paymentAmount = paymentAmount;
+	}
+
+	public String getPaymentCurrency() {
+		return paymentCurrency;
+	}
+
+	public void setPaymentCurrency(String paymentCurrency) {
+		this.paymentCurrency = paymentCurrency;
+	}
+
+	public String getSettlementMethod() {
+		return settlementMethod;
+	}
+
+	public void setSettlementMethod(String settlementMethod) {
+		this.settlementMethod = settlementMethod;
+	}
+
+	public String getDebtorId() {
+		return debtorId;
+	}
+
+	public void setDebtorId(String debtorId) {
+		this.debtorId = debtorId;
+	}
+
+	public String getDebtorAccountNumber() {
+		return debtorAccountNumber;
+	}
+
+	public void setDebtorAccountNumber(String debtorAccountNumber) {
+		this.debtorAccountNumber = debtorAccountNumber;
+	}
+
+	public String getCreditorId() {
+		return creditorId;
+	}
+
+	public void setCreditorId(String creditorId) {
+		this.creditorId = creditorId;
+	}
+
+	public String getCreditorAccountNumber() {
+		return creditorAccountNumber;
+	}
+
+	public void setCreditorAccountNumber(String creditorAccountNumber) {
+		this.creditorAccountNumber = creditorAccountNumber;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public Boolean getIsValidated() {
@@ -40,9 +164,21 @@ public class Payment {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((creditTransferMessage == null) ? 0 : creditTransferMessage.hashCode());
+		result = prime * result + ((creationDateTime == null) ? 0 : creationDateTime.hashCode());
+		result = prime * result + ((creditTransferMessageId == null) ? 0 : creditTransferMessageId.hashCode());
+		result = prime * result + ((creditorAccountNumber == null) ? 0 : creditorAccountNumber.hashCode());
+		result = prime * result + ((creditorId == null) ? 0 : creditorId.hashCode());
+		result = prime * result + ((debtorAccountNumber == null) ? 0 : debtorAccountNumber.hashCode());
+		result = prime * result + ((debtorId == null) ? 0 : debtorId.hashCode());
+		result = prime * result + ((endToEndId == null) ? 0 : endToEndId.hashCode());
 		result = prime * result + ((errors == null) ? 0 : errors.hashCode());
 		result = prime * result + ((isValidated == null) ? 0 : isValidated.hashCode());
+		result = prime * result + ((numberOfTransactions == null) ? 0 : numberOfTransactions.hashCode());
+		result = prime * result + ((paymentAmount == null) ? 0 : paymentAmount.hashCode());
+		result = prime * result + ((paymentCurrency == null) ? 0 : paymentCurrency.hashCode());
+		result = prime * result + ((paymentInstructionId == null) ? 0 : paymentInstructionId.hashCode());
+		result = prime * result + ((settlementMethod == null) ? 0 : settlementMethod.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		return result;
 	}
 
@@ -55,10 +191,40 @@ public class Payment {
 		if (getClass() != obj.getClass())
 			return false;
 		Payment other = (Payment) obj;
-		if (creditTransferMessage == null) {
-			if (other.creditTransferMessage != null)
+		if (creationDateTime == null) {
+			if (other.creationDateTime != null)
 				return false;
-		} else if (!creditTransferMessage.equals(other.creditTransferMessage))
+		} else if (!creationDateTime.equals(other.creationDateTime))
+			return false;
+		if (creditTransferMessageId == null) {
+			if (other.creditTransferMessageId != null)
+				return false;
+		} else if (!creditTransferMessageId.equals(other.creditTransferMessageId))
+			return false;
+		if (creditorAccountNumber == null) {
+			if (other.creditorAccountNumber != null)
+				return false;
+		} else if (!creditorAccountNumber.equals(other.creditorAccountNumber))
+			return false;
+		if (creditorId == null) {
+			if (other.creditorId != null)
+				return false;
+		} else if (!creditorId.equals(other.creditorId))
+			return false;
+		if (debtorAccountNumber == null) {
+			if (other.debtorAccountNumber != null)
+				return false;
+		} else if (!debtorAccountNumber.equals(other.debtorAccountNumber))
+			return false;
+		if (debtorId == null) {
+			if (other.debtorId != null)
+				return false;
+		} else if (!debtorId.equals(other.debtorId))
+			return false;
+		if (endToEndId == null) {
+			if (other.endToEndId != null)
+				return false;
+		} else if (!endToEndId.equals(other.endToEndId))
 			return false;
 		if (errors == null) {
 			if (other.errors != null)
@@ -70,13 +236,48 @@ public class Payment {
 				return false;
 		} else if (!isValidated.equals(other.isValidated))
 			return false;
+		if (numberOfTransactions == null) {
+			if (other.numberOfTransactions != null)
+				return false;
+		} else if (!numberOfTransactions.equals(other.numberOfTransactions))
+			return false;
+		if (paymentAmount == null) {
+			if (other.paymentAmount != null)
+				return false;
+		} else if (!paymentAmount.equals(other.paymentAmount))
+			return false;
+		if (paymentCurrency == null) {
+			if (other.paymentCurrency != null)
+				return false;
+		} else if (!paymentCurrency.equals(other.paymentCurrency))
+			return false;
+		if (paymentInstructionId == null) {
+			if (other.paymentInstructionId != null)
+				return false;
+		} else if (!paymentInstructionId.equals(other.paymentInstructionId))
+			return false;
+		if (settlementMethod == null) {
+			if (other.settlementMethod != null)
+				return false;
+		} else if (!settlementMethod.equals(other.settlementMethod))
+			return false;
+		if (status == null) {
+			if (other.status != null)
+				return false;
+		} else if (!status.equals(other.status))
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Payment [creditTransferMessage=" + creditTransferMessage + ", isValidated=" + isValidated + ", errors="
-				+ errors + "]";
+		return "Payment [creditTransferMessageId=" + creditTransferMessageId + ", paymentInstructionId="
+				+ paymentInstructionId + ", endToEndId=" + endToEndId + ", creationDateTime=" + creationDateTime
+				+ ", numberOfTransactions=" + numberOfTransactions + ", paymentAmount=" + paymentAmount
+				+ ", paymentCurrency=" + paymentCurrency + ", settlementMethod=" + settlementMethod + ", debtorId="
+				+ debtorId + ", debtorAccountNumber=" + debtorAccountNumber + ", creditorId=" + creditorId
+				+ ", creditorAccountNumber=" + creditorAccountNumber + ", status=" + status + ", isValidated="
+				+ isValidated + ", errors=" + errors + "]";
 	}
 
 }

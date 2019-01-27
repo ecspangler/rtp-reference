@@ -8,7 +8,7 @@
   <version>1.0.0.0</version>
 
   <name>Creditor Payment Acknowledgement</name>
-  <description>Creditor Payment Acknowledgment</description>
+  <description>Creditor Payment Acknowledgement</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

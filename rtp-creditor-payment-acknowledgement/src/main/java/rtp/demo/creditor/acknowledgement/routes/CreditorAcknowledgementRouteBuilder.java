@@ -14,7 +14,7 @@ public class CreditorAcknowledgementRouteBuilder extends RouteBuilder {
 	private static final Logger LOG = LoggerFactory.getLogger(CreditorAcknowledgementRouteBuilder.class);
 
 	private String kafkaBootstrap = System.getenv("BOOTSTRAP_SERVERS");
-	private String kafkaCreditorAcknowledgmentTopic = System.getenv("MOCK_RTP_CREDITOR_ACK_TOPIC");
+	private String kafkaCreditorAcknowledgementTopic = System.getenv("MOCK_RTP_CREDITOR_ACK_TOPIC");
 	private String kafkaCreditorPaymentsTopic = System.getenv("CREDITOR_PAYMENTS_TOPIC");
 	private String consumerMaxPollRecords = System.getenv("CONSUMER_MAX_POLL_RECORDS");
 	private String consumerCount = System.getenv("CONSUMER_COUNT");
@@ -26,6 +26,7 @@ public class CreditorAcknowledgementRouteBuilder extends RouteBuilder {
 		LOG.info("Configuring Creditor Acknowledgement Routes");
 
 		KafkaComponent kafka = new KafkaComponent();
+		kafka.setBrokers(kafkaBootstrap);
 		this.getContext().addComponent("kafka", kafka);
 
 		from("kafka:" + kafkaCreditorPaymentsTopic + "?brokers=" + kafkaBootstrap + "&maxPollRecords="
@@ -33,8 +34,9 @@ public class CreditorAcknowledgementRouteBuilder extends RouteBuilder {
 				+ "&groupId=" + consumerGroup
 				+ "&valueDeserializer=rtp.demo.creditor.domain.payments.serde.PaymentDeserializer").routeId("FromKafka")
 						.log("\n/// Creditor Acknowledegement Route >>> ${body}")
-						.bean(MessageStatusReportTransformer.class, "toMessageStatusReport").log(">>> ${body}")
-						.to("kafka:" + kafkaCreditorAcknowledgmentTopic
+						.bean(MessageStatusReportTransformer.class, "toMessageStatusReport")
+						.log("Sending payment status report >>> ${body}")
+						.to("kafka:" + kafkaCreditorAcknowledgementTopic
 								+ "?serializerClass=rtp.message.model.serde.FIToFIPaymentStatusReportV07Serializer");
 	}
 

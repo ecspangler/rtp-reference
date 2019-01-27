@@ -55,16 +55,16 @@ public class CreditorIntakeRouteBuilder extends RouteBuilder {
 				+ "&valueDeserializer=rtp.message.model.serde.FIToFICustomerCreditTransferV06Deserializer")
 						.routeId("FromKafka").log("\n/// Creditor Intake Route >>> ${body}")
 						.bean(CreditTransferMessageTransformer.class, "toCreditTransferMessage").log(" >>> ${body}")
-						.log(" Retrieved >>> ${body}")
+						.log(" Retrieved message >>> ${body}")
 						.bean(CreditTransferMessageValidationBean.class, "validateCreditTransferMessage")
-						.log(" >>> ${body}").bean(PaymentTransformer.class, "toPayment")
-						.log(" >>>${body}  >> key ${body}.getPaymentId()").process(new Processor() {
+						.log(" Validated payment >>> ${body}").bean(PaymentTransformer.class, "toPayment")
+						.log(" Transformed payment >>> ${body}  >> key ${body.getCreditTransferMessageId}")
+						.process(new Processor() {
 							@Override
 							public void process(Exchange exchange) throws Exception {
-								exchange.getIn().setBody("${body}", Payment.class);
-								exchange.getIn().setHeader(KafkaConstants.KEY, "${body}.getPaymentId()");
+								exchange.getIn().setHeader(KafkaConstants.KEY, "${body.getCreditTransferMessageId}");
 							}
-						}).to("kafka:" + kafkaCreditorPaymentsTopic
+						}).log(" Sending payment >>> ${body}").to("kafka:" + kafkaCreditorPaymentsTopic
 								+ "?serializerClass=rtp.demo.creditor.domain.payments.serde.PaymentSerializer");
 	}
 

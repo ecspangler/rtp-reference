@@ -1,5 +1,8 @@
 package rtp.demo.creditor.acknowledgement.beans;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import iso.std.iso._20022.tech.xsd.pacs_002_001.FIToFIPaymentStatusReportV07;
 import iso.std.iso._20022.tech.xsd.pacs_002_001.GroupHeader53;
 import iso.std.iso._20022.tech.xsd.pacs_002_001.PaymentTransaction63;
@@ -15,14 +18,21 @@ public class MessageStatusReportTransformer {
 		FIToFIPaymentStatusReportV07 messageStatusReport = new FIToFIPaymentStatusReportV07();
 		PaymentValidationError validationError = null;
 
+		System.out.println("PAYMENT: " + payment);
+
 		if (payment.getErrors().size() > 0) {
 			validationError = payment.getErrors().get(0);
 		}
 
 		messageStatusReport.setGrpHdr(new GroupHeader53());
-		messageStatusReport.getGrpHdr().setMsgId("M2015111202120020101BRRR00000000001");
+
+		// Payment status key generated based on timestamp for the reference example
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
+		LocalDateTime now = LocalDateTime.now();
+		messageStatusReport.getGrpHdr().setMsgId("PAYMENT_STATUS" + formatter.format(now));
 
 		PaymentTransaction63 transaction = new PaymentTransaction63();
+		transaction.setOrgnlInstrId(payment.getCreditTransferMessageId());
 		if (validationError != null) {
 			TransactionIndividualStatus3Code status = TransactionIndividualStatus3Code.RJCT;
 			transaction.setTxSts(status);

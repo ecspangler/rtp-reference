@@ -67,10 +67,10 @@ public class DebtorPaymentService extends AbstractVerticle {
 			payment = PayeeAccountLookupBean.enrichPayeeAccountInformation(payment);
 
 			try {
-				// Pyament key generated based on timestamp for the reference example
+				// Payment key generated based on timestamp for the reference example
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
 				LocalDateTime now = LocalDateTime.now();
-				payment.setPaymentId(formatter.format(now));
+				payment.setPaymentId("PAYMENT" + formatter.format(now));
 
 				debtorPaymentsProducer.sendMessage(payment.getPaymentId(), payment);
 			} catch (Exception e) {
