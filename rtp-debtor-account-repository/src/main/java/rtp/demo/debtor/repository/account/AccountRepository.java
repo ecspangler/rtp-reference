@@ -4,10 +4,10 @@ import rtp.demo.debtor.domain.account.Account;
 
 public interface AccountRepository {
 
-	public void addAccount(Account account);
+	public void addAccount(String key, Account account);
 
-	public Account getAccount(String accountNumber);
+	public Account getAccount(String key);
 
-	public void deleteAccount(String accountNumber);
+	public void deleteAccount(String key);
 
 }

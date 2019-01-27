@@ -32,21 +32,6 @@ Then I expect no validation errors
 
 
 #=======================================================================================================================
-@Ignore
-Scenario: RTP_CBPV_001 - Credit Transfer Message creation date must be within 1 calendar day of current processing date and time
-
-Given I receive the following Credit Transfer Message:
-| Message Id                          | Creation Date Time  | Number of Transactions | Payment Amount | Payment Currency | Creditor Id | Creditor Account  | Settlement Method |
-| M2018111511021200201BFFF00000000001 | 2018-11-11T11:26:00 | 1                      | 512.23         | USD              | 020010001   | 12000194212199001 | CLRG              |
-
-When I validate the Credit Transfer Message
-
-Then I expect the following validation errors:
-| Internal Error Code | RTP Reject Reason Code | Error Message                                             | 
-| CPVE_001            | DT04                   | Message creation date is outside of valid date range      | 
-
-
-#=======================================================================================================================
 Scenario: RTP_CBPV_002a - Credit Transfer Message must represent a single transaction - More than one transaction
 
 Given I receive the following Credit Transfer Message:
@@ -131,36 +116,6 @@ Then I expect the following validation errors:
 
 
 #=======================================================================================================================
-@Ignore
-Scenario: RTP_CBPV_007 - Account to be credited must be open
-
-Given I receive the following Credit Transfer Message:
-| Message Id                          | Creation Date Time  | Number of Transactions | Payment Amount | Payment Currency | Creditor Id | Creditor Account  | Settlement Method |
-| M2018111511021200201BFFF00000000001 | 2018-11-12T10:05:00 | 1                      | 512.23         | USD              | 020010001   | 12000194212199007 | CLRG              |
-
-When I validate the Credit Transfer Message
-
-Then I expect the following validation errors:
-| Internal Error Code | RTP Reject Reason Code | Error Message                                             | 
-| CPVE_007            | AC04                   | Account number specified has been closed                  | 
-
-
-#=======================================================================================================================
-@Ignore
-Scenario: RTP_CBPV_008 - Account to be credited must not be blocked for payments
-
-Given I receive the following Credit Transfer Message:
-| Message Id                          | Creation Date Time  | Number of Transactions | Payment Amount | Payment Currency | Creditor Id | Creditor Account  | Settlement Method |
-| M2018111511021200201BFFF00000000001 | 2018-11-12T10:05:00 | 1                      | 512.23         | USD              | 020010001   | 12000194212199005 | CLRG              |
-
-When I validate the Credit Transfer Message
-
-Then I expect the following validation errors:
-| Internal Error Code | RTP Reject Reason Code | Error Message                                             | 
-| CPVE_008            | AC06                   | Account number specified is blocked                       | 
-
-
-#=======================================================================================================================
 Scenario: RTP_CBPV_009 - Settlement Method must be CLRG
 
 Given I receive the following Credit Transfer Message:
@@ -175,7 +130,6 @@ Then I expect the following validation errors:
 
 
 #=======================================================================================================================
-@Ignore
 Scenario: RTP_CBPV_000 - Multiple validation errors
 
 Given I receive the following Credit Transfer Message:
@@ -186,7 +140,6 @@ When I validate the Credit Transfer Message
 
 Then I expect the following validation errors:
 | Internal Error Code | RTP Reject Reason Code | Error Message                                             | 
-| CPVE_001            | DT04                   | Message creation date is outside of valid date range      | 
 | CPVE_002            | 650                    | Number of transactions on message was not 1               | 
 | CPVE_003            | 650                    | Payment amount less than or equal to zero                 | 
 | CPVE_004            | 650                    | Payment currency code is not valid                        | 

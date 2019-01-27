@@ -65,9 +65,9 @@ public class MockRtpRouteBuilder extends RouteBuilder {
 				+ "&valueDeserializer=rtp.message.model.serde.FIToFIPaymentStatusReportV07Deserializer")
 						.routeId("FromKafka").log("\n/// Mock RTP - Receiving Acknowledgements >>> ${body}")
 						.to("kafka:" + kafkaDebtorConfirmationTopic
-								+ "?serializerClass=rtp.message.model.serde.FIToFICustomerCreditTransferV06Serializer")
+								+ "?serializerClass=rtp.message.model.serde.FIToFIPaymentStatusReportV07Serializer")
 						.to("kafka:" + kafkaCreditorConfirmationTopic
-								+ "?serializerClass=rtp.message.model.serde.FIToFICustomerCreditTransferV06Serializer");
+								+ "?serializerClass=rtp.message.model.serde.FIToFIPaymentStatusReportV07Serializer");
 
 	}
 

@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 import rtp.demo.creditor.domain.account.Account;
 import rtp.demo.creditor.domain.rtp.simplified.CreditTransferMessage;
 import rtp.demo.creditor.intake.routes.CreditorIntakeRouteBuilder;
+import rtp.demo.creditor.repository.account.AccountRepository;
+import rtp.demo.creditor.repository.account.JdgAccountRepository;
+//import rtp.demo.creditor.repository.account.AccountRepository;
+//import rtp.demo.creditor.repository.account.JdgAccountRepository;
 import rtp.demo.creditor.validation.PaymentValidationRequest;
 import rtp.demo.creditor.validation.wrappers.Accounts;
 import rtp.demo.creditor.validation.wrappers.CreditorBank;
@@ -22,7 +26,10 @@ public class CreditTransferMessageValidationBean {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CreditorIntakeRouteBuilder.class);
 
+	private static final String KSESSION = "payments-validation-ksession";
+
 	private final KieContainer kieContainer;
+	private AccountRepository accountRepository = new JdgAccountRepository();
 
 	@Autowired
 	public CreditTransferMessageValidationBean(KieContainer kieContainer) {
@@ -32,15 +39,18 @@ public class CreditTransferMessageValidationBean {
 
 	public PaymentValidationRequest validateCreditTransferMessage(CreditTransferMessage creditTransferMessage) {
 		LOG.info("Validation Rules");
+
+		Accounts accounts = new Accounts();
+		accounts.getAccounts().add(accountRepository.getAccount(creditTransferMessage.getCreditorAccountNumber()));
+
 		PaymentValidationRequest validationRequest = new PaymentValidationRequest();
 		validationRequest.setCreditTransferMessage(creditTransferMessage);
 
-		StatelessKieSession kSession = kieContainer.newStatelessKieSession("payments-validation-ksession");
+		StatelessKieSession kSession = kieContainer.newStatelessKieSession(KSESSION);
 
 		List<Object> facts = new ArrayList<Object>();
 		facts.add(makeDummyCreditor());
-		// facts.add(processingDateTime);
-		facts.add(makeDummyAccounts());
+		facts.add(creditTransferMessage.getCreditorAccountNumber());
 		facts.add(validationRequest);
 
 		LOG.info("Incoming Payment Validation Request: " + validationRequest);
@@ -50,21 +60,10 @@ public class CreditTransferMessageValidationBean {
 		return validationRequest;
 	}
 
-	private Accounts makeDummyAccounts() {
-		Accounts accounts = new Accounts();
-
-		Account account1 = new Account();
-		account1.setAccountNumber("12000194212199001");
-		// account1.setStatus(AccountStatus.OPEN);
-		accounts.getAccounts().add(account1);
-
-		return accounts;
-	}
-
+	// Test data for reference example
 	private CreditorBank makeDummyCreditor() {
 		CreditorBank creditor = new CreditorBank();
 		creditor.setRoutingAndTransitNumber("020010001");
-
 		return creditor;
 	}
 

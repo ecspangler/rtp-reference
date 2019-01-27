@@ -9,10 +9,14 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.StaticHandler;
+import rtp.demo.debtor.domain.account.Account;
 import rtp.demo.debtor.domain.model.payment.Payments;
 import rtp.demo.debtor.domain.model.transaction.DebitTransaction;
 import rtp.demo.debtor.domain.model.transaction.Transactions;
 import rtp.demo.debtor.payments.producer.DebtorPaymentsProducer;
+import rtp.demo.debtor.repository.account.AccountRepository;
+import rtp.demo.debtor.repository.account.JdgAccountRepository;
+import rtp.demo.payments.beans.PayeeAccountLookupBean;
 
 import static io.vertx.core.http.HttpHeaders.CONTENT_TYPE;
 
@@ -24,6 +28,8 @@ import java.util.logging.Logger;
 public class DebtorPaymentService extends AbstractVerticle {
 
 	private static final Logger LOGGER = Logger.getLogger(DebtorPaymentService.class.getName());
+
+	private AccountRepository accountRepository = new JdgAccountRepository();
 
 	@Override
 	public void start() {
@@ -37,6 +43,17 @@ public class DebtorPaymentService extends AbstractVerticle {
 
 		vertx.createHttpServer().requestHandler(router::accept).listen(8080);
 		LOGGER.info("THE HTTP APPLICATION HAS STARTED");
+
+		// Populate test payees in the cache, for purposes of the reference example
+		Account testAccount1 = new Account();
+		testAccount1.setRoutingNumber("020010001");
+		testAccount1.setAccountNumber("12000194212199001");
+		accountRepository.addAccount("JANE_SHAW", testAccount1);
+
+		Account testAccount2 = new Account();
+		testAccount1.setRoutingNumber("020010001");
+		testAccount1.setAccountNumber("12000194212199002");
+		accountRepository.addAccount("DIEGO_LOPEZ", testAccount2);
 	}
 
 	private void createPayments(RoutingContext routingContext) {
@@ -45,10 +62,16 @@ public class DebtorPaymentService extends AbstractVerticle {
 
 		DebtorPaymentsProducer debtorPaymentsProducer = new DebtorPaymentsProducer();
 		payments.getPayments().forEach(payment -> {
+
+			// Find the routing number and account number for the payee
+			payment = PayeeAccountLookupBean.enrichPayeeAccountInformation(payment);
+
 			try {
+				// Pyament key generated based on timestamp for the reference example
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
 				LocalDateTime now = LocalDateTime.now();
 				payment.setPaymentId(formatter.format(now));
+
 				debtorPaymentsProducer.sendMessage(payment.getPaymentId(), payment);
 			} catch (Exception e) {
 				LOGGER.severe("Error publishing payment to topic");

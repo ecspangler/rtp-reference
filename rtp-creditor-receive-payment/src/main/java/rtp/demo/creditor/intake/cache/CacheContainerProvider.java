@@ -22,11 +22,6 @@ import org.slf4j.LoggerFactory;
 
 public class CacheContainerProvider {
 
-//    public static final String DATAGRID_HOST = "datagrid.host";
-//    public static final String HOTROD_PORT = "datagrid.hotrod.port";
-//    public static final String PROPERTIES_FILE = "META-INF" + File.separator + "datagrid.properties";
-//
-
 	public CacheContainerProvider() {
 		super();
 	}
@@ -66,7 +61,7 @@ public class CacheContainerProvider {
 	public BasicCacheContainer getBasicCacheContainer() {
 		if (manager == null) {
 			ConfigurationBuilder builder = new ConfigurationBuilder();
-			builder.addServer().host("accountcache-hotrod").port(11333);
+			builder.addServer().host("rtp-demo-cache").port(11222);
 
 			builder.security().authentication().enable().serverName("jdg-server").saslMechanism("DIGEST-MD5")
 					.callbackHandler(new TestCallbackHandler("jdguser", "ApplicationRealm", "P@ssword1".toCharArray()));

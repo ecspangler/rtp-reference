@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /*
- * Simple domain class representing an account held by the Debtor 
+ * Simple domain class representing an account 
  */
 public class Account implements Serializable {
 
 	private static final long serialVersionUID = -9131494827098991910L;
+
+	private String routingNumber;
 
 	private String accountNumber;
 
@@ -17,6 +19,14 @@ public class Account implements Serializable {
 	private String status;
 
 	private BigDecimal availableBalance;
+
+	public String getRoutingNumber() {
+		return routingNumber;
+	}
+
+	public void setRoutingNumber(String routingNumber) {
+		this.routingNumber = routingNumber;
+	}
 
 	public String getAccountNumber() {
 		return accountNumber;
@@ -57,6 +67,7 @@ public class Account implements Serializable {
 		result = prime * result + ((accountNumber == null) ? 0 : accountNumber.hashCode());
 		result = prime * result + ((accountType == null) ? 0 : accountType.hashCode());
 		result = prime * result + ((availableBalance == null) ? 0 : availableBalance.hashCode());
+		result = prime * result + ((routingNumber == null) ? 0 : routingNumber.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		return result;
 	}
@@ -85,15 +96,23 @@ public class Account implements Serializable {
 				return false;
 		} else if (!availableBalance.equals(other.availableBalance))
 			return false;
-		if (status != other.status)
+		if (routingNumber == null) {
+			if (other.routingNumber != null)
+				return false;
+		} else if (!routingNumber.equals(other.routingNumber))
+			return false;
+		if (status == null) {
+			if (other.status != null)
+				return false;
+		} else if (!status.equals(other.status))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Account [accountNumber=" + accountNumber + ", accountType=" + accountType + ", status=" + status
-				+ ", availableBalance=" + availableBalance + "]";
+		return "Account [routingNumber=" + routingNumber + ", accountNumber=" + accountNumber + ", accountType="
+				+ accountType + ", status=" + status + ", availableBalance=" + availableBalance + "]";
 	}
 
 }

@@ -134,7 +134,6 @@ mock-rtp-debtor-credit-transfer
 ```
 
 
-
 #### JBoss Datagrid Server and Caches
 
 Import the JDG OpenShift image:
@@ -154,11 +153,71 @@ Create the JDG server and caches:
 $ oc new-app --name=rtp-demo-cache \
 --image-stream=datagrid72-openshift:latest \
 -e INFINISPAN_CONNECTORS=hotrod \
--e CACHE_NAMES=debtorAccountCache,creditorAccountcache \
+-e CACHE_NAMES=debtorAccountCache,creditorAccountCache \
 -e HOTROD_SERVICE_NAME=rtp-demo-cache\
 -e HOTROD_AUTHENTICATION=true \
 -e USERNAME=jdguser \
 -e PASSWORD=P@ssword1
+```
+
+
+#### Install Fuse on the OpenShift Cluster
+
+As an admin user, change to the openshift project:
+```
+$ oc project openshift
+```
+
+Create docker-registry using Red Hat credentials:
+```
+$ oc create secret docker-registry imagestreamsecret \
+  --docker-server=registry.redhat.io \
+  --docker-username=CUSTOMER_PORTAL_USERNAME \
+  --docker-password=CUSTOMER_PORTAL_PASSWORD \
+  --docker-email=EMAIL_ADDRESS
+```
+
+Install Fuse on OpenShift image streams and templates:
+```
+$ BASEURL=https://raw.githubusercontent.com/jboss-fuse/application-templates/application-templates-2.1.fuse-720018-redhat-00001
+
+$ oc create -n openshift -f ${BASEURL}/fis-image-streams.json
+
+$ for template in eap-camel-amq-template.json \
+ eap-camel-cdi-template.json \
+ eap-camel-cxf-jaxrs-template.json \
+ eap-camel-cxf-jaxws-template.json \
+ eap-camel-jpa-template.json \
+ karaf-camel-amq-template.json \
+ karaf-camel-log-template.json \
+ karaf-camel-rest-sql-template.json \
+ karaf-cxf-rest-template.json \
+ spring-boot-camel-amq-template.json \
+ spring-boot-camel-config-template.json \
+ spring-boot-camel-drools-template.json \
+ spring-boot-camel-infinispan-template.json \
+ spring-boot-camel-rest-sql-template.json \
+ spring-boot-camel-teiid-template.json \
+ spring-boot-camel-template.json \
+ spring-boot-camel-xa-template.json \
+ spring-boot-camel-xml-template.json \
+ spring-boot-cxf-jaxrs-template.json \
+ spring-boot-cxf-jaxws-template.json ;
+ do
+ oc create -n openshift -f \
+ https://raw.githubusercontent.com/jboss-fuse/application-templates/application-templates-2.1.fuse-720018-redhat-00001/quickstarts/${template}
+ done
+
+$ oc create -n openshift -f https://raw.githubusercontent.com/jboss-fuse/application-templates/application-templates-2.1.fuse-720018-redhat-00001/fis-console-cluster-template.json
+
+$ oc create -n openshift -f https://raw.githubusercontent.com/jboss-fuse/application-templates/application-templates-2.1.fuse-720018-redhat-00001/fis-console-namespace-template.json
+
+$ oc create -n openshift -f ${BASEURL}/fuse-apicurito.yml
+```
+
+Confirm Fuse images and templates were installed:
+```
+$ oc get template -n openshift
 ```
 
 
@@ -189,15 +248,15 @@ Build, configure and deploy the Debtor Send Payment Service
 $ cd rtp-debtor-send-payment
 $ oc create configmap rtp-debtor-send-payment-config \
             --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
-            --from-literal=CONSUMER_TOPIC=debtor-payments \
-            --from-literal=PRODUCER_TOPIC=mock-rtp-debtor-credit-transfer \
+            --from-literal=DEBTOR_PAYMENTS_TOPIC=debtor-payments \
+            --from-literal=MOCK_RTP_CREDIT_TRANSFER_TOPIC=mock-rtp-debtor-credit-transfer \
             --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
             --from-literal=CONSUMER_COUNT=1 \
             --from-literal=CONSUMER_SEEK_TO=end \
             --from-literal=CONSUMER_GROUP=rtp-debtor-send-payment \
             --from-literal=SECURITY_PROTOCOL=PLAINTEXT \
-            --from-literal=DESERIALIZER_CLASS=rtp.message.model.serde.FIToFICustomerCreditTransferV06Deserializer \
-            --from-literal=SERIALIZER_CLASS=rtp.demo.debtor.domain.model.payment.serde.PaymentSerializer \
+            --from-literal=DESERIALIZER_CLASS=rtp.demo.debtor.domain.model.payment.serde.PaymentDeserializer \
+            --from-literal=SERIALIZER_CLASS=rtp.message.model.serde.FIToFICustomerCreditTransferV06Serializer \
             --from-literal=ACKS=1
 $ mvn fabric8:deploy -Popenshift
 $ oc set env dc/rtp-debtor-send-payment --from configmap/rtp-debtor-send-payment-config
@@ -222,7 +281,7 @@ $ oc create configmap rtp-mock-config \
             --from-literal=CONSUMER_GROUP=rtp-mock \
             --from-literal=ACKS=1
 $ mvn fabric8:deploy -Popenshift
-$ oc set env dc/rtp-mock --from configmap/rtp-mock-config
+$ oc set env dc/rtp-demo-mock --from configmap/rtp-mock-config
 $ cd ..
 ```
 
@@ -238,13 +297,31 @@ $ oc create configmap rtp-creditor-receive-payment-config \
             --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
             --from-literal=CONSUMER_COUNT=1 \
             --from-literal=CONSUMER_SEEK_TO=end \
-            --from-literal=CONSUMER_GROUP=rtp-mock \
+            --from-literal=CONSUMER_GROUP=rtp-creditor-receive-payment \
             --from-literal=ACKS=1
 $ mvn fabric8:deploy -Popenshift
 $ oc set env dc/rtp-creditor-receive-payment --from configmap/rtp-creditor-receive-payment-config
 $ cd ..
 ```
 
+Build, configure and deploy the Creditor Payment Acknowledgment Service
+
+```
+$ cd rtp-creditor-payment-acknowledgement
+$ oc create configmap rtp-creditor-payment-acknowledgement-config \
+            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
+            --from-literal=SECURITY_PROTOCOL=PLAINTEXT \
+            --from-literal=CREDITOR_PAYMENTS_TOPIC=creditor-payments \
+            --from-literal=MOCK_RTP_CREDITOR_ACK_TOPIC=mock-rtp-creditor-acknowledgment \
+            --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
+            --from-literal=CONSUMER_COUNT=1 \
+            --from-literal=CONSUMER_SEEK_TO=end \
+            --from-literal=CONSUMER_GROUP=rtp-creditor-payment-acknowledgement \
+            --from-literal=ACKS=1
+$ mvn fabric8:deploy -Popenshift
+$ oc set env dc/rtp-creditor-payment-acknowledgement --from configmap/rtp-creditor-payment-acknowledgement-config
+$ cd ..
+```
 
 
 

@@ -1,8 +1,8 @@
-package rtp.demo.debtor.repository.account;
+package rtp.demo.creditor.repository.account;
 
 import org.infinispan.commons.api.BasicCache;
 
-import rtp.demo.debtor.domain.account.Account;
+import rtp.demo.creditor.domain.account.Account;
 
 public class JdgAccountRepository implements AccountRepository {
 
@@ -16,19 +16,19 @@ public class JdgAccountRepository implements AccountRepository {
 	}
 
 	@Override
-	public void addAccount(String key, Account account) {
-		accountCache.put(key, account);
+	public void addAccount(Account account) {
+		accountCache.put(account.getAccountNumber(), account);
 	}
 
 	@Override
-	public Account getAccount(String key) {
-		Account retrievedAccount = (Account) accountCache.get(AccountManager.encode(key));
+	public Account getAccount(String accountNumber) {
+		Account retrievedAccount = (Account) accountCache.get(AccountManager.encode(accountNumber));
 		return retrievedAccount;
 	}
 
 	@Override
-	public void deleteAccount(String key) {
-		accountCache.remove(key);
+	public void deleteAccount(String accountNumber) {
+		accountCache.remove(accountNumber);
 	}
 
 }

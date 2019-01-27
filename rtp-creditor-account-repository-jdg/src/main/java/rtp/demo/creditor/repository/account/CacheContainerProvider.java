@@ -1,4 +1,4 @@
-package rtp.demo.debtor.repository.account;
+package rtp.demo.creditor.repository.account;
 
 import java.io.IOException;
 

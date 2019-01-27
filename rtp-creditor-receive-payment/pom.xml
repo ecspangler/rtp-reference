@@ -52,58 +52,12 @@
       <artifactId>rtp-message-model</artifactId>
       <version>1.0.0.0</version>
     </dependency>
-
-<!--
+    
     <dependency>
       <groupId>rtp.demo</groupId>
-      <artifactId>rtp-creditor-validation-rules</artifactId>
+      <artifactId>rtp-creditor-account-repository-jdg</artifactId>
       <version>1.0.0.0</version>
-    </dependency>-->
-
-
-<dependency>
-    <groupId>org.infinispan</groupId>
-    <artifactId>infinispan-core</artifactId>
-    <version>8.5.3.Final-redhat-00002</version>
-</dependency>
-
-<dependency>
-    <groupId>org.infinispan</groupId>
-    <artifactId>infinispan-client-hotrod</artifactId>
-    <version>8.5.3.Final-redhat-00002</version>
-</dependency>
-
-<dependency>
-    <groupId>org.infinispan</groupId>
-    <artifactId>infinispan-remote-query-client</artifactId>
-    <version>8.5.3.Final-redhat-00002</version>
-</dependency>
-
-<dependency>
-    <groupId>org.infinispan</groupId>
-    <artifactId>infinispan-query-dsl</artifactId>
-    <version>8.5.3.Final-redhat-00002</version>
-</dependency>
-<!-- JBoss Data Grid -->
-<!--
-      <dependency>
-    <groupId>org.infinispan</groupId>
-    <artifactId>infinispan-remote</artifactId>
-    <version>8.5.3.Final-redhat-00002</version>
-    </dependency>-->
-
-
-<dependency>
-    <groupId>org.infinispan</groupId>
-    <artifactId>infinispan-cdi</artifactId>
-    <version>7.0.3.Final</version>
-</dependency>
-
-<dependency>
-  <groupId>org.apache.camel</groupId>
-  <artifactId>camel-jbossdatagrid</artifactId>
-  <version>7.2.0.Final-redhat-9</version>
-</dependency>
+    </dependency>
 
 <!-- Decision Manager -->
 <dependency>
@@ -156,6 +110,10 @@
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-tomcat</artifactId>
         </exclusion>
+    <exclusion>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-logging</artifactId>
+    </exclusion>
       </exclusions>
     </dependency>
     <dependency>
@@ -166,6 +124,12 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-spring-boot-starter</artifactId>
+  <exclusions>
+    <exclusion>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-logging</artifactId>
+    </exclusion>
+  </exclusions>
     </dependency>
 
     <!-- testing -->

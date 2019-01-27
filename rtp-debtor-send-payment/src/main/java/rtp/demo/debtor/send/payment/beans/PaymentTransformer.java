@@ -33,9 +33,10 @@ public class PaymentTransformer {
 		FIToFICustomerCreditTransferV06 dummyRtpCreditTransferMessage = new FIToFICustomerCreditTransferV06();
 		dummyRtpCreditTransferMessage.setGrpHdr(new GroupHeader70());
 
-		// Set Credit Transfer Message Id
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
 		LocalDateTime now = LocalDateTime.now();
+
+		// Set Credit Transfer Message Id
 		dummyRtpCreditTransferMessage.getGrpHdr().setMsgId(payment.getPaymentId());
 
 		// Set Message Created Date Time

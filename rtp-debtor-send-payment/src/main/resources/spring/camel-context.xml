@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="
-       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
 
-	<bean id="mockRtpRouteBuilder" class="rtp.demo.mock.routes.MockRtpRouteBuilder"></bean>
+    <bean class="rtp.demo.debtor.send.payment.routes.DebtorSendPaymentRouteBuilder" id="debtorSendPaymentRouteBuilder"/>
 
-    <camelContext xmlns="http://camel.apache.org/schema/spring">
-        <routeBuilder ref="mockRtpRouteBuilder" />
+    <camelContext id="camelContext-547df1f2-3651-4927-8f68-26ad2db28626" xmlns="http://camel.apache.org/schema/spring">
+        <routeBuilder ref="debtorSendPaymentRouteBuilder"/>
     </camelContext>
-
 </beans>

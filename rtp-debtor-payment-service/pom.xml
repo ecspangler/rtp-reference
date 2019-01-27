@@ -52,6 +52,12 @@
       <artifactId>rtp-message-model</artifactId>
       <version>1.0.0.0</version>
     </dependency>
+    
+     <dependency>
+      <groupId>rtp.demo</groupId>
+      <artifactId>rtp-debtor-account-repository-jdg</artifactId>
+      <version>1.0.0.0</version>    
+    </dependency>
 
     <dependency>
       <groupId>io.vertx</groupId>
