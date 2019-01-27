@@ -1,4 +1,4 @@
-package rtp.demo.creditor.auditing.routes;
+package rtp.demo.creditor.customer.notification.routes;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.kafka.KafkaComponent;
@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CreditorAuditingRouteBuilder extends RouteBuilder {
+public class CreditorCustomerNotificationRouteBuilder extends RouteBuilder {
 
-	private static final Logger LOG = LoggerFactory.getLogger(CreditorAuditingRouteBuilder.class);
+	private static final Logger LOG = LoggerFactory.getLogger(CreditorCustomerNotificationRouteBuilder.class);
 
 	private String kafkaBootstrap = System.getenv("BOOTSTRAP_SERVERS");
 	private String kafkaCreditorCompletedPaymentsTopic = System.getenv("CREDITOR_COMPLETED_PAYMENTS_TOPIC");
@@ -20,7 +20,7 @@ public class CreditorAuditingRouteBuilder extends RouteBuilder {
 
 	@Override
 	public void configure() throws Exception {
-		LOG.info("Configuring Creditor Auditing Routes");
+		LOG.info("Configuring Creditor Customer Notification Routes");
 
 		KafkaComponent kafka = new KafkaComponent();
 		kafka.setBrokers(kafkaBootstrap);
@@ -30,7 +30,6 @@ public class CreditorAuditingRouteBuilder extends RouteBuilder {
 				+ consumerMaxPollRecords + "&consumersCount=" + consumerCount + "&seekTo=" + consumerSeekTo
 				+ "&groupId=" + consumerGroup
 				+ "&valueDeserializer=rtp.demo.creditor.domain.payments.serde.PaymentDeserializer").routeId("FromKafka")
-						.log("\n/// Creditor Auditing stub service received payment >>> ${body}");
+						.log("\n/// Creditor Customer Notification stub service received payment >>> ${body}");
 	}
-
 }

@@ -367,7 +367,7 @@ $ cd rtp-creditor-payment-confirmation
 $ oc create configmap rtp-creditor-payment-confirmation-config \
             --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
             --from-literal=CREDITOR_COMPLETED_PAYMENTS_TOPIC=creditor-completed-payments \
-            --from-literal=MOCK_RTP_CREDITOR_ACK_TOPIC=mock-rtp-creditor-confirmation \
+            --from-literal=MOCK_RTP_CREDITOR_CONFIRMATION_TOPIC=mock-rtp-creditor-confirmation \
             --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
             --from-literal=CONSUMER_COUNT=1 \
             --from-literal=CONSUMER_SEEK_TO=end \
@@ -377,6 +377,127 @@ $ mvn fabric8:deploy -Popenshift
 $ oc set env dc/rtp-creditor-payment-confirmation --from configmap/rtp-creditor-payment-confirmation-config
 $ cd ..
 ```
+
+Build, configure and deploy the Creditor Customer Notification Service
+
+```
+$ cd rtp-creditor-customer-notification
+$ oc create configmap rtp-creditor-customer-notification-config \
+            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
+            --from-literal=CREDITOR_COMPLETED_PAYMENTS_TOPIC=creditor-completed-payments \
+            --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
+            --from-literal=CONSUMER_COUNT=1 \
+            --from-literal=CONSUMER_SEEK_TO=end \
+            --from-literal=CONSUMER_GROUP=rtp-creditor-customer-notification \
+            --from-literal=ACKS=1
+$ mvn fabric8:deploy -Popenshift
+$ oc set env dc/rtp-creditor-customer-notification --from configmap/rtp-creditor-customer-notification-config
+$ cd ..
+```
+
+Build, configure and deploy the Creditor Customer Core Banking Service
+
+```
+$ cd rtp-creditor-core-banking
+$ oc create configmap rtp-creditor-core-banking-config \
+            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
+            --from-literal=CREDITOR_COMPLETED_PAYMENTS_TOPIC=creditor-completed-payments \
+            --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
+            --from-literal=CONSUMER_COUNT=1 \
+            --from-literal=CONSUMER_SEEK_TO=end \
+            --from-literal=CONSUMER_GROUP=rtp-creditor-core-banking \
+            --from-literal=ACKS=1
+$ mvn fabric8:deploy -Popenshift
+$ oc set env dc/rtp-creditor-core-banking --from configmap/rtp-creditor-core-banking-config
+$ cd ..
+```
+
+Build, configure and deploy the Creditor Payment Auditing Service
+
+```
+$ cd rtp-creditor-auditing
+$ oc create configmap rtp-creditor-auditing-config \
+            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
+            --from-literal=CREDITOR_COMPLETED_PAYMENTS_TOPIC=creditor-completed-payments \
+            --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
+            --from-literal=CONSUMER_COUNT=1 \
+            --from-literal=CONSUMER_SEEK_TO=end \
+            --from-literal=CONSUMER_GROUP=rtp-creditor-auditing \
+            --from-literal=ACKS=1
+$ mvn fabric8:deploy -Popenshift
+$ oc set env dc/rtp-creditor-auditing --from configmap/rtp-creditor-auditing-config
+$ cd ..
+```
+
+Build, configure and deploy the Debtor Payment Confirmation Service
+
+```
+$ cd rtp-debtor-payment-confirmation
+$ oc create configmap rtp-debtor-payment-confirmation-config \
+            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
+            --from-literal=DEBTOR_COMPLETED_PAYMENTS_TOPIC=debtor-completed-payments \
+            --from-literal=MOCK_RTP_DEBTOR_CONFIRMATION_TOPIC=mock-rtp-debtor-confirmation \
+            --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
+            --from-literal=CONSUMER_COUNT=1 \
+            --from-literal=CONSUMER_SEEK_TO=end \
+            --from-literal=CONSUMER_GROUP=rtp-debtor-payment-confirmation \
+            --from-literal=ACKS=1
+$ mvn fabric8:deploy -Popenshift
+$ oc set env dc/rtp-debtor-payment-confirmation --from configmap/rtp-debtor-payment-confirmation-config
+$ cd ..
+```
+
+Build, configure and deploy the Debtor Customer Notification Service
+
+```
+$ cd rtp-debtor-customer-notification
+$ oc create configmap rtp-debtor-customer-notification-config \
+            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
+            --from-literal=CREDITOR_COMPLETED_PAYMENTS_TOPIC=debtor-completed-payments \
+            --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
+            --from-literal=CONSUMER_COUNT=1 \
+            --from-literal=CONSUMER_SEEK_TO=end \
+            --from-literal=CONSUMER_GROUP=rtp-debtor-customer-notification \
+            --from-literal=ACKS=1
+$ mvn fabric8:deploy -Popenshift
+$ oc set env dc/rtp-debtor-customer-notification --from configmap/rtp-debtor-customer-notification-config
+$ cd ..
+```
+
+Build, configure and deploy the Debtor Customer Core Banking Service
+
+```
+$ cd rtp-debtor-core-banking
+$ oc create configmap rtp-debtor-core-banking-config \
+            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
+            --from-literal=CREDITOR_COMPLETED_PAYMENTS_TOPIC=debtor-completed-payments \
+            --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
+            --from-literal=CONSUMER_COUNT=1 \
+            --from-literal=CONSUMER_SEEK_TO=end \
+            --from-literal=CONSUMER_GROUP=rtp-debtor-core-banking \
+            --from-literal=ACKS=1
+$ mvn fabric8:deploy -Popenshift
+$ oc set env dc/rtp-debtor-core-banking --from configmap/rtp-debtor-core-banking-config
+$ cd ..
+```
+
+Build, configure and deploy the Debtor Payment Auditing Service
+
+```
+$ cd rtp-debtor-auditing
+$ oc create configmap rtp-debtor-auditing-config \
+            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
+            --from-literal=CREDITOR_COMPLETED_PAYMENTS_TOPIC=debtor-completed-payments \
+            --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
+            --from-literal=CONSUMER_COUNT=1 \
+            --from-literal=CONSUMER_SEEK_TO=end \
+            --from-literal=CONSUMER_GROUP=rtp-debtor-auditing \
+            --from-literal=ACKS=1
+$ mvn fabric8:deploy -Popenshift
+$ oc set env dc/rtp-debtor-auditing --from configmap/rtp-debtor-auditing-config
+$ cd ..
+```
+
 
 
 ## Running the Reference Application
@@ -403,6 +524,7 @@ Using a rest client, POST the following request body to the Debtor Payment Servi
   ]
 }
 ```
+
 
 
 
