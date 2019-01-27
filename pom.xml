@@ -21,7 +21,7 @@
     <module>rtp-debtor-account-repository-jdg</module>
     <module>rtp-creditor-account-repository</module>
     <module>rtp-creditor-account-repository-jdg</module>
-    <module>rtp-debtor-payment-service</module>
+    <!--<module>rtp-debtor-payment-service</module>-->
     <module>rtp-debtor-send-payment</module>
     <module>rtp-debtor-payment-confirmation</module>
     <module>rtp-debtor-complete-payment</module>
