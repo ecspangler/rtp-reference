@@ -304,6 +304,13 @@ $ oc set env dc/rtp-creditor-receive-payment --from configmap/rtp-creditor-recei
 $ cd ..
 ```
 
+Note: The rtp-creditor-receive-payment service may deploy with the below warning, but this does not impact the application:
+
+```
+09:18:00.332 [XNIO-2 task-1] WARN  i.f.s.c.kubernetes.StandardPodUtils - Failed to get pod with name:[rtp-creditor-receive-payment-30-kc8m6]. You should look into this if things aren't working as you expect. Are you missing serviceaccount permissions?
+io.fabric8.kubernetes.client.KubernetesClientException: Failure executing: GET at: https://kubernetes.default.svc/api/v1/namespaces/rtp-reference/pods/rtp-creditor-receive-payment-30-kc8m6 . Message: Forbidden!Configured service account doesn't have access. Service account may have been revoked. pods "rtp-creditor-receive-payment-30-kc8m6" is forbidden: User "system:serviceaccount:rtp-reference:default" cannot get pods in the namespace "rtp-reference": no RBAC policy matched.
+```
+
 Build, configure and deploy the Creditor Payment Acknowledgment Service
 
 ```

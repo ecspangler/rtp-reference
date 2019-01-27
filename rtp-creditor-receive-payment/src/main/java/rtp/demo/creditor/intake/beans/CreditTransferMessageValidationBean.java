@@ -15,8 +15,6 @@ import rtp.demo.creditor.domain.rtp.simplified.CreditTransferMessage;
 import rtp.demo.creditor.intake.routes.CreditorIntakeRouteBuilder;
 import rtp.demo.creditor.repository.account.AccountRepository;
 import rtp.demo.creditor.repository.account.JdgAccountRepository;
-//import rtp.demo.creditor.repository.account.AccountRepository;
-//import rtp.demo.creditor.repository.account.JdgAccountRepository;
 import rtp.demo.creditor.validation.PaymentValidationRequest;
 import rtp.demo.creditor.validation.wrappers.Accounts;
 import rtp.demo.creditor.validation.wrappers.CreditorBank;
@@ -40,8 +38,16 @@ public class CreditTransferMessageValidationBean {
 	public PaymentValidationRequest validateCreditTransferMessage(CreditTransferMessage creditTransferMessage) {
 		LOG.info("Validation Rules");
 
+		LOG.info(creditTransferMessage.toString());
+
 		Accounts accounts = new Accounts();
-		accounts.getAccounts().add(accountRepository.getAccount(creditTransferMessage.getCreditorAccountNumber()));
+		Account account = null;
+		if (creditTransferMessage.getCreditorAccountNumber() != null) {
+			account = accountRepository.getAccount(creditTransferMessage.getCreditorAccountNumber());
+			if (account != null) {
+				accounts.getAccounts().add(account);
+			}
+		}
 
 		PaymentValidationRequest validationRequest = new PaymentValidationRequest();
 		validationRequest.setCreditTransferMessage(creditTransferMessage);
@@ -50,7 +56,7 @@ public class CreditTransferMessageValidationBean {
 
 		List<Object> facts = new ArrayList<Object>();
 		facts.add(makeDummyCreditor());
-		facts.add(creditTransferMessage.getCreditorAccountNumber());
+		facts.add(accounts);
 		facts.add(validationRequest);
 
 		LOG.info("Incoming Payment Validation Request: " + validationRequest);

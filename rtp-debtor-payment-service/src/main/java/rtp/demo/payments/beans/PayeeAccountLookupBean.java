@@ -22,8 +22,10 @@ public class PayeeAccountLookupBean {
 				+ payment.getReceiverLastName().toUpperCase();
 		Account payeeAccount = accountRepository.getAccount(accountKey);
 
-		payment.setReceiverRoutingNumber(payeeAccount.getRoutingNumber());
-		payment.setReceiverAccountNumber(payeeAccount.getAccountNumber());
+		if (payeeAccount != null) {
+			payment.setReceiverRoutingNumber(payeeAccount.getRoutingNumber());
+			payment.setReceiverAccountNumber(payeeAccount.getAccountNumber());
+		}
 		return payment;
 	}
 

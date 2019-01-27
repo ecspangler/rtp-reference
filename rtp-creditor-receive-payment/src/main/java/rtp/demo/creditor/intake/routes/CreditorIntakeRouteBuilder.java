@@ -36,7 +36,7 @@ public class CreditorIntakeRouteBuilder extends RouteBuilder {
 	public void configure() throws Exception {
 		LOG.info("Configuring Creditor Intake Routes");
 
-		// Populate test data for reference example
+		// Populate test data, valid accounts for reference example
 		Account testAccount1 = new Account();
 		testAccount1.setAccountNumber("12000194212199001");
 		accountRepository.addAccount(testAccount1);
