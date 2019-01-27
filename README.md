@@ -399,7 +399,7 @@ Using a rest client, POST the following request body to the Debtor Payment Servi
   		"receiverLastName":"Shaw",
       "receiverEmail":"jshaw@company.com",
       "receiverCellPhone":"111-222-3456"
-  	}
+    }
   ]
 }
 ```
@@ -410,6 +410,7 @@ Using a rest client, POST the following request body to the Debtor Payment Servi
 
 ## Resources
 
+https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/
 https://access.redhat.com/documentation/en-us/red_hat_fuse/7.2/html-single/fuse_on_openshift_guide/
 https://access.redhat.com/documentation/en-us/red_hat_jboss_data_grid/7.2/html-single/data_grid_for_openshift/
-https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/
+https://access.redhat.com/documentation/en-us/reference_architectures/2018/html-single/vert.x_microservices_on_red_hat_openshift_container_platform_3/
