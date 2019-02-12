@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import rtp.demo.creditor.domain.rtp.simplified.CreditTransferMessage;
 
-public class CreditTransferMessageDeserializer implements Deserializer {
+public class CreditTransferMessageDeserializer implements Deserializer<CreditTransferMessage> {
 
 	@Override
 	public void close() {
@@ -19,7 +19,7 @@ public class CreditTransferMessageDeserializer implements Deserializer {
 	}
 
 	@Override
-	public Object deserialize(String arg0, byte[] arg1) {
+	public CreditTransferMessage deserialize(String arg0, byte[] arg1) {
 		ObjectMapper mapper = new ObjectMapper();
 		CreditTransferMessage message = null;
 		try {

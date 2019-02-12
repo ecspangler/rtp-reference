@@ -7,6 +7,7 @@ import java.util.List;
 
 import rtp.demo.creditor.domain.error.PaymentValidationError;
 import rtp.demo.creditor.domain.rtp.simplified.CreditTransferMessage;
+import rtp.demo.creditor.domain.rtp.simplified.MessageStatusReport;
 
 public class Payment {
 
@@ -38,7 +39,37 @@ public class Payment {
 
 	private Boolean isValidated = false;
 
+	private String rejectReasonCode;
+
 	private List<PaymentValidationError> errors = new ArrayList<PaymentValidationError>();
+
+	private String messageStatusReportId;
+
+	public Payment() {
+		super();
+	}
+
+	public Payment(Payment payment, MessageStatusReport messageStatusReport, String status) {
+		super();
+		this.creditTransferMessageId = payment.getCreditTransferMessageId();
+		this.paymentInstructionId = payment.getPaymentInstructionId();
+		this.endToEndId = payment.getEndToEndId();
+		this.creationDateTime = payment.getCreationDateTime();
+		this.numberOfTransactions = payment.getNumberOfTransactions();
+		this.paymentAmount = payment.getPaymentAmount();
+		this.paymentCurrency = payment.getPaymentCurrency();
+		this.settlementMethod = payment.getSettlementMethod();
+		this.debtorId = payment.getDebtorId();
+		this.debtorAccountNumber = payment.getDebtorAccountNumber();
+		this.creditorId = payment.getCreditorId();
+		this.creditorAccountNumber = payment.getCreditorAccountNumber();
+		this.status = payment.getStatus();
+		this.isValidated = payment.getIsValidated();
+		this.rejectReasonCode = payment.getRejectReasonCode();
+		this.errors = payment.getErrors();
+		this.status = status;
+		this.messageStatusReportId = messageStatusReport.getMessageStatusReportId();
+	}
 
 	public String getCreditTransferMessageId() {
 		return creditTransferMessageId;
@@ -152,12 +183,28 @@ public class Payment {
 		this.isValidated = isValidated;
 	}
 
+	public String getRejectReasonCode() {
+		return rejectReasonCode;
+	}
+
+	public void setRejectReasonCode(String rejectReasonCode) {
+		this.rejectReasonCode = rejectReasonCode;
+	}
+
 	public List<PaymentValidationError> getErrors() {
 		return errors;
 	}
 
 	public void setErrors(List<PaymentValidationError> errors) {
 		this.errors = errors;
+	}
+
+	public String getMessageStatusReportId() {
+		return messageStatusReportId;
+	}
+
+	public void setMessageStatusReportId(String messageStatusReportId) {
+		this.messageStatusReportId = messageStatusReportId;
 	}
 
 	@Override
@@ -173,10 +220,12 @@ public class Payment {
 		result = prime * result + ((endToEndId == null) ? 0 : endToEndId.hashCode());
 		result = prime * result + ((errors == null) ? 0 : errors.hashCode());
 		result = prime * result + ((isValidated == null) ? 0 : isValidated.hashCode());
+		result = prime * result + ((messageStatusReportId == null) ? 0 : messageStatusReportId.hashCode());
 		result = prime * result + ((numberOfTransactions == null) ? 0 : numberOfTransactions.hashCode());
 		result = prime * result + ((paymentAmount == null) ? 0 : paymentAmount.hashCode());
 		result = prime * result + ((paymentCurrency == null) ? 0 : paymentCurrency.hashCode());
 		result = prime * result + ((paymentInstructionId == null) ? 0 : paymentInstructionId.hashCode());
+		result = prime * result + ((rejectReasonCode == null) ? 0 : rejectReasonCode.hashCode());
 		result = prime * result + ((settlementMethod == null) ? 0 : settlementMethod.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		return result;
@@ -236,6 +285,11 @@ public class Payment {
 				return false;
 		} else if (!isValidated.equals(other.isValidated))
 			return false;
+		if (messageStatusReportId == null) {
+			if (other.messageStatusReportId != null)
+				return false;
+		} else if (!messageStatusReportId.equals(other.messageStatusReportId))
+			return false;
 		if (numberOfTransactions == null) {
 			if (other.numberOfTransactions != null)
 				return false;
@@ -255,6 +309,11 @@ public class Payment {
 			if (other.paymentInstructionId != null)
 				return false;
 		} else if (!paymentInstructionId.equals(other.paymentInstructionId))
+			return false;
+		if (rejectReasonCode == null) {
+			if (other.rejectReasonCode != null)
+				return false;
+		} else if (!rejectReasonCode.equals(other.rejectReasonCode))
 			return false;
 		if (settlementMethod == null) {
 			if (other.settlementMethod != null)
@@ -277,7 +336,8 @@ public class Payment {
 				+ ", paymentCurrency=" + paymentCurrency + ", settlementMethod=" + settlementMethod + ", debtorId="
 				+ debtorId + ", debtorAccountNumber=" + debtorAccountNumber + ", creditorId=" + creditorId
 				+ ", creditorAccountNumber=" + creditorAccountNumber + ", status=" + status + ", isValidated="
-				+ isValidated + ", errors=" + errors + "]";
+				+ isValidated + ", rejectReasonCode=" + rejectReasonCode + ", errors=" + errors
+				+ ", messageStatusReportId=" + messageStatusReportId + "]";
 	}
 
 }

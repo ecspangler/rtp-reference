@@ -2,11 +2,12 @@ package rtp.demo.debtor.domain.model.payment;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import rtp.demo.debtor.domain.rtp.simplified.MessageStatusReport;
 
 @XmlRootElement(name = "Payment")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -23,6 +24,26 @@ public class Payment implements Serializable {
 	private String receiverCellPhone;
 	private String receiverRoutingNumber;
 	private String receiverAccountNumber;
+	private String status = "PENDING";
+	private String messageStatusReportId;
+
+	public Payment() {
+		super();
+	}
+
+	public Payment(Payment payment, MessageStatusReport messageStatusReport, String status) {
+		super();
+
+		this.paymentId = payment.getPaymentId();
+		this.debtorAccountNumber = payment.getDebtorAccountNumber();
+		this.amount = payment.getAmount();
+		this.receiverFirstName = payment.getReceiverFirstName();
+		this.receiverLastName = payment.getReceiverLastName();
+		this.receiverCellPhone = payment.getReceiverCellPhone();
+		this.receiverAccountNumber = payment.getReceiverAccountNumber();
+		this.status = status;
+		this.messageStatusReportId = messageStatusReport.getMessageStatusReportId();
+	}
 
 	public String getPaymentId() {
 		return paymentId;
@@ -96,12 +117,29 @@ public class Payment implements Serializable {
 		this.receiverAccountNumber = receiverAccountNumber;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getMessageStatusReportId() {
+		return messageStatusReportId;
+	}
+
+	public void setMessageStatusReportId(String messageStatusReportId) {
+		this.messageStatusReportId = messageStatusReportId;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((amount == null) ? 0 : amount.hashCode());
 		result = prime * result + ((debtorAccountNumber == null) ? 0 : debtorAccountNumber.hashCode());
+		result = prime * result + ((messageStatusReportId == null) ? 0 : messageStatusReportId.hashCode());
 		result = prime * result + ((paymentId == null) ? 0 : paymentId.hashCode());
 		result = prime * result + ((receiverAccountNumber == null) ? 0 : receiverAccountNumber.hashCode());
 		result = prime * result + ((receiverCellPhone == null) ? 0 : receiverCellPhone.hashCode());
@@ -109,6 +147,7 @@ public class Payment implements Serializable {
 		result = prime * result + ((receiverFirstName == null) ? 0 : receiverFirstName.hashCode());
 		result = prime * result + ((receiverLastName == null) ? 0 : receiverLastName.hashCode());
 		result = prime * result + ((receiverRoutingNumber == null) ? 0 : receiverRoutingNumber.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		return result;
 	}
 
@@ -130,6 +169,11 @@ public class Payment implements Serializable {
 			if (other.debtorAccountNumber != null)
 				return false;
 		} else if (!debtorAccountNumber.equals(other.debtorAccountNumber))
+			return false;
+		if (messageStatusReportId == null) {
+			if (other.messageStatusReportId != null)
+				return false;
+		} else if (!messageStatusReportId.equals(other.messageStatusReportId))
 			return false;
 		if (paymentId == null) {
 			if (other.paymentId != null)
@@ -166,15 +210,22 @@ public class Payment implements Serializable {
 				return false;
 		} else if (!receiverRoutingNumber.equals(other.receiverRoutingNumber))
 			return false;
+		if (status == null) {
+			if (other.status != null)
+				return false;
+		} else if (!status.equals(other.status))
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Payment [debtorAccountNumber=" + debtorAccountNumber + ", amount=" + amount + ", receiverFirstName="
-				+ receiverFirstName + ", receiverLastName=" + receiverLastName + ", receiverEmail=" + receiverEmail
-				+ ", receiverCellPhone=" + receiverCellPhone + ", receiverRoutingNumber=" + receiverRoutingNumber
-				+ ", receiverAccountNumber=" + receiverAccountNumber + "]";
+		return "Payment [paymentId=" + paymentId + ", debtorAccountNumber=" + debtorAccountNumber + ", amount=" + amount
+				+ ", receiverFirstName=" + receiverFirstName + ", receiverLastName=" + receiverLastName
+				+ ", receiverEmail=" + receiverEmail + ", receiverCellPhone=" + receiverCellPhone
+				+ ", receiverRoutingNumber=" + receiverRoutingNumber + ", receiverAccountNumber="
+				+ receiverAccountNumber + ", status=" + status + ", messageStatusReportId=" + messageStatusReportId
+				+ "]";
 	}
 
 }

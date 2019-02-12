@@ -1,5 +1,7 @@
 package rtp.demo.creditor.intake.beans;
 
+import java.time.LocalDateTime;
+
 import rtp.demo.creditor.domain.payments.Payment;
 import rtp.demo.creditor.validation.PaymentValidationRequest;
 
@@ -23,15 +25,19 @@ public class PaymentTransformer {
 		payment.setPaymentInstructionId(paymentValidationRequest.getCreditTransferMessage().getPaymentInstructionId());
 		payment.setSettlementMethod(paymentValidationRequest.getCreditTransferMessage().getSettlementMethod());
 
+		paymentValidationRequest.getErrors().forEach(error -> {
+			payment.getErrors().add(error);
+			// if multiple, reference example reports on just one error without logic to
+			// select which
+			payment.setRejectReasonCode(error.getRtpReasonCode().toString());
+		});
+
 		if (paymentValidationRequest.getErrors().size() == 0) {
 			payment.setIsValidated(true);
 			payment.setStatus("ACCEPTED");
-		}
-
-		paymentValidationRequest.getErrors().forEach(error -> {
-			payment.getErrors().add(error);
+		} else {
 			payment.setStatus("REJECTED");
-		});
+		}
 
 		return payment;
 	}

@@ -62,7 +62,8 @@ public class CreditorIntakeRouteBuilder extends RouteBuilder {
 						.process(new Processor() {
 							@Override
 							public void process(Exchange exchange) throws Exception {
-								exchange.getIn().setHeader(KafkaConstants.KEY, "${body.getCreditTransferMessageId}");
+								exchange.getIn().setHeader(KafkaConstants.KEY,
+										((Payment) exchange.getIn().getBody()).getCreditTransferMessageId());
 							}
 						}).log(" Sending payment >>> ${body}").to("kafka:" + kafkaCreditorPaymentsTopic
 								+ "?serializerClass=rtp.demo.creditor.domain.payments.serde.PaymentSerializer");

@@ -304,7 +304,7 @@ $ oc create configmap rtp-mock-config \
             --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
             --from-literal=CREDIT_TRANS_DEBTOR_TOPIC=mock-rtp-debtor-credit-transfer \
             --from-literal=CREDIT_TRANS_CREDITOR_TOPIC=mock-rtp-creditor-credit-transfer \
-            --from-literal=CREDITOR_ACK_TOPIC=mock-rtp-creditor-acknowledgment \
+            --from-literal=CREDITOR_ACK_TOPIC=mock-rtp-creditor-acknowledgement \
             --from-literal=DEBTOR_CONFIRMATION_TOPIC=mock-rtp-debtor-confirmation \
             --from-literal=CREDITOR_CONFIRMATION_TOPIC=mock-rtp-creditor-confirmation \
             --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
@@ -366,7 +366,7 @@ Build, configure and deploy the Creditor Payment Confirmation Service
 $ cd rtp-creditor-payment-confirmation
 $ oc create configmap rtp-creditor-payment-confirmation-config \
             --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
-            --from-literal=CREDITOR_COMPLETED_PAYMENTS_TOPIC=creditor-completed-payments \
+            --from-literal=CREDITOR_CONFIRMATION_TOPIC=creditor-payment-confirmation \
             --from-literal=MOCK_RTP_CREDITOR_CONFIRMATION_TOPIC=mock-rtp-creditor-confirmation \
             --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
             --from-literal=CONSUMER_COUNT=1 \
@@ -375,6 +375,22 @@ $ oc create configmap rtp-creditor-payment-confirmation-config \
             --from-literal=ACKS=1
 $ mvn fabric8:deploy -Popenshift
 $ oc set env dc/rtp-creditor-payment-confirmation --from configmap/rtp-creditor-payment-confirmation-config
+$ cd ..
+```
+
+Build, configure and deploy the Creditor Complete Payment Service
+
+```
+$ cd rtp-creditor-complete-payment
+$ oc create configmap rtp-creditor-complete-payment-config \
+            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
+            --from-literal=CREDITOR_COMPLETED_PAYMENTS_TOPIC=creditor-completed-payments \
+            --from-literal=CREDITOR_PAYMENTS_TOPIC=creditor-payments \
+            --from-literal=CREDITOR_CONFIRMATION_TOPIC=creditor-payment-confirmation \
+            --from-literal=APPLICATION_ID=creditor-complete-payment \
+            --from-literal=CLIENT_ID=creditor-complete-payment-client
+$ mvn fabric8:deploy -Popenshift
+$ oc set env dc/rtp-creditor-complete-payment --from configmap/rtp-creditor-complete-payment-config
 $ cd ..
 ```
 
@@ -435,7 +451,7 @@ Build, configure and deploy the Debtor Payment Confirmation Service
 $ cd rtp-debtor-payment-confirmation
 $ oc create configmap rtp-debtor-payment-confirmation-config \
             --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
-            --from-literal=DEBTOR_COMPLETED_PAYMENTS_TOPIC=debtor-completed-payments \
+            --from-literal=DEBTOR_CONFIRMATION_TOPIC=debtor-payment-confirmation \
             --from-literal=MOCK_RTP_DEBTOR_CONFIRMATION_TOPIC=mock-rtp-debtor-confirmation \
             --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
             --from-literal=CONSUMER_COUNT=1 \
@@ -444,6 +460,22 @@ $ oc create configmap rtp-debtor-payment-confirmation-config \
             --from-literal=ACKS=1
 $ mvn fabric8:deploy -Popenshift
 $ oc set env dc/rtp-debtor-payment-confirmation --from configmap/rtp-debtor-payment-confirmation-config
+$ cd ..
+```
+
+Build, configure and deploy the Debtor Complete Payment Service
+
+```
+$ cd rtp-debtor-complete-payment
+$ oc create configmap rtp-debtor-complete-payment-config \
+            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
+            --from-literal=DEBTOR_COMPLETED_PAYMENTS_TOPIC=debtor-completed-payments \
+            --from-literal=DEBTOR_PAYMENTS_TOPIC=debtor-payments \
+            --from-literal=DEBTOR_CONFIRMATION_TOPIC=debtor-payment-confirmation \
+            --from-literal=APPLICATION_ID=debtor-complete-payment \
+            --from-literal=CLIENT_ID=debtor-complete-payment-client
+$ mvn fabric8:deploy -Popenshift
+$ oc set env dc/rtp-debtor-complete-payment --from configmap/rtp-debtor-complete-payment-config
 $ cd ..
 ```
 

@@ -6,7 +6,9 @@ import org.apache.kafka.common.serialization.Serializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class CreditTransferMessageSerializer implements Serializer {
+import rtp.demo.creditor.domain.rtp.simplified.CreditTransferMessage;
+
+public class CreditTransferMessageSerializer implements Serializer<CreditTransferMessage> {
 
 	@Override
 	public void close() {
@@ -20,7 +22,7 @@ public class CreditTransferMessageSerializer implements Serializer {
 	}
 
 	@Override
-	public byte[] serialize(String arg0, Object arg1) {
+	public byte[] serialize(String arg0, CreditTransferMessage arg1) {
 		byte[] retVal = null;
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
