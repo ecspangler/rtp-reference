@@ -1,0 +1,296 @@
+body{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Open Sans', sans-serif !important;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+} 
+
+.toolbar.wallet-toolbar {
+    background: #EE350F;
+    color: white;
+}
+
+.toolbar.wallet-toolbar a.link {
+    color: inherit;
+}
+
+.md .payment-form-wrap form {
+    border: 1px solid #f7f7f7;
+    box-sizing: border-box;
+    padding-bottom: 10px;
+}
+
+.payment-form-wrap .list input[type=text] {
+    color: #ff8d00;
+}
+
+.wallet-navbar .toolbar .tab-link i {
+    font-size: 25px;
+}
+
+p.helper-text {
+    font-size: 13px;
+    color: #9E9E9E;
+    margin-left: 15px;
+}
+
+.popup-acknowledge .icon-wrap {
+    font-size: 41px;
+    text-align: center;
+    /* border: 10px solid red; */
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #4CAF50;
+    color: white;
+    line-height: 100px;
+    margin: 20% auto 0px auto;
+}
+
+.popup-acknowledge .icon-wrap i.fas {
+    font-size: inherit;
+}
+
+.popup.popup-acknowledge {
+    text-align: center;
+}
+
+p.modal-txt {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20%;
+}
+
+.ack-date {
+    float: right;
+    color: #ababab;
+}
+
+.ack-details {
+    text-align: left;
+}
+
+.ack-amount {
+    font-size: 50px;
+    font-weight: bold;
+    color: #F44336;
+    padding: 20px 0px;
+    border: 1px dashed #e8e8e8;
+    background: white;
+    width: auto;
+    margin: 5px 0px 5px 0px;
+}
+
+.ack-name {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.ack-account {
+    color: #ababab;
+}
+
+p.ack-continue {
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    padding: 10px;
+    box-sizing: border-box;
+    bottom: 0px;
+    margin: 0px;
+}
+
+.popup.popup-acknowledge {
+    background: #f9f9f9;
+}
+
+.stat-status div {
+    width: 40px;
+    height: 40px;
+    margin-right: 20px;
+    background: red;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 40px;
+    background: #4CAF50;
+    color: #FFF;
+}
+
+.item-title.stat-title {
+    color: #6b6b6b;
+    font-weight: bold;
+}
+
+.item-subtitle.stat-transaction {
+    color: #adadad;
+}
+
+.stat-amount {
+    color: #292929 !important;
+    font-weight: bold;
+    font-size: 25px !important;
+}
+
+.orderdetail {
+    font-size: 12px;
+    color: #ada1a1;
+}
+
+.tran-PENDING .stat-status div {
+    background: #FFC107;
+}
+
+.tran-REJECTED .stat-status div {
+    background: #f54c3d;
+}
+
+.transhistory .item-after {
+    padding-right: 10px !important;
+}
+
+.md .navbar-inner {
+    background: #ff9300;
+}
+
+.login-wrap {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background: #FFC107;
+    color: #FFF;
+}
+
+.login-form-section {
+    background: #FFF;
+}
+
+
+.logo-text {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+    background: white;
+    border-bottom: 3px solid #ff9300;
+}
+
+.logo-content {
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-size: 34px;
+    font-weight: bold;
+}
+
+.logo-item {
+    flex: 2;
+    font-size: 150px;
+    color: #731910;
+    -webkit-text-stroke: 2px rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.login-form-section ul:before,.login-form-section ul:after {
+    background: none !important;
+}
+
+.login-form-section .list {
+    margin: 20px 0px 15px 0px;
+}
+
+.login-form-section .item-label {
+    color: rgba(0,0,0,.65) !important;
+}
+
+h4.txt-account {
+    margin: 10px 15px;
+    color: #ff8700;
+    font-weight: bold;
+}
+
+.block-footer.logout-section {
+    position: absolute;
+    width: 100%;
+    box-sizing: border-box;
+    bottom: 0px;
+    left: 0px;
+    margin-bottom: 15px;
+    z-index: 1;
+}
+
+.account-hero {
+    background: #ff8d00;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #ff8700;
+    box-shadow: 0px 5px 10px 0px #afafaf;
+    flex-direction: column;
+}
+
+p.account-hero-info {
+    margin: 0px;
+    font-size: 35px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+p.account-hero-title {
+    margin: 0px;
+    font-size: 22px;
+    color: #a25600;
+    font-weight: bold;
+    margin-top: -10px;
+    margin-bottom: 15px;
+}
+
+.logo-item img {
+    align-self: center;
+    width: 310px;
+}
+
+.page-account {
+    padding-bottom: 50px;
+}
+
+.ios .block-footer.logout-section {
+    bottom: 50px;
+}
+
+.ios .page-content.wrappe.page-account {
+    background: white;
+}
+
+.md .color-theme-red .navbar, .md .color-theme-red.navbar {
+    z-index: 999;
+    background-color: transparent;
+}
+
+.ios .color-theme-red .button.button-fill, .ios .color-theme-red .button.button-fill-ios {
+    background: #FF9800;
+    border-color: transparent;
+    border-radius: 0px;
+}
+
+.md .color-red .button.button-active, .md .color-red .button.button-fill, .md .color-red .button.button-fill-md, .md .color-red .button.tab-link-active, .md .color-theme-red .button.button-active, .md .color-theme-red .button.button-fill, .md .color-theme-red .button.button-fill-md, .md .color-theme-red .button.tab-link-active {
+    background-color: #FF9800;
+    color: #fff;
+}
+
+.md .color-theme-red .toolbar:not(.messagebar), .md .color-theme-red.toolbar:not(.messagebar) {
+    background: #ff8d00;
+}
+
+.md .color-theme-red .input-after:after, .md .color-theme-red .item-input-focused .item-input-wrap:after {
+    background: #ffc000;
+}
