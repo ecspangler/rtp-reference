@@ -1,0 +1,54 @@
+<div class="page wallet-navbar" data-page="account">
+
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="title wallet-title">ABC Bank</div>
+        </div>
+    </div>
+
+    <div class="toolbar tabbar tabbar-labels">
+        <div class="toolbar-inner">
+            <a href="/send/" class="tab-link">
+                <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                <span class="tabbar-label">Send Money</span>
+            </a>
+            <a href="/transaction/" class="tab-link">
+                <i class="fas fa-exchange-alt"></i>
+                <span class="tabbar-label">Passbook</span>
+            </a>
+            <a href="/account/" class="tab-link tab-link-active">
+                <i class="fas fa-user"></i>
+                <span class="tabbar-label">Account</span>
+            </a>
+        </div>
+    </div>
+        
+    <div class="page-content wrappe page-account"> 
+        <div class="account-hero">
+            <p class="account-hero-title">Balance</p>
+            <p class="account-hero-info">--</p>
+        </div>
+        <div class="payment-form-wrap">
+            
+            <div class="list inset">
+                <p class="helper-text">Name</p>
+                <h4 class="txt-account account-name"></h4>
+            </div>
+            <div class="list inset">
+                <p class="helper-text">Email</p>
+                <h4 class="txt-account account-email"></h4>
+            </div>
+            <div class="list inset">
+                <p class="helper-text">Your account no.</p>
+                <h4 class="txt-account account-id"></h4>
+            </div>
+        </div>
+    </div> 
+    <div class="block-footer logout-section">
+          <button type="button" onclick="logout()" class="button button-fill">
+                <i class="fas fa-lock" aria-hidden="true"></i>
+                Logout
+          </button> 
+    </div>
+    
+</div>
