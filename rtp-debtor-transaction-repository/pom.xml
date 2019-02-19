@@ -10,8 +10,8 @@
   <dependencies>
 
   <dependency>
-    <groupId>org.example</groupId>
-    <artifactId>demo-app-model</artifactId>
+    <groupId>rtp.demo</groupId>
+    <artifactId>rtp-debtor-domain-model</artifactId>
     <version>1.0.0.0</version>
   </dependency>
   </dependencies>

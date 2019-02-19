@@ -9,19 +9,23 @@
 
   <dependencies>
 
-    <dependency>
-    <groupId>org.example</groupId>
-    <artifactId>demo-app-model</artifactId>
+  <dependency>
+    <groupId>rtp.demo</groupId>
+    <artifactId>rtp-debtor-domain-model</artifactId>
     <version>1.0.0.0</version>
   </dependency>
 
-      <dependency>
-    <groupId>org.example</groupId>
-    <artifactId>demo-app-repository</artifactId>
+  <dependency>
+    <groupId>rtp.demo</groupId>
+    <artifactId>rtp-debtor-transaction-repository</artifactId>
     <version>1.0.0.0</version>
   </dependency>
 
-
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-core</artifactId>
+    <version>5.3.7.Final-redhat-00001</version>
+</dependency>
 
     <!-- MySQL database driver -->
         <dependency>

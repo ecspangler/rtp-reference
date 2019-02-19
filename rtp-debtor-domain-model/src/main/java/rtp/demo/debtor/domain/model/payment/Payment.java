@@ -2,11 +2,17 @@ package rtp.demo.debtor.domain.model.payment;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import rtp.demo.debtor.domain.model.transaction.Transaction;
 import rtp.demo.debtor.domain.rtp.simplified.MessageStatusReport;
 
 @XmlRootElement(name = "Payment")
@@ -15,16 +21,41 @@ public class Payment implements Serializable {
 
 	private static final long serialVersionUID = -8864097979538228811L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID", updatable = false, unique = true)
+	private BigInteger id;
+	@Column(name = "PAYMENT_ID", unique = true, nullable = false, length = 256)
 	private String paymentId;
-	private String debtorAccountNumber;
+	@Column(name = "SENDER_ROUTING_NUM", unique = true, nullable = false, length = 256)
+	private String senderRoutingNumber;
+	@Column(name = "SENDER_ACCT_NUM", unique = true, nullable = false, length = 256)
+	private String senderAccountNumber;
+	@Column(name = "SENDER_FIRST_NAME", unique = true, nullable = false, length = 256)
+	private String senderFirstName;
+	@Column(name = "SENDER_LAST_NAME", unique = true, nullable = false, length = 256)
+	private String senderLastName;
+	@Column(name = "SENDER_EMAIL", unique = true, nullable = false, length = 256)
+	private String senderEmail;
+	@Column(name = "SENDER_CELL_PHONE", unique = true, nullable = false, length = 256)
+	private String senderCellPhone;
+	@Column(name = "PAYMENT_AMOUNT", unique = true, nullable = false, length = 256)
 	private BigDecimal amount;
+	@Column(name = "RECEIVER_FIRST_NAME", unique = true, nullable = false, length = 256)
 	private String receiverFirstName;
+	@Column(name = "RECEIVER_LAST_NAME", unique = true, nullable = false, length = 256)
 	private String receiverLastName;
+	@Column(name = "RECEIVER_EMAIL", unique = true, nullable = false, length = 256)
 	private String receiverEmail;
+	@Column(name = "RECEIVER_CELL_PHONE", unique = true, nullable = false, length = 256)
 	private String receiverCellPhone;
+	@Column(name = "RECEIVER_ROUTING_NUM", unique = true, nullable = false, length = 256)
 	private String receiverRoutingNumber;
+	@Column(name = "RECEIVER_ACCT_NUM", unique = true, nullable = false, length = 256)
 	private String receiverAccountNumber;
+	@Column(name = "STATUS", unique = true, nullable = false, length = 256)
 	private String status = "PENDING";
+	@Column(name = "MESSAGE_STATUS_REPORT_ID", unique = true, nullable = false, length = 256)
 	private String messageStatusReportId;
 
 	public Payment() {
@@ -35,7 +66,7 @@ public class Payment implements Serializable {
 		super();
 
 		this.paymentId = payment.getPaymentId();
-		this.debtorAccountNumber = payment.getDebtorAccountNumber();
+		this.senderAccountNumber = payment.getSenderAccountNumber();
 		this.amount = payment.getAmount();
 		this.receiverFirstName = payment.getReceiverFirstName();
 		this.receiverLastName = payment.getReceiverLastName();
@@ -53,12 +84,52 @@ public class Payment implements Serializable {
 		this.paymentId = paymentId;
 	}
 
-	public String getDebtorAccountNumber() {
-		return debtorAccountNumber;
+	public String getSenderRoutingNumber() {
+		return senderRoutingNumber;
 	}
 
-	public void setDebtorAccountNumber(String debtorAccountNumber) {
-		this.debtorAccountNumber = debtorAccountNumber;
+	public void setSenderRoutingNumber(String senderRoutingNumber) {
+		this.senderRoutingNumber = senderRoutingNumber;
+	}
+
+	public String getSenderAccountNumber() {
+		return senderAccountNumber;
+	}
+
+	public void setSenderAccountNumber(String senderAccountNumber) {
+		this.senderAccountNumber = senderAccountNumber;
+	}
+
+	public String getSenderFirstName() {
+		return senderFirstName;
+	}
+
+	public void setSenderFirstName(String senderFirstName) {
+		this.senderFirstName = senderFirstName;
+	}
+
+	public String getSenderLastName() {
+		return senderLastName;
+	}
+
+	public void setSenderLastName(String senderLastName) {
+		this.senderLastName = senderLastName;
+	}
+
+	public String getSenderEmail() {
+		return senderEmail;
+	}
+
+	public void setSenderEmail(String senderEmail) {
+		this.senderEmail = senderEmail;
+	}
+
+	public String getSenderCellPhone() {
+		return senderCellPhone;
+	}
+
+	public void setSenderCellPhone(String senderCellPhone) {
+		this.senderCellPhone = senderCellPhone;
 	}
 
 	public BigDecimal getAmount() {
@@ -138,7 +209,6 @@ public class Payment implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((amount == null) ? 0 : amount.hashCode());
-		result = prime * result + ((debtorAccountNumber == null) ? 0 : debtorAccountNumber.hashCode());
 		result = prime * result + ((messageStatusReportId == null) ? 0 : messageStatusReportId.hashCode());
 		result = prime * result + ((paymentId == null) ? 0 : paymentId.hashCode());
 		result = prime * result + ((receiverAccountNumber == null) ? 0 : receiverAccountNumber.hashCode());
@@ -147,6 +217,12 @@ public class Payment implements Serializable {
 		result = prime * result + ((receiverFirstName == null) ? 0 : receiverFirstName.hashCode());
 		result = prime * result + ((receiverLastName == null) ? 0 : receiverLastName.hashCode());
 		result = prime * result + ((receiverRoutingNumber == null) ? 0 : receiverRoutingNumber.hashCode());
+		result = prime * result + ((senderAccountNumber == null) ? 0 : senderAccountNumber.hashCode());
+		result = prime * result + ((senderCellPhone == null) ? 0 : senderCellPhone.hashCode());
+		result = prime * result + ((senderEmail == null) ? 0 : senderEmail.hashCode());
+		result = prime * result + ((senderFirstName == null) ? 0 : senderFirstName.hashCode());
+		result = prime * result + ((senderLastName == null) ? 0 : senderLastName.hashCode());
+		result = prime * result + ((senderRoutingNumber == null) ? 0 : senderRoutingNumber.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		return result;
 	}
@@ -164,11 +240,6 @@ public class Payment implements Serializable {
 			if (other.amount != null)
 				return false;
 		} else if (!amount.equals(other.amount))
-			return false;
-		if (debtorAccountNumber == null) {
-			if (other.debtorAccountNumber != null)
-				return false;
-		} else if (!debtorAccountNumber.equals(other.debtorAccountNumber))
 			return false;
 		if (messageStatusReportId == null) {
 			if (other.messageStatusReportId != null)
@@ -210,6 +281,36 @@ public class Payment implements Serializable {
 				return false;
 		} else if (!receiverRoutingNumber.equals(other.receiverRoutingNumber))
 			return false;
+		if (senderAccountNumber == null) {
+			if (other.senderAccountNumber != null)
+				return false;
+		} else if (!senderAccountNumber.equals(other.senderAccountNumber))
+			return false;
+		if (senderCellPhone == null) {
+			if (other.senderCellPhone != null)
+				return false;
+		} else if (!senderCellPhone.equals(other.senderCellPhone))
+			return false;
+		if (senderEmail == null) {
+			if (other.senderEmail != null)
+				return false;
+		} else if (!senderEmail.equals(other.senderEmail))
+			return false;
+		if (senderFirstName == null) {
+			if (other.senderFirstName != null)
+				return false;
+		} else if (!senderFirstName.equals(other.senderFirstName))
+			return false;
+		if (senderLastName == null) {
+			if (other.senderLastName != null)
+				return false;
+		} else if (!senderLastName.equals(other.senderLastName))
+			return false;
+		if (senderRoutingNumber == null) {
+			if (other.senderRoutingNumber != null)
+				return false;
+		} else if (!senderRoutingNumber.equals(other.senderRoutingNumber))
+			return false;
 		if (status == null) {
 			if (other.status != null)
 				return false;
@@ -220,12 +321,23 @@ public class Payment implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Payment [paymentId=" + paymentId + ", debtorAccountNumber=" + debtorAccountNumber + ", amount=" + amount
-				+ ", receiverFirstName=" + receiverFirstName + ", receiverLastName=" + receiverLastName
-				+ ", receiverEmail=" + receiverEmail + ", receiverCellPhone=" + receiverCellPhone
-				+ ", receiverRoutingNumber=" + receiverRoutingNumber + ", receiverAccountNumber="
+		return "Payment [paymentId=" + paymentId + ", senderRoutingNumber=" + senderRoutingNumber
+				+ ", senderAccountNumber=" + senderAccountNumber + ", senderFirstName=" + senderFirstName
+				+ ", senderLastName=" + senderLastName + ", senderEmail=" + senderEmail + ", senderCellPhone="
+				+ senderCellPhone + ", amount=" + amount + ", receiverFirstName=" + receiverFirstName
+				+ ", receiverLastName=" + receiverLastName + ", receiverEmail=" + receiverEmail + ", receiverCellPhone="
+				+ receiverCellPhone + ", receiverRoutingNumber=" + receiverRoutingNumber + ", receiverAccountNumber="
 				+ receiverAccountNumber + ", status=" + status + ", messageStatusReportId=" + messageStatusReportId
-				+ "]";
+				+ ", getPaymentId()=" + getPaymentId() + ", getSenderRoutingNumber()=" + getSenderRoutingNumber()
+				+ ", getSenderAccountNumber()=" + getSenderAccountNumber() + ", getSenderFirstName()="
+				+ getSenderFirstName() + ", getSenderLastName()=" + getSenderLastName() + ", getSenderEmail()="
+				+ getSenderEmail() + ", getSenderCellPhone()=" + getSenderCellPhone() + ", getAmount()=" + getAmount()
+				+ ", getReceiverFirstName()=" + getReceiverFirstName() + ", getReceiverLastName()="
+				+ getReceiverLastName() + ", getReceiverEmail()=" + getReceiverEmail() + ", getReceiverCellPhone()="
+				+ getReceiverCellPhone() + ", getReceiverRoutingNumber()=" + getReceiverRoutingNumber()
+				+ ", getReceiverAccountNumber()=" + getReceiverAccountNumber() + ", getStatus()=" + getStatus()
+				+ ", getMessageStatusReportId()=" + getMessageStatusReportId() + ", hashCode()=" + hashCode()
+				+ ", getClass()=" + getClass() + ", toString()=" + super.toString() + "]";
 	}
 
 }

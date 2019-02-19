@@ -11,6 +11,14 @@
 
   <dependencies>
 
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.2.2.Final</version>
+        </dependency>
+
+
   <dependency>
     <groupId>org.apache.kafka</groupId>
     <artifactId>kafka-clients</artifactId>
@@ -21,6 +29,7 @@
     <artifactId>jackson-databind</artifactId>
     <version>2.9.7</version>
 </dependency>
+
 
     <dependency>
       <groupId>junit</groupId>

@@ -2,8 +2,8 @@ package rtp.demo.payments.beans;
 
 import rtp.demo.debtor.domain.account.Account;
 import rtp.demo.debtor.domain.model.payment.Payment;
-import rtp.demo.debtor.repository.account.AccountRepository;
-import rtp.demo.debtor.repository.account.JdgAccountRepository;
+//import rtp.demo.debtor.repository.account.AccountRepository;
+//import rtp.demo.debtor.repository.account.JdgAccountRepository;
 
 /*
  * This class represents a mock service to lookup a payment receiver's 
@@ -15,17 +15,18 @@ import rtp.demo.debtor.repository.account.JdgAccountRepository;
  */
 public class PayeeAccountLookupBean {
 
-	private static AccountRepository accountRepository = new JdgAccountRepository();
+	// private static AccountRepository accountRepository = new
+	// JdgAccountRepository();
 
 	public static Payment enrichPayeeAccountInformation(Payment payment) {
 		String accountKey = payment.getReceiverFirstName().toUpperCase() + "_"
 				+ payment.getReceiverLastName().toUpperCase();
-		Account payeeAccount = accountRepository.getAccount(accountKey);
+		// Account payeeAccount = accountRepository.getAccount(accountKey);
 
-		if (payeeAccount != null) {
-			payment.setReceiverRoutingNumber(payeeAccount.getRoutingNumber());
-			payment.setReceiverAccountNumber(payeeAccount.getAccountNumber());
-		}
+//		if (payeeAccount != null) {
+//			payment.setReceiverRoutingNumber(payeeAccount.getRoutingNumber());
+//			payment.setReceiverAccountNumber(payeeAccount.getAccountNumber());
+//		}
 		return payment;
 	}
 

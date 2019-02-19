@@ -220,6 +220,41 @@ Confirm Fuse images and templates were installed:
 $ oc get template -n openshift
 ```
 
+#### Install MySQL Database
+
+Create a new MySQL database from the image:
+```
+oc new-app \
+    -e MYSQL_USER=dbuser \
+    -e MYSQL_PASSWORD=dbpass \
+    -e MYSQL_DATABASE=rtpdb \
+    registry.access.redhat.com/rhscl/mysql-56-rhel7
+```
+
+Download and install MySQL workbench:
+https://dev.mysql.com/downloads/workbench/
+
+Port forward from OpenShift project to local in order to use MySQL workbench from desktop.
+```
+$ oc project mysql-demo
+$ oc get pods
+$ oc port-forward <mysql pod name> 3306:3306
+```
+
+In MySQL workbench, create a new connection:
+```
+hostname: 127.0.0.1
+port: 3306
+username: dbuser
+password: dbpass
+default schema: rtpdb
+```
+
+Open a connection to the database and run the DDL scripts located in:
+```
+rtp-debtor-transaction-repository-mysql/src/main/resources/database-scripts
+```
+
 
 #### Deploy the RTP Reference Services
 
@@ -546,13 +581,13 @@ Using a rest client, POST the following request body to the Debtor Payment Servi
 {
   "payments":[
     {
-  		"debtorAccountNumber":"1234567890123456",
-  		"amount":"20.00",
-  		"receiverFirstName":"Jane",
-  		"receiverLastName":"Shaw",
-      "receiverEmail":"jshaw@company.com",
-      "receiverCellPhone":"111-222-3456"
-    }
+  		"senderAccountNumber":"12000194212199001",
+  		"amount":"100.25",
+  		"receiverFirstName":"Amy",
+  		"receiverLastName":"Lopez",
+      "receiverEmail":"alopez@company.com",
+      "receiverCellPhone":null
+	  }
   ]
 }
 ```
