@@ -7,7 +7,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: strimzi-cluster-operator
-  namespace: fsi-real-time-payments
+  namespace: rtp-reference
 roleRef:
   kind: ClusterRole
   name: strimzi-kafka-broker
@@ -23,7 +23,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: strimzi-cluster-operator
-  namespace: fsi-real-time-payments
+  namespace: rtp-reference
 roleRef:
   kind: ClusterRole
   name: strimzi-cluster-operator-global
@@ -89,7 +89,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: strimzi-cluster-operator
-  namespace: fsi-real-time-payments
+  namespace: rtp-reference
 roleRef:
   kind: ClusterRole
   name: strimzi-topic-operator
@@ -737,7 +737,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: strimzi-cluster-operator
-  namespace: fsi-real-time-payments
+  namespace: rtp-reference
 roleRef:
   kind: ClusterRole
   name: strimzi-cluster-operator-namespaced
@@ -3136,7 +3136,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: strimzi-cluster-operator
-  namespace: fsi-real-time-payments
+  namespace: rtp-reference
 roleRef:
   kind: ClusterRole
   name: strimzi-entity-operator

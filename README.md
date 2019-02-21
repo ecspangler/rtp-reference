@@ -264,6 +264,12 @@ $ bootstrap=`oc get service rtp-demo-cluster-kafka-bootstrap -o=jsonpath='{.spec
 $ bootstrap="${bootstrap}:9092"
 ```
 
+Capture the MySQL database IP and format URL:
+```
+$ database_url=`oc get service mysql-56-rhel7 -o=jsonpath='{.spec.clusterIP}{"\n"}'`
+$ database_url="jdbc:mysql://${database_url}:3306/rtpdb"
+```
+
 Build the dependency projects:
 ```
 $ cd rtp-message-model
@@ -306,7 +312,10 @@ $ oc create configmap rtp-debtor-payment-service-config \
             --from-literal=PRODUCER_TOPIC=debtor-payments \
             --from-literal=SECURITY_PROTOCOL=PLAINTEXT \
             --from-literal=SERIALIZER_CLASS=rtp.demo.debtor.domain.model.payment.serde.PaymentSerializer \
-            --from-literal=ACKS=1
+            --from-literal=ACKS=1 \
+            --from-literal=DATABASE_URL="${database_url}" \
+            --from-literal=DATABASE_USER=dbuser \
+            --from-literal=DATABASE_PASS=dbpass
 $ mvn fabric8:deploy -Popenshift
 $ oc set env dc/rtp-debtor-payment-service --from configmap/rtp-debtor-payment-service-config
 $ cd ..
@@ -581,7 +590,7 @@ Using a rest client, POST the following request body to the Debtor Payment Servi
 {
   "payments":[
     {
-  		"senderAccountNumber":"12000194212199001",
+  		"senderAccountNumber":"12000194212199000",
   		"amount":"100.25",
   		"receiverFirstName":"Amy",
   		"receiverLastName":"Lopez",

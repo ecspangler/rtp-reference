@@ -13,9 +13,14 @@ import rtp.demo.debtor.domain.model.payment.DebitPayment;
 import rtp.demo.debtor.domain.model.payment.Payments;
 import rtp.demo.debtor.domain.model.transaction.Transaction;
 import rtp.demo.debtor.domain.model.transaction.Transactions;
-//import rtp.demo.debtor.repository.account.AccountRepository;
-//import rtp.demo.debtor.repository.account.JdgAccountRepository;
+import rtp.demo.debtor.payments.producer.DebtorPaymentsProducer;
+import rtp.demo.debtor.repository.account.AccountRepository;
+import rtp.demo.debtor.repository.account.JdgAccountRepository;
 import rtp.demo.payments.beans.PayeeAccountLookupBean;
+import rtp.demo.repository.CreditPaymentRepository;
+import rtp.demo.repository.DebitPaymentRepository;
+import rtp.demo.repository.MySqlCreditPaymentRepository;
+import rtp.demo.repository.MySqlDebitPaymentRepository;
 
 import static io.vertx.core.http.HttpHeaders.CONTENT_TYPE;
 
@@ -25,18 +30,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Logger;
 
-//import org.example.repository.CreditPaymentRepository;
-//import org.example.repository.DebitPaymentRepository;
-//import org.example.repository.MySqlCreditPaymentRepository;
-//import org.example.repository.MySqlDebitPaymentRepository;
-
 public class DebtorPaymentService extends AbstractVerticle {
 
 	private static final Logger LOGGER = Logger.getLogger(DebtorPaymentService.class.getName());
 
-//	private AccountRepository accountRepository = new JdgAccountRepository();
-//	private CreditPaymentRepository creditPaymentRepository = new MySqlCreditPaymentRepository();
-//	private DebitPaymentRepository debitPaymentRepository = new MySqlDebitPaymentRepository();
+	private AccountRepository accountRepository = new JdgAccountRepository();
+	private CreditPaymentRepository creditPaymentRepository = new MySqlCreditPaymentRepository();
+	private DebitPaymentRepository debitPaymentRepository = new MySqlDebitPaymentRepository();
 
 	@Override
 	public void start() {
@@ -56,32 +56,28 @@ public class DebtorPaymentService extends AbstractVerticle {
 		Account testAccount1 = new Account();
 		testAccount1.setRoutingNumber("020010001");
 		testAccount1.setAccountNumber("12000194212199001");
-		// accountRepository.addAccount("JANE_SHAW", testAccount1);
+		accountRepository.addAccount("alopez@company.com", testAccount1);
 
-		Account testAccount2 = new Account();
-		testAccount1.setRoutingNumber("020010001");
-		testAccount1.setAccountNumber("12000194212199002");
-		// accountRepository.addAccount("DIEGO_LOPEZ", testAccount2);
 	}
 
 	private void createPayments(RoutingContext routingContext) {
 		Payments payments = routingContext.getBodyAsJson().mapTo(Payments.class);
 		LOGGER.info("Creating payments: " + payments);
 
-		// DebtorPaymentsProducer debtorPaymentsProducer = new DebtorPaymentsProducer();
+		DebtorPaymentsProducer debtorPaymentsProducer = new DebtorPaymentsProducer();
 		payments.getPayments().forEach(payment -> {
 
 			// Find the routing number and account number for the payee
-			// payment = PayeeAccountLookupBean.enrichPayeeAccountInformation(payment);
+			payment = PayeeAccountLookupBean.enrichPayeeAccountInformation(payment);
 
 			try {
 				// Payment key generated based on timestamp for the reference example
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
 				LocalDateTime now = LocalDateTime.now();
-				payment.setPaymentId("PAYMENT" + formatter.format(now));
+				payment.setPaymentId("ABCBANK" + formatter.format(now));
 
-				// debitPaymentRepository.addPayment((DebitPayment) payment);
-				// debtorPaymentsProducer.sendMessage(payment.getPaymentId(), payment);
+				debitPaymentRepository.addPayment((DebitPayment) payment);
+				debtorPaymentsProducer.sendMessage(payment.getPaymentId(), payment);
 			} catch (Exception e) {
 				LOGGER.severe("Error publishing payment to topic");
 				LOGGER.severe(e.getMessage());

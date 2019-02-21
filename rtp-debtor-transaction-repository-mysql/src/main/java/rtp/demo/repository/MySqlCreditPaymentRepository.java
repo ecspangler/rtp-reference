@@ -1,26 +1,27 @@
-package org.example.repository;
+package rtp.demo.repository;
 
 import java.math.BigInteger;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.example.repository.util.HibernateUtil;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
-import rtp.demo.debtor.domain.model.payment.DebitPayment;
+import rtp.demo.debtor.domain.model.payment.CreditPayment;
+import rtp.demo.repository.CreditPaymentRepository;
+import rtp.demo.repository.util.HibernateUtil;
 
-public class MySqlDebitPaymentRepository implements DebitPaymentRepository {
+public class MySqlCreditPaymentRepository implements CreditPaymentRepository {
 
-	private static final Logger log = LogManager.getLogger(MySqlDebitPaymentRepository.class);
+	private static final Logger log = LogManager.getLogger(MySqlCreditPaymentRepository.class);
 
 	protected Session session = HibernateUtil.getHibernateSession();
 
 	@Override
-	public void addPayment(DebitPayment payment) {
+	public void addPayment(CreditPayment payment) {
 		// In a real application the full object would not be logged at info level
 		log.info("Saving payment: {}", payment);
 
@@ -31,30 +32,30 @@ public class MySqlDebitPaymentRepository implements DebitPaymentRepository {
 	}
 
 	@Override
-	public List<DebitPayment> getAllPayments() {
+	public List<CreditPayment> getAllPayments() {
 		log.info("Retrieving all payments");
 		Transaction transaction = session.beginTransaction();
 
-		Criteria cr = session.createCriteria(DebitPayment.class);
-		List<DebitPayment> results = cr.list();
+		Criteria cr = session.createCriteria(CreditPayment.class);
+		List<CreditPayment> results = cr.list();
 
 		transaction.commit();
 		return results;
 	}
 
 	@Override
-	public DebitPayment getPayment(BigInteger id) {
+	public CreditPayment getPayment(BigInteger id) {
 		log.info("Retrieving payment with id: {}", id);
 		Transaction transaction = session.beginTransaction();
 
-		DebitPayment customer = (DebitPayment) session.get(DebitPayment.class, id);
+		CreditPayment payment = (CreditPayment) session.get(CreditPayment.class, id);
 
 		transaction.commit();
-		return customer;
+		return payment;
 	}
 
 	@Override
-	public void updatePayment(DebitPayment payment) {
+	public void updatePayment(CreditPayment payment) {
 		// In a real application the full object would not be logged at info level
 		log.info("Updating payment: {}", payment);
 		Transaction transaction = session.beginTransaction();
@@ -65,7 +66,7 @@ public class MySqlDebitPaymentRepository implements DebitPaymentRepository {
 	}
 
 	@Override
-	public void deletePayment(DebitPayment payment) {
+	public void deletePayment(CreditPayment payment) {
 		// In a real application the full object would not be logged at info level
 		log.info("Deleting payment: {}", payment);
 		Transaction transaction = session.beginTransaction();
@@ -80,13 +81,13 @@ public class MySqlDebitPaymentRepository implements DebitPaymentRepository {
 	}
 
 	@Override
-	public List<DebitPayment> getPayments(String accountNumber) {
+	public List<CreditPayment> getPayments(String accountNumber) {
 		log.info("Retrieving all payments by account number");
 		Transaction transaction = session.beginTransaction();
 
-		Criteria cr = session.createCriteria(DebitPayment.class);
-		cr.add(Restrictions.eq("senderAccountNumber", accountNumber));
-		List<DebitPayment> results = cr.list();
+		Criteria cr = session.createCriteria(CreditPayment.class);
+		cr.add(Restrictions.eq("receiverAccountNumber", accountNumber));
+		List<CreditPayment> results = cr.list();
 
 		transaction.commit();
 		return results;

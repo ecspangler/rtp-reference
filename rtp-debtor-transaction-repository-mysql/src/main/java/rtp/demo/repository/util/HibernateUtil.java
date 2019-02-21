@@ -1,4 +1,4 @@
-package org.example.repository.util;
+package rtp.demo.repository.util;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

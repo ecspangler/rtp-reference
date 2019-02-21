@@ -1,4 +1,4 @@
-package org.example.repository;
+package rtp.demo.repository;
 
 import java.math.BigInteger;
 import java.util.List;
