@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#2196f3">
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap:">
+  <title>ABC Bank</title>
+  
+	<link rel="stylesheet" href="dist/font-awesome/css/all.css"> 
+	<link rel="stylesheet" href="dist/css/framework7.min.css"> 
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"> 
+	
+	<link rel="stylesheet" href="css/custom.css">
+  
+</head>
+<body class="color-theme-red wallet-app">
+	<div id="app">
+		<div class="statusbar"></div>
+		<div class="panel panel-left panel-cover"> 
+			 
+		</div>
+	
+		<div class="view view-main view-init ios-edges" data-url="/">
+			<div class="page" data-page="login">
+                <div class="login-wrap">
+                    <div class="logo-text">
+                        <!-- <div class="logo-content">
+                            ABC Bank
+                        </div> -->
+                        <div class="logo-item">
+                            <img src="img/logo.png">
+                        </div>
+                    </div>
+                    <div class="login-form-section">
+                        <form class="list" id="my-form">
+                            <ul>
+                              <li>
+                                <div class="item-content item-input noborder">
+                                  <div class="item-inner">
+                                    <div class="item-title item-label">Account ID:</div>
+                                    <div class="item-input-wrap">
+                                      <input type="text" name="name" class="login-accountId" placeholder="">
+                                    </div>
+                                  </div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="item-content item-input noborder">
+                                  <div class="item-inner">
+                                    <div class="item-title item-label">Password</div>
+                                    <div class="item-input-wrap">
+                                      <input type="password" name="login-password" class="login-password" placeholder="">
+                                    </div>
+                                  </div>
+                                </div>
+                              </li>
+                            </ul>
+                            <div class="block-footer">
+                                <button type="button" onclick="login()" class="button button-fill">
+                                    <i class="fas fa-unlock" aria-hidden="true"></i> Login
+                                </button> 
+                          </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+		</div> 
+	</div>
+
+<div class="popup popup-acknowledge">
+    <div class="block">
+        <div class="icon-wrap">
+            <i class="fas fa-check" aria-hidden="true"></i>
+        </div>
+        <p class="modal-txt">Payment Completed</p>
+        <div class="ack-details">
+            <div class="ack-date">10/10/2019</div>
+            <div class="ack-account">040001508659</div>
+        </div>
+        <div class="ack-amount">$50.00</div>
+        <div class="ack-name">Anurag Saran</div>
+    </div>
+    <p class="ack-continue"><a class="button button-fill popup-close" href="#">Continue</a></p>
+</div>
+
+    <script src="js/config.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="dist/js/framework7.min.js"></script>
+    <script src="js/routes.js"></script>
+    <script src="js/payment.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/index.js"></script>
+    <script src="cordova.js"></script>
+</body>
+</html>

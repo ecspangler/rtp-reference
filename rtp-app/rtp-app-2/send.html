@@ -1,0 +1,78 @@
+<div class="page wallet-navbar"> 
+
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="title wallet-title">ABC Bank</div>
+        </div>
+    </div>
+
+    <div class="toolbar tabbar tabbar-labels">
+        <div class="toolbar-inner">
+            <a href="/send/" class="tab-link tab-link-active">
+                <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                <span class="tabbar-label">Send Money</span>
+            </a>
+            <a href="/transaction/" class="tab-link">
+                <i class="fas fa-exchange-alt"></i>
+                <span class="tabbar-label">Passbook</span>
+            </a>
+            <a href="/account/" class="tab-link">
+                <i class="fas fa-user"></i>
+                <span class="tabbar-label">Account</span>
+            </a>
+        </div>
+    </div>
+        
+    <div class="page-content wrapper"> 
+        <div class="payment-form-wrap">
+            
+            <div class="list inset">
+                    <p class="helper-text">Fill the details and click on SEND button.</p>
+                    <form name="from-send-payment" action="javascript:void()">
+              <ul>
+                <li class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input type="text" class="s-first-name" placeholder="First Name">
+                      <span class="input-clear-button"></span>
+                    </div>
+                  </div>
+                </li>
+                <li class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input type="text" class="s-last-name" placeholder="Last Name">
+                      <span class="input-clear-button"></span>
+                    </div>
+                  </div>
+                </li>
+                <li class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input type="text" class="s-amount" placeholder="Amount">
+                      <span class="input-clear-button"></span>
+                    </div>
+                  </div>
+                </li>
+                <li class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input type="text" class="s-phoneemail" placeholder="Email or Phone no.">
+                      <span class="input-clear-button"></span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              
+              <div class="block-footer">
+                    <button type="button" onclick="sendPayment()" class="button button-fill">
+                            <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                            Send
+                    </button> 
+              </div>
+              </form>
+            </div>
+        </div>
+    </div> 
+    
+</div>
