@@ -35,8 +35,10 @@ public class DebtorPaymentService extends AbstractVerticle {
 	private static final Logger LOGGER = Logger.getLogger(DebtorPaymentService.class.getName());
 
 	private AccountRepository accountRepository = new JdgAccountRepository();
-	private CreditPaymentRepository creditPaymentRepository = new MySqlCreditPaymentRepository();
-	private DebitPaymentRepository debitPaymentRepository = new MySqlDebitPaymentRepository();
+	// private CreditPaymentRepository creditPaymentRepository = new
+	// MySqlCreditPaymentRepository();
+	// private DebitPaymentRepository debitPaymentRepository = new
+	// MySqlDebitPaymentRepository();
 
 	@Override
 	public void start() {
@@ -76,7 +78,7 @@ public class DebtorPaymentService extends AbstractVerticle {
 				LocalDateTime now = LocalDateTime.now();
 				payment.setPaymentId("ABCBANK" + formatter.format(now));
 
-				debitPaymentRepository.addPayment((DebitPayment) payment);
+				// debitPaymentRepository.addPayment((DebitPayment) payment);
 				debtorPaymentsProducer.sendMessage(payment.getPaymentId(), payment);
 			} catch (Exception e) {
 				LOGGER.severe("Error publishing payment to topic");
