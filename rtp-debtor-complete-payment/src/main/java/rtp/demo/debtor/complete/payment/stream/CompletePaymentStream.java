@@ -12,17 +12,21 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.JoinWindows;
 import org.apache.kafka.streams.kstream.KStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
+import rtp.demo.debtor.domain.model.payment.DebitPayment;
 import rtp.demo.debtor.domain.model.payment.Payment;
 import rtp.demo.debtor.domain.model.payment.serde.PaymentSerde;
 import rtp.demo.debtor.domain.rtp.simplified.MessageStatusReport;
 import rtp.demo.debtor.domain.rtp.simplified.serde.MessageStatusReportSerde;
+//import rtp.demo.repository.DebitPaymentRepository;
+//import rtp.demo.repository.MySqlDebitPaymentRepository;
+import rtp.demo.repository.DebitPaymentRepository;
+import rtp.demo.repository.MySqlDebitPaymentRepository;
 
 public class CompletePaymentStream {
 
-	private static final Logger LOG = LoggerFactory.getLogger(CompletePaymentStream.class);
+	private static final Logger LOG = Logger.getLogger(CompletePaymentStream.class.getName());
 
 	private String bootstrapServers = System.getenv("BOOTSTRAP_SERVERS");
 	private String paymentsTopic = System.getenv("DEBTOR_PAYMENTS_TOPIC");
@@ -39,6 +43,7 @@ public class CompletePaymentStream {
 
 		final Serde<Payment> paymentSerde = new PaymentSerde();
 		final Serde<MessageStatusReport> messageStatusReportSerde = new MessageStatusReportSerde();
+		final DebitPaymentRepository debitPaymentRepository = new MySqlDebitPaymentRepository();
 
 		streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, applicationId);
 		streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -63,6 +68,13 @@ public class CompletePaymentStream {
 
 		LOG.info("Joined stream: ");
 		completedPaymentsStream.print();
+
+		completedPaymentsStream.foreach((key, value) -> {
+			LOG.info("Updating Payment: " + key);
+			DebitPayment debitPayment = debitPaymentRepository.getPaymentByPaymentKey(key);
+			debitPayment.setStatus("COMPLETED");
+			debitPaymentRepository.updatePayment(debitPayment);
+		});
 
 		completedPaymentsStream.to(completedPaymentsTopic);
 

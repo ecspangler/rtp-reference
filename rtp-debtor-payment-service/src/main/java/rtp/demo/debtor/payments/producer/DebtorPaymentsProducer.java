@@ -18,7 +18,7 @@ public class DebtorPaymentsProducer {
 	public DebtorPaymentsProducer() {
 		this.config = DebtorPaymentsProducerConfig.fromEnv();
 		this.props = DebtorPaymentsProducerConfig.createProperties(config);
-		this.producer = new KafkaProducer(props);
+		this.producer = new KafkaProducer<String, Payment>(props);
 	}
 
 	public void sendMessage(String key, Payment payment) throws InterruptedException {

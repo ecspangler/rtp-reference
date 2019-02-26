@@ -48,7 +48,7 @@ public class DebtorPaymentsProducerConfig {
 		Properties props = new Properties();
 		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, config.getBootstrapServers());
 		props.put(ProducerConfig.ACKS_CONFIG, config.getAcks());
-		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, config.getSerializerClass());
+		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
 		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, config.getSerializerClass());
 		props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, config.getSecurityProtocol());
 

@@ -93,4 +93,23 @@ public class MySqlDebitPaymentRepository implements DebitPaymentRepository {
 		return results;
 	}
 
+	@Override
+	public DebitPayment getPaymentByPaymentKey(String paymentKey) {
+		log.info("Retrieving payment by payment key: " + paymentKey);
+		Transaction transaction = session.beginTransaction();
+
+		Criteria cr = session.createCriteria(DebitPayment.class);
+		cr.add(Restrictions.eq("paymentId", paymentKey));
+		List<DebitPayment> results = cr.list();
+		DebitPayment result = null;
+
+		if (results != null) {
+			result = results.get(0);
+		}
+
+		transaction.commit();
+
+		return result;
+	}
+
 }

@@ -19,4 +19,6 @@ public interface DebitPaymentRepository {
 
 	public void deletePayment(DebitPayment payment);
 
+	public DebitPayment getPaymentByPaymentKey(String paymentKey);
+
 }

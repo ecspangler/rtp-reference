@@ -5,24 +5,28 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import rtp.demo.debtor.domain.model.transaction.Transaction;
 import rtp.demo.debtor.domain.rtp.simplified.MessageStatusReport;
 
 @XmlRootElement(name = "Payment")
 @XmlAccessorType(XmlAccessType.FIELD)
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Payment implements Serializable {
 
 	private static final long serialVersionUID = -8864097979538228811L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID", updatable = false, unique = true)
 	private BigInteger id;
 	@Column(name = "PAYMENT_ID", unique = true, nullable = false, length = 256)
@@ -64,7 +68,7 @@ public class Payment implements Serializable {
 
 	public Payment(Payment payment, MessageStatusReport messageStatusReport, String status) {
 		super();
-
+		this.id = payment.getId();
 		this.paymentId = payment.getPaymentId();
 		this.senderAccountNumber = payment.getSenderAccountNumber();
 		this.amount = payment.getAmount();
@@ -74,6 +78,14 @@ public class Payment implements Serializable {
 		this.receiverAccountNumber = payment.getReceiverAccountNumber();
 		this.status = status;
 		this.messageStatusReportId = messageStatusReport.getMessageStatusReportId();
+	}
+
+	public BigInteger getId() {
+		return id;
+	}
+
+	public void setId(BigInteger id) {
+		this.id = id;
 	}
 
 	public String getPaymentId() {

@@ -93,7 +93,7 @@ public class PaymentTransformer {
 		creditTransferTransaction25.setDbtrAcct(new CashAccount24());
 		creditTransferTransaction25.getDbtrAcct().setId(new AccountIdentification4Choice());
 		creditTransferTransaction25.getDbtrAcct().getId().setOthr(new GenericAccountIdentification1());
-		creditTransferTransaction25.getDbtrAcct().getId().getOthr().setId(payment.getDebtorAccountNumber());
+		creditTransferTransaction25.getDbtrAcct().getId().getOthr().setId(payment.getSenderAccountNumber());
 
 		rtpCreditTransferMessage.getCdtTrfTxInf().add(creditTransferTransaction25);
 

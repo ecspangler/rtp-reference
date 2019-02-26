@@ -432,7 +432,10 @@ $ oc create configmap rtp-creditor-complete-payment-config \
             --from-literal=CREDITOR_PAYMENTS_TOPIC=creditor-payments \
             --from-literal=CREDITOR_CONFIRMATION_TOPIC=creditor-payment-confirmation \
             --from-literal=APPLICATION_ID=creditor-complete-payment \
-            --from-literal=CLIENT_ID=creditor-complete-payment-client
+            --from-literal=CLIENT_ID=creditor-complete-payment-client \
+            --from-literal=DATABASE_URL="${database_url}" \
+            --from-literal=DATABASE_USER=dbuser \
+            --from-literal=DATABASE_PASS=dbpass
 $ mvn fabric8:deploy -Popenshift
 $ oc set env dc/rtp-creditor-complete-payment --from configmap/rtp-creditor-complete-payment-config
 $ cd ..
@@ -517,7 +520,10 @@ $ oc create configmap rtp-debtor-complete-payment-config \
             --from-literal=DEBTOR_PAYMENTS_TOPIC=debtor-payments \
             --from-literal=DEBTOR_CONFIRMATION_TOPIC=debtor-payment-confirmation \
             --from-literal=APPLICATION_ID=debtor-complete-payment \
-            --from-literal=CLIENT_ID=debtor-complete-payment-client
+            --from-literal=CLIENT_ID=debtor-complete-payment-client \
+            --from-literal=DATABASE_URL="${database_url}" \
+            --from-literal=DATABASE_USER=dbuser \
+            --from-literal=DATABASE_PASS=dbpass
 $ mvn fabric8:deploy -Popenshift
 $ oc set env dc/rtp-debtor-complete-payment --from configmap/rtp-debtor-complete-payment-config
 $ cd ..
