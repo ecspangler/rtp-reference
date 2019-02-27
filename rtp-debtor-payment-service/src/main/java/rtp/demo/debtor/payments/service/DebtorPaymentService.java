@@ -122,24 +122,52 @@ public class DebtorPaymentService extends AbstractVerticle {
 		Transactions transactions = new Transactions();
 
 		// call lookups
-//		List<DebitPayment> debitPayments = debitPaymentRepository.getPayments(transactionsRequest.getAccountNumber());
-//		List<CreditPayment> creditPayments = creditPaymentRepository
-//				.getPayments(transactionsRequest.getAccountNumber());
+		List<DebitPayment> debitPayments = debitPaymentRepository.getPayments(transactionsRequest.getAccountNumber());
+		List<CreditPayment> creditPayments = creditPaymentRepository
+				.getPayments(transactionsRequest.getAccountNumber());
 
-		transactions.getTransactions().add(makeDummyTransaction());
-		Transaction dummyTransaction2 = makeDummyTransaction();
-		dummyTransaction2.setTransId("123457");
-		dummyTransaction2.setSenderFirstName("John");
-		dummyTransaction2.setSenderLastName("Smith");
-		dummyTransaction2.setSenderEmail("john.smith@email.com");
-		dummyTransaction2.setReceiverFirstName("Amy");
-		dummyTransaction2.setReceiverLastName("Lopez");
-		dummyTransaction2.setReceiverEmail("alopez@company.com");
-		dummyTransaction2.setAmount(new BigDecimal("100.25"));
-		dummyTransaction2.setStatus("PENDING");
-		dummyTransaction2.setCreditDebitCode("DEBIT");
-		dummyTransaction2.setAccountNumber("12000194212199001");
-		transactions.getTransactions().add(dummyTransaction2);
+		debitPayments.forEach(debitPayment -> {
+			Transaction transaction = new Transaction();
+			transaction.setTransId(debitPayment.getPaymentId());
+			transaction.setAmount(debitPayment.getAmount());
+			transaction.setCreditDebitCode("DEBIT");
+			transaction.setReceiverFirstName(debitPayment.getReceiverFirstName());
+			transaction.setReceiverLastName(debitPayment.getReceiverLastName());
+			transaction.setReceiverEmail(debitPayment.getReceiverEmail());
+			transaction.setReceiverCellPhone(debitPayment.getReceiverCellPhone());
+			transaction.setStatus(debitPayment.getStatus());
+			transactions.getTransactions().add(transaction);
+		});
+
+		creditPayments.forEach(creditPayment -> {
+			Transaction transaction = new Transaction();
+			transaction.setTransId(creditPayment.getPaymentId());
+			transaction.setAmount(creditPayment.getAmount());
+			transaction.setCreditDebitCode("DEBIT");
+			transaction.setReceiverFirstName(creditPayment.getReceiverFirstName());
+			transaction.setReceiverLastName(creditPayment.getReceiverLastName());
+			transaction.setReceiverEmail(creditPayment.getReceiverEmail());
+			transaction.setReceiverCellPhone(creditPayment.getReceiverCellPhone());
+			transaction.setStatus(creditPayment.getStatus());
+			transactions.getTransactions().add(transaction);
+		});
+
+		LOGGER.info("Retrieved transactions: " + transactions.getTransactions());
+
+//		transactions.getTransactions().add(makeDummyTransaction());
+//		Transaction dummyTransaction2 = makeDummyTransaction();
+//		dummyTransaction2.setTransId("123457");
+//		dummyTransaction2.setSenderFirstName("John");
+//		dummyTransaction2.setSenderLastName("Smith");
+//		dummyTransaction2.setSenderEmail("john.smith@email.com");
+//		dummyTransaction2.setReceiverFirstName("Amy");
+//		dummyTransaction2.setReceiverLastName("Lopez");
+//		dummyTransaction2.setReceiverEmail("alopez@company.com");
+//		dummyTransaction2.setAmount(new BigDecimal("100.25"));
+//		dummyTransaction2.setStatus("PENDING");
+//		dummyTransaction2.setCreditDebitCode("DEBIT");
+//		dummyTransaction2.setAccountNumber("12000194212199001");
+//		transactions.getTransactions().add(dummyTransaction2);
 
 		routingContext.response().putHeader(CONTENT_TYPE, "application/json; charset=utf-8")
 				.putHeader("Access-Control-Allow-Origin", "*").end(Json.encodePrettily(transactions));
