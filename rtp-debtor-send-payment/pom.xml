@@ -17,26 +17,6 @@
   <name>Debtor Send Payment Service</name>
   <description>Debtor Send Payment Service</description>
 
-  <properties>
-    <!-- configure the Fuse version you want to use here -->
-    <fuse.version>7.1.0.fuse-710019-redhat-00002</fuse.version>
-    <fabric8-maven-plugin.version>3.5.41</fabric8-maven-plugin.version>
-    <camel.version>2.23.0</camel.version>
-  </properties>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.jboss.redhat-fuse</groupId>
-        <artifactId>fuse-springboot-bom</artifactId>
-        <version>${fuse.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-
-    </dependencies>
-  </dependencyManagement>
-
   <dependencies>
 
     <dependency>
@@ -123,6 +103,19 @@
     </dependency>
 
   </dependencies>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.jboss.redhat-fuse</groupId>
+        <artifactId>fuse-springboot-bom</artifactId>
+        <version>${fuse.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
 
   <build>
     <defaultGoal>spring-boot:run</defaultGoal>
