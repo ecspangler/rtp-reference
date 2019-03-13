@@ -123,12 +123,12 @@ oc new-app \
     registry.access.redhat.com/rhscl/mysql-56-rhel7
 
 # IntelliJ may THINK that this isn't formatted correctly, but don't worry--it is.
-until [ "`oc get pods --selector app=$mysql_app_name -o jsonpath=\"{.items[0].status.containerStatuses[?(@.name == \\"mysql-56-rhel7\\")].ready}\" 2> /dev/null`" = "true" ]; do sleep 0.5; printf "Waiting container is ready...\n"; done
+until [ "`oc get pods --selector app=$mysql_app_name -o jsonpath=\"{.items[0].status.containerStatuses[?(@.name == \\"mysql-56-rhel7\\")].ready}\" 2> /dev/null`" = "true" ]; do sleep 3; printf "Waiting until container is ready...\n"; done
 
 oc port-forward `oc get pods --selector app=$mysql_app_name -o jsonpath="{.items[0].metadata.name}"` 3306 &> /dev/null &
 cpid=$!
 trap "kill $cpid" EXIT
-until mysql --host localhost -P 3306 --protocol tcp -u dbuser -D rtpdb -pdbpass --execute exit &> /dev/null; do sleep 0.5; printf "Waiting until MySQL comes up...\n"; done
+until mysql --host localhost -P 3306 --protocol tcp -u dbuser -D rtpdb -pdbpass --execute exit &> /dev/null; do sleep 3; printf "Waiting until MySQL comes up...\n"; done
 
 printf "Loading create_debtor_credit_payment.sql\n"
 mysql -w --host localhost -P 3306 --protocol tcp -u dbuser -D rtpdb -pdbpass < ./rtp-debtor-transaction-repository-mysql/src/main/resources/database-scripts/create_debtor_credit_payment.sql

@@ -40,7 +40,7 @@
     <dependency>
       <groupId>javax.xml.bind</groupId>
       <artifactId>jaxb-api</artifactId>
-      <version>${jaxb-api.version}</version>
+      <version>${jaxb.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/javax.activation/activation -->
@@ -54,7 +54,7 @@
     <dependency>
       <groupId>org.glassfish.jaxb</groupId>
       <artifactId>jaxb-runtime</artifactId>
-      <version>${jaxb-runtime.version}</version>
+      <version>${jaxb.version}</version>
     </dependency>
 
 

@@ -54,51 +54,21 @@
     <hibernate-core.version>5.3.7.Final-redhat-00001</hibernate-core.version>
     <infinispan-client-hotrod.version>8.5.3.Final-redhat-00002</infinispan-client-hotrod.version>
     <jackson-databind.versioon>2.9.7</jackson-databind.versioon>
-    <jaxb-api.version>2.3.0</jaxb-api.version>
-    <jaxb-core.version>${jaxb-api.version}</jaxb-core.version>
-    <jaxb-impl.version>${jaxb-api.version}</jaxb-impl.version>
-    <jaxb-runtime.version>${jaxb-api.version}</jaxb-runtime.version>
+    <jaxb.version>2.3.0</jaxb.version>
     <junit.version>4.12</junit.version>
     <kafka-clients.version>2.1.0</kafka-clients.version>
     <log4j-api.version>2.11.1</log4j-api.version>
     <log4j-core.version>${log4j-api.version}</log4j-core.version>
     <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+    <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
     <maven-war-plugin.version>2.3</maven-war-plugin.version>
     <slf4j-simple.version>1.6.2</slf4j-simple.version>
+    <spring-boot-starter.version>1.5.13.RELEASE</spring-boot-starter.version>
+    <arquillian-junit-container.version>1.1.12.Final</arquillian-junit-container.version>
+    <arquillian-cube-openshift.version>1.9.0</arquillian-cube-openshift.version>
+    <kubernetes-assertions>3.0.11.fuse-710023-redhat-00001</kubernetes-assertions>
 
   </properties>
-
-  <profiles>
-    <profile>
-      <id>openshift</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>io.fabric8</groupId>
-            <artifactId>fabric8-maven-plugin</artifactId>
-            <version>${fabric8-maven-plugin.version}</version>
-            <executions>
-              <execution>
-                <id>fmp</id>
-                <goals>
-                  <goal>resource</goal>
-                  <goal>build</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <enricher>
-                <excludes>
-                  <exclude>f8-maven-scm</exclude>
-                </excludes>
-                <!-- ADD HEALTH CHECK HERE -->
-              </enricher>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 
   <repositories>
     <repository>
