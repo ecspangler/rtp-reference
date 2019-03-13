@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.example</groupId>
+    <artifactId>rtp-reference</artifactId>
+    <version>1.0.0.0</version>
+  </parent>
 
   <groupId>rtp.demo</groupId>
   <artifactId>rtp-debtor-send-payment</artifactId>
@@ -15,6 +22,7 @@
 
     <!-- configure the Fuse version you want to use here -->
     <fuse.version>7.1.0.fuse-710019-redhat-00002</fuse.version>
+    <fabric8-maven-plugin.version>3.5.41</fabric8-maven-plugin.version>
     <camel.version>2.23.0</camel.version>
     <!--  <spring.boot.version>2.1.1.RELEASE</spring.boot.version>
     <junit.version>4.12</junit.version>-->
@@ -32,9 +40,9 @@
         <version>${fuse.version}</version>
         <type>pom</type>
         <scope>import</scope>
-      </dependency> 
-      
-    </dependencies> 
+      </dependency>
+
+    </dependencies>
   </dependencyManagement>
 
   <dependencies>
@@ -42,28 +50,28 @@
     <dependency>
       <groupId>rtp.demo</groupId>
       <artifactId>rtp-debtor-domain-model</artifactId>
-      <version>1.0.0.0</version>    
+      <version>1.0.0.0</version>
     </dependency>
-    
+
     <dependency>
       <groupId>rtp.demo</groupId>
       <artifactId>rtp-message-model</artifactId>
-      <version>1.0.0.0</version>    
+      <version>1.0.0.0</version>
     </dependency>
 
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-kafka</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-stream</artifactId>
-		</dependency>
-    
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-kafka</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-stream</artifactId>
+    </dependency>
+
 
     <!-- Enabling health checks -->
     <dependency>
@@ -147,20 +155,6 @@
           <execution>
             <goals>
               <goal>repackage</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.jboss.redhat-fuse</groupId>
-        <artifactId>fabric8-maven-plugin</artifactId>
-        <version>${fuse.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>resource</goal>
-              <goal>build</goal>
             </goals>
           </execution>
         </executions>

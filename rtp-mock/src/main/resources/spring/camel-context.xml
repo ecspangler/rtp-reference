@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
-    <bean class="rtp.demo.mock.routes.MockRtpRouteBuilder" id="mockRtpRouteBuilder"/>
-    <camelContext id="camelContext-5cc46c7d-f82b-481d-acf2-003fc8bf1ad1" xmlns="http://camel.apache.org/schema/spring">
-        <routeBuilder ref="mockRtpRouteBuilder"/>
-    </camelContext>
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
+  <bean class="rtp.demo.mock.routes.MockRtpRouteBuilder" id="mockRtpRouteBuilder"/>
+  <camelContext id="camelContext-5cc46c7d-f82b-481d-acf2-003fc8bf1ad1" xmlns="http://camel.apache.org/schema/spring">
+    <routeBuilder ref="mockRtpRouteBuilder"/>
+  </camelContext>
 </beans>

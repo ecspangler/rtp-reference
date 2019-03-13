@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.example</groupId>
+    <artifactId>rtp-reference</artifactId>
+    <version>1.0.0.0</version>
+  </parent>
 
   <groupId>rtp.demo</groupId>
   <artifactId>rtp-debtor-complete-payment</artifactId>
@@ -27,9 +34,9 @@
         <version>${fuse.version}</version>
         <type>pom</type>
         <scope>import</scope>
-      </dependency> 
-      
-    </dependencies> 
+      </dependency>
+
+    </dependencies>
   </dependencyManagement>
 
   <dependencies>
@@ -37,41 +44,41 @@
     <dependency>
       <groupId>rtp.demo</groupId>
       <artifactId>rtp-debtor-domain-model</artifactId>
-      <version>1.0.0.0</version>    
+      <version>1.0.0.0</version>
     </dependency>
-    
+
     <dependency>
       <groupId>rtp.demo</groupId>
       <artifactId>rtp-debtor-transaction-repository-mysql</artifactId>
       <version>1.0.0.0</version>
     </dependency>
-    
+
     <dependency>
       <groupId>org.apache.kafka</groupId>
       <artifactId>kafka-streams</artifactId>
       <version>1.0.0</version>
     </dependency>
-    
+
     <dependency>
       <groupId>org.apache.kafka</groupId>
       <artifactId>kafka-clients</artifactId>
     </dependency>
 
-<dependency>
-    <groupId>commons-logging</groupId>
-    <artifactId>commons-logging</artifactId>
-    <version>1.2.0.redhat-3</version>
-</dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.2.0.redhat-3</version>
+    </dependency>
 
     <!-- Enabling health checks -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
       <exclusions>
-    	<exclusion>
-     		<groupId>org.springframework.boot</groupId>
-      		<artifactId>spring-boot-starter-logging</artifactId>
-   		 </exclusion>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
@@ -82,20 +89,20 @@
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-tomcat</artifactId>
         </exclusion>
-    	<exclusion>
-     		<groupId>org.springframework.boot</groupId>
-      		<artifactId>spring-boot-starter-logging</artifactId>
-   		 </exclusion>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-undertow</artifactId>
       <exclusions>
-    	<exclusion>
-     		<groupId>org.springframework.boot</groupId>
-      		<artifactId>spring-boot-starter-logging</artifactId>
-   		 </exclusion>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
 
