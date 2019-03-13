@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <groupId>org.example</groupId>
+  <groupId>rtp.demo</groupId>
   <artifactId>rtp-reference</artifactId>
   <version>1.0.0.0</version>
   <packaging>pom</packaging>
@@ -40,7 +40,32 @@
   </modules>
 
   <properties>
+    <maven.min.version>3.3.9</maven.min.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <jdk.min.version>${maven.compiler.source}</jdk.min.version>
+
+    <!--Dependency & Plugin Versions-->
+    <activation.version>1.1</activation.version>
+    <camel.version>2.23.0</camel.version>
     <fabric8-maven-plugin.version>3.5.41</fabric8-maven-plugin.version>
+    <hibernate-core.version>5.3.7.Final-redhat-00001</hibernate-core.version>
+    <infinispan-client-hotrod.version>8.5.3.Final-redhat-00002</infinispan-client-hotrod.version>
+    <jackson-databind.versioon>2.9.7</jackson-databind.versioon>
+    <jaxb-api.version>2.3.0</jaxb-api.version>
+    <jaxb-core.version>${jaxb-api.version}</jaxb-core.version>
+    <jaxb-impl.version>${jaxb-api.version}</jaxb-impl.version>
+    <jaxb-runtime.version>${jaxb-api.version}</jaxb-runtime.version>
+    <junit.version>4.12</junit.version>
+    <kafka-clients.version>2.1.0</kafka-clients.version>
+    <log4j-api.version>2.11.1</log4j-api.version>
+    <log4j-core.version>${log4j-api.version}</log4j-core.version>
+    <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+    <maven-war-plugin.version>2.3</maven-war-plugin.version>
+    <slf4j-simple.version>1.6.2</slf4j-simple.version>
+
   </properties>
 
   <profiles>

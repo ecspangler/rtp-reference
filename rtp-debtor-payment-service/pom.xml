@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.example</groupId>
+    <groupId>rtp.demo</groupId>
     <artifactId>rtp-reference</artifactId>
     <version>1.0.0.0</version>
   </parent>
@@ -19,20 +19,10 @@
   <description>Debtor Payment Service</description>
 
   <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <camel.version>2.23.0</camel.version>
-    <maven.min.version>3.3.9</maven.min.version>
-    <jdk.min.version>${maven.compiler.source}</jdk.min.version>
     <vertx.version>3.5.4.redhat-00002</vertx.version>
     <vertx-maven-plugin.version>1.0.18</vertx-maven-plugin.version>
     <vertx.verticle>rtp.demo.debtor.payments.service.DebtorPaymentService</vertx.verticle>
-    <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-    <fabric8-maven-plugin.version>3.5.41</fabric8-maven-plugin.version>
-    <fabric8.generator.from>registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift
-    </fabric8.generator.from>
+    <fabric8.generator.from>registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift</fabric8.generator.from>
   </properties>
 
   <dependencyManagement>
