@@ -11,12 +11,12 @@
   </parent>
 
   <groupId>rtp.demo</groupId>
-  <artifactId>rtp-debtor-payment-service</artifactId>
+  <artifactId>rtp-flow-viz-service</artifactId>
   <version>1.0.0.0</version>
   <packaging>jar</packaging>
 
-  <name>Debtor Payment Service</name>
-  <description>Debtor Payment Service</description>
+  <name>Visualization Service</name>
+  <description>Visualization Service</description>
 
   <properties>
     <vertx.version>3.5.4.redhat-00002</vertx.version>
