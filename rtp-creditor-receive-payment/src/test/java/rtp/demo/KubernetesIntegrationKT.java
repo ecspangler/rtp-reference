@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package org.example;
+package rtp.demo;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
 
