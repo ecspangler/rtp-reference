@@ -129,19 +129,18 @@ oc get template -n openshift
 
 
 # --- MySQL Installation
-mysql_app_name=mysql-56-rhel7
 oc project rtp-reference
 oc new-app \
     -e MYSQL_USER=dbuser \
     -e MYSQL_PASSWORD=dbpass \
     -e MYSQL_DATABASE=rtpdb \
-    --name=$mysql_app_name \
+    --name=mysql-56-rhel7 \
     registry.access.redhat.com/rhscl/mysql-56-rhel7
 
 # IntelliJ may THINK that this isn't formatted correctly, but don't worry--it is.
-until [ "$(oc get pods --selector app=$mysql_app_name -o jsonpath="{.items[0].status.containerStatuses[?(@.name == \"mysql-56-rhel7\")].ready}" 2> /dev/null)" = "true" ]; do sleep 3; printf "Waiting until container is ready...\n"; done
+until [ "$(oc get pods --selector app=mysql-56-rhel7 -o jsonpath="{.items[0].status.containerStatuses[?(@.name == \"mysql-56-rhel7\")].ready}" 2> /dev/null)" = "true" ]; do sleep 3; printf "Waiting until container is ready...\n"; done
 
-oc port-forward $(oc get pods --selector app=$mysql_app_name -o jsonpath="{.items[0].metadata.name}") 3306 &> /dev/null &
+oc port-forward $(oc get pods --selector app=mysql-56-rhel7 -o jsonpath="{.items[0].metadata.name}") 3306 &> /dev/null &
 cpid=$!
 trap "kill $cpid" EXIT
 until mysql --host localhost -P 3306 --protocol tcp -u dbuser -D rtpdb -pdbpass --execute exit &> /dev/null; do sleep 3; printf "Waiting until MySQL comes up...\n"; done
@@ -155,12 +154,6 @@ trap - EXIT
 
 
 # --- Deploy the RTP Reference Services
-bootstrap=$(oc get service rtp-demo-cluster-kafka-bootstrap -o=jsonpath='{.spec.clusterIP}{"\n"}')
-bootstrap="${bootstrap}:9092"
-
-database_url=$(oc get service $mysql_app_name -o=jsonpath='{.spec.clusterIP}{"\n"}')
-database_url="jdbc:mysql://${database_url}:3306/rtpdb"
-
 mvn --non-recursive clean install
 
 for dependency in \
@@ -182,69 +175,24 @@ do
 done
 
 cd rtp-debtor-payment-service
-oc create configmap rtp-debtor-payment-service-config \
-            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
-            --from-literal=PRODUCER_TOPIC=debtor-payments \
-            --from-literal=SECURITY_PROTOCOL=PLAINTEXT \
-            --from-literal=SERIALIZER_CLASS=rtp.demo.debtor.domain.model.payment.serde.PaymentSerializer \
-            --from-literal=ACKS=1 \
-            --from-literal=DATABASE_URL="${database_url}" \
-            --from-literal=DATABASE_USER=dbuser \
-            --from-literal=DATABASE_PASS=dbpass
-mvn fabric8:deploy -Popenshift
-oc set env dc/rtp-debtor-payment-service --from configmap/rtp-debtor-payment-service-config
+mvn clean fabric8:deploy -Popenshift
 cd ..
 
 cd rtp-debtor-send-payment
-oc create configmap rtp-debtor-send-payment-config \
-            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
-            --from-literal=DEBTOR_PAYMENTS_TOPIC=debtor-payments \
-            --from-literal=MOCK_RTP_CREDIT_TRANSFER_TOPIC=mock-rtp-debtor-credit-transfer \
-            --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
-            --from-literal=CONSUMER_COUNT=1 \
-            --from-literal=CONSUMER_SEEK_TO=end \
-            --from-literal=CONSUMER_GROUP=rtp-debtor-send-payment \
-            --from-literal=DESERIALIZER_CLASS=rtp.demo.debtor.domain.model.payment.serde.PaymentDeserializer \
-            --from-literal=SERIALIZER_CLASS=rtp.message.model.serde.FIToFICustomerCreditTransferV06Serializer \
-            --from-literal=ACKS=1
-mvn fabric8:deploy -Popenshift
-oc set env dc/rtp-debtor-send-payment --from configmap/rtp-debtor-send-payment-config
+mvn clean fabric8:deploy -Popenshift
 cd ..
 
 cd rtp-mock
-oc create configmap rtp-mock-config \
-            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
-            --from-literal=CREDIT_TRANS_DEBTOR_TOPIC=mock-rtp-debtor-credit-transfer \
-            --from-literal=CREDIT_TRANS_CREDITOR_TOPIC=mock-rtp-creditor-credit-transfer \
-            --from-literal=CREDITOR_ACK_TOPIC=mock-rtp-creditor-acknowledgement \
-            --from-literal=DEBTOR_CONFIRMATION_TOPIC=mock-rtp-debtor-confirmation \
-            --from-literal=CREDITOR_CONFIRMATION_TOPIC=mock-rtp-creditor-confirmation \
-            --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
-            --from-literal=CONSUMER_COUNT=1 \
-            --from-literal=CONSUMER_SEEK_TO=end \
-            --from-literal=CONSUMER_GROUP=rtp-mock \
-            --from-literal=ACKS=1
-mvn fabric8:deploy -Popenshift
-oc set env dc/rtp-demo-mock --from configmap/rtp-mock-config
+mvn clean fabric8:deploy -Popenshift
 cd ..
 
 cd rtp-creditor-receive-payment
-oc create configmap rtp-creditor-receive-payment-config \
-            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
-            --from-literal=CREDIT_TRANS_CREDITOR_TOPIC=mock-rtp-creditor-credit-transfer \
-            --from-literal=CREDITOR_PAYMENTS_TOPIC=creditor-payments \
-            --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
-            --from-literal=CONSUMER_COUNT=1 \
-            --from-literal=CONSUMER_SEEK_TO=end \
-            --from-literal=CONSUMER_GROUP=rtp-creditor-receive-payment \
-            --from-literal=ACKS=1
-mvn fabric8:deploy -Popenshift
-oc set env dc/rtp-creditor-receive-payment --from configmap/rtp-creditor-receive-payment-config
+mvn clean fabric8:deploy -Popenshift
 cd ..
 
 cd rtp-creditor-payment-acknowledgement
 oc create configmap rtp-creditor-payment-acknowledgement-config \
-            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
+            --from-literal=BOOTSTRAP_SERVERS="rtp-demo-cluster-kafka-bootstrap:9092" \
             --from-literal=CREDITOR_PAYMENTS_TOPIC=creditor-payments \
             --from-literal=MOCK_RTP_CREDITOR_ACK_TOPIC=mock-rtp-creditor-acknowledgement \
             --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
@@ -258,7 +206,7 @@ cd ..
 
 cd rtp-creditor-payment-confirmation
 oc create configmap rtp-creditor-payment-confirmation-config \
-            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
+            --from-literal=BOOTSTRAP_SERVERS="rtp-demo-cluster-kafka-bootstrap:9092" \
             --from-literal=CREDITOR_CONFIRMATION_TOPIC=creditor-payment-confirmation \
             --from-literal=MOCK_RTP_CREDITOR_CONFIRMATION_TOPIC=mock-rtp-creditor-confirmation \
             --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
@@ -272,13 +220,13 @@ cd ..
 
 cd rtp-creditor-complete-payment
 oc create configmap rtp-creditor-complete-payment-config \
-            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
+            --from-literal=BOOTSTRAP_SERVERS="rtp-demo-cluster-kafka-bootstrap:9092" \
             --from-literal=CREDITOR_COMPLETED_PAYMENTS_TOPIC=creditor-completed-payments \
             --from-literal=CREDITOR_PAYMENTS_TOPIC=creditor-payments \
             --from-literal=CREDITOR_CONFIRMATION_TOPIC=creditor-payment-confirmation \
             --from-literal=APPLICATION_ID=creditor-complete-payment \
             --from-literal=CLIENT_ID=creditor-complete-payment-client \
-            --from-literal=DATABASE_URL="${database_url}" \
+            --from-literal=DATABASE_URL="jdbc:mysql://mysql-56-rhel7:3306/rtpdb" \
             --from-literal=DATABASE_USER=dbuser \
             --from-literal=DATABASE_PASS=dbpass
 mvn fabric8:deploy -Popenshift
@@ -287,7 +235,7 @@ cd ..
 
 cd rtp-creditor-customer-notification
 oc create configmap rtp-creditor-customer-notification-config \
-            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
+            --from-literal=BOOTSTRAP_SERVERS="rtp-demo-cluster-kafka-bootstrap:9092" \
             --from-literal=CREDITOR_COMPLETED_PAYMENTS_TOPIC=creditor-completed-payments \
             --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
             --from-literal=CONSUMER_COUNT=1 \
@@ -300,7 +248,7 @@ cd ..
 
 cd rtp-creditor-core-banking
 oc create configmap rtp-creditor-core-banking-config \
-            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
+            --from-literal=BOOTSTRAP_SERVERS="rtp-demo-cluster-kafka-bootstrap:9092" \
             --from-literal=CREDITOR_COMPLETED_PAYMENTS_TOPIC=creditor-completed-payments \
             --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
             --from-literal=CONSUMER_COUNT=1 \
@@ -313,7 +261,7 @@ cd ..
 
 cd rtp-creditor-auditing
 oc create configmap rtp-creditor-auditing-config \
-            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
+            --from-literal=BOOTSTRAP_SERVERS="rtp-demo-cluster-kafka-bootstrap:9092" \
             --from-literal=CREDITOR_COMPLETED_PAYMENTS_TOPIC=creditor-completed-payments \
             --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
             --from-literal=CONSUMER_COUNT=1 \
@@ -326,7 +274,7 @@ cd ..
 
 cd rtp-debtor-payment-confirmation
 oc create configmap rtp-debtor-payment-confirmation-config \
-            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
+            --from-literal=BOOTSTRAP_SERVERS="rtp-demo-cluster-kafka-bootstrap:9092" \
             --from-literal=DEBTOR_CONFIRMATION_TOPIC=debtor-payment-confirmation \
             --from-literal=MOCK_RTP_DEBTOR_CONFIRMATION_TOPIC=mock-rtp-debtor-confirmation \
             --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
@@ -340,13 +288,13 @@ cd ..
 
 cd rtp-debtor-complete-payment
 oc create configmap rtp-debtor-complete-payment-config \
-            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
+            --from-literal=BOOTSTRAP_SERVERS="rtp-demo-cluster-kafka-bootstrap:9092" \
             --from-literal=DEBTOR_COMPLETED_PAYMENTS_TOPIC=debtor-completed-payments \
             --from-literal=DEBTOR_PAYMENTS_TOPIC=debtor-payments \
             --from-literal=DEBTOR_CONFIRMATION_TOPIC=debtor-payment-confirmation \
             --from-literal=APPLICATION_ID=debtor-complete-payment \
             --from-literal=CLIENT_ID=debtor-complete-payment-client \
-            --from-literal=DATABASE_URL="${database_url}" \
+            --from-literal=DATABASE_URL="jdbc:mysql://mysql-56-rhel7:3306/rtpdb" \
             --from-literal=DATABASE_USER=dbuser \
             --from-literal=DATABASE_PASS=dbpass
 mvn fabric8:deploy -Popenshift
@@ -355,8 +303,8 @@ cd ..
 
 cd rtp-debtor-customer-notification
 oc create configmap rtp-debtor-customer-notification-config \
-            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
-            --from-literal=CREDITOR_COMPLETED_PAYMENTS_TOPIC=debtor-completed-payments \
+            --from-literal=BOOTSTRAP_SERVERS="rtp-demo-cluster-kafka-bootstrap:9092" \
+            --from-literal=DEBTOR_COMPLETED_PAYMENTS_TOPIC=debtor-completed-payments \
             --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
             --from-literal=CONSUMER_COUNT=1 \
             --from-literal=CONSUMER_SEEK_TO=end \
@@ -368,8 +316,8 @@ cd ..
 
 cd rtp-debtor-core-banking
 oc create configmap rtp-debtor-core-banking-config \
-            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
-            --from-literal=CREDITOR_COMPLETED_PAYMENTS_TOPIC=debtor-completed-payments \
+            --from-literal=BOOTSTRAP_SERVERS="rtp-demo-cluster-kafka-bootstrap:9092" \
+            --from-literal=DEBTOR_COMPLETED_PAYMENTS_TOPIC=debtor-completed-payments \
             --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
             --from-literal=CONSUMER_COUNT=1 \
             --from-literal=CONSUMER_SEEK_TO=end \
@@ -381,8 +329,8 @@ cd ..
 
 cd rtp-debtor-auditing
 oc create configmap rtp-debtor-auditing-config \
-            --from-literal=BOOTSTRAP_SERVERS="${bootstrap}" \
-            --from-literal=CREDITOR_COMPLETED_PAYMENTS_TOPIC=debtor-completed-payments \
+            --from-literal=BOOTSTRAP_SERVERS="rtp-demo-cluster-kafka-bootstrap:9092" \
+            --from-literal=DEBTOR_COMPLETED_PAYMENTS_TOPIC=debtor-completed-payments \
             --from-literal=CONSUMER_MAX_POLL_RECORDS=500 \
             --from-literal=CONSUMER_COUNT=1 \
             --from-literal=CONSUMER_SEEK_TO=end \
@@ -390,6 +338,14 @@ oc create configmap rtp-debtor-auditing-config \
             --from-literal=ACKS=1
 mvn fabric8:deploy -Popenshift
 oc set env dc/rtp-debtor-auditing --from configmap/rtp-debtor-auditing-config
+cd ..
+
+
+# --- Deploy the visualizer gateway
+cd rtp-flow-viz-service
+oc create configmap rtp-flow-viz-service-config --from-literal=BOOTSTRAP_SERVERS="rtp-demo-cluster-kafka-bootstrap:9092"
+mvn fabric8:deploy -Popenshift
+oc set env dc/rtp-flow-viz-service --from configmap/rtp-flow-viz-service-config
 cd ..
 
 
