@@ -24,6 +24,22 @@ oc login -u system:admin
 minishift addon apply admin-user
 oc new-project rtp-reference
 
+echo '
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: default-view
+  namespace: rtp-reference
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: rtp-reference
+' | oc apply -f -
+
 
 # --- AMQ Streams Cluter and Kafka Topics
 oc apply -f kafka/install/cluster-operator/deployment-srtimzi-cluster-operator.yaml -n rtp-reference
@@ -32,9 +48,9 @@ oc get pods -w -n rtp-reference &
 cpid=$!
 trap "kill $cpid" EXIT
 
-until [ "`oc get pods --selector strimzi.io/name=rtp-demo-cluster-kafka -o jsonpath='{.items[:3].status.containerStatuses[?(@.name == \"kafka\")].ready}' 2>/dev/null`" = "true true true" ]; do sleep 1; done
-until [ "`oc get pods --selector strimzi.io/name=rtp-demo-cluster-zookeeper -o jsonpath='{.items[:3].status.containerStatuses[?(@.name == \"zookeeper\")].ready}' 2>/dev/null`" = "true true true" ]; do sleep 1; done
-until [ "`oc get pods --selector strimzi.io/name=rtp-demo-cluster-entity-operator -o jsonpath='{.items[0].status.containerStatuses[:3].ready}' 2>/dev/null`" = "true true true" ]; do sleep 1; done
+until [ "$(oc get pods --selector strimzi.io/name=rtp-demo-cluster-kafka -o jsonpath="{.items[:3].status.containerStatuses[?(@.name == \"kafka\")].ready}" 2>/dev/null)" = "true true true" ]; do sleep 1; done
+until [ "$(oc get pods --selector strimzi.io/name=rtp-demo-cluster-zookeeper -o jsonpath="{.items[:3].status.containerStatuses[?(@.name == \"zookeeper\")].ready}" 2>/dev/null)" = "true true true" ]; do sleep 1; done
+until [ "$(oc get pods --selector strimzi.io/name=rtp-demo-cluster-entity-operator -o jsonpath="{.items[0].status.containerStatuses[:3].ready}" 2>/dev/null)" = "true true true" ]; do sleep 1; done
 
 kill $cpid
 trap - EXIT
@@ -123,9 +139,9 @@ oc new-app \
     registry.access.redhat.com/rhscl/mysql-56-rhel7
 
 # IntelliJ may THINK that this isn't formatted correctly, but don't worry--it is.
-until [ "`oc get pods --selector app=$mysql_app_name -o jsonpath=\"{.items[0].status.containerStatuses[?(@.name == \\"mysql-56-rhel7\\")].ready}\" 2> /dev/null`" = "true" ]; do sleep 3; printf "Waiting until container is ready...\n"; done
+until [ "$(oc get pods --selector app=$mysql_app_name -o jsonpath="{.items[0].status.containerStatuses[?(@.name == \"mysql-56-rhel7\")].ready}" 2> /dev/null)" = "true" ]; do sleep 3; printf "Waiting until container is ready...\n"; done
 
-oc port-forward `oc get pods --selector app=$mysql_app_name -o jsonpath="{.items[0].metadata.name}"` 3306 &> /dev/null &
+oc port-forward $(oc get pods --selector app=$mysql_app_name -o jsonpath="{.items[0].metadata.name}") 3306 &> /dev/null &
 cpid=$!
 trap "kill $cpid" EXIT
 until mysql --host localhost -P 3306 --protocol tcp -u dbuser -D rtpdb -pdbpass --execute exit &> /dev/null; do sleep 3; printf "Waiting until MySQL comes up...\n"; done
@@ -139,10 +155,10 @@ trap - EXIT
 
 
 # --- Deploy the RTP Reference Services
-bootstrap=`oc get service rtp-demo-cluster-kafka-bootstrap -o=jsonpath='{.spec.clusterIP}{"\n"}'`
+bootstrap=$(oc get service rtp-demo-cluster-kafka-bootstrap -o=jsonpath='{.spec.clusterIP}{"\n"}')
 bootstrap="${bootstrap}:9092"
 
-database_url=`oc get service $mysql_app_name -o=jsonpath='{.spec.clusterIP}{"\n"}'`
+database_url=$(oc get service $mysql_app_name -o=jsonpath='{.spec.clusterIP}{"\n"}')
 database_url="jdbc:mysql://${database_url}:3306/rtpdb"
 
 mvn --non-recursive clean install
@@ -375,3 +391,6 @@ oc create configmap rtp-debtor-auditing-config \
 mvn fabric8:deploy -Popenshift
 oc set env dc/rtp-debtor-auditing --from configmap/rtp-debtor-auditing-config
 cd ..
+
+
+# --- Deploy the web apps

@@ -29,7 +29,7 @@ public class DebtorCustomerNotificationRouteBuilder extends RouteBuilder {
 		from("kafka:" + kafkaDebtorCompletedPaymentsTopic + "?brokers=" + kafkaBootstrap + "&maxPollRecords="
 				+ consumerMaxPollRecords + "&consumersCount=" + consumerCount + "&seekTo=" + consumerSeekTo
 				+ "&groupId=" + consumerGroup
-				+ "&valueDeserializer=rtp.demo.debtor.domain.payments.serde.PaymentDeserializer").routeId("FromKafka")
+				+ "&valueDeserializer=rtp.demo.debtor.domain.model.payment.serde.PaymentDeserializer").routeId("FromKafka")
 						.log("\n/// Debtor Customer Notification stub service received payment >>> ${body}");
 	}
 

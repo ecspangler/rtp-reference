@@ -1,4 +1,4 @@
-package rtp.demo.creditor.auditing.routes;
+package rtp.demo.debtor.auditing.routes;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.kafka.KafkaComponent;
@@ -29,7 +29,7 @@ public class DebtorAuditingRouteBuilder extends RouteBuilder {
 		from("kafka:" + kafkaDebtorCompletedPaymentsTopic + "?brokers=" + kafkaBootstrap + "&maxPollRecords="
 				+ consumerMaxPollRecords + "&consumersCount=" + consumerCount + "&seekTo=" + consumerSeekTo
 				+ "&groupId=" + consumerGroup
-				+ "&valueDeserializer=rtp.demo.debtor.domain.payments.serde.PaymentDeserializer").routeId("FromKafka")
+				+ "&valueDeserializer=rtp.demo.debtor.domain.model.payment.serde.PaymentDeserializer").routeId("FromKafka")
 						.log("\n/// Debtor Auditing stub service received payment >>> ${body}");
 	}
 
