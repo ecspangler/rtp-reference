@@ -13,3 +13,18 @@ spec:
           env:
           - name: SPRING_APPLICATION_JSON
             value: '{"server":{"undertow":{"io-threads":1, "worker-threads":2 }}}'
+          - name: BOOTSTRAP_SERVERS
+            value: "rtp-demo-cluster-kafka-bootstrap:9092"
+          - name: DEBTOR_COMPLETED_PAYMENTS_TOPIC
+            value: debtor-completed-payments
+          - name: CONSUMER_MAX_POLL_RECORDS
+            value: 500
+          - name: CONSUMER_COUNT
+            value: 1
+          - name: CONSUMER_SEEK_TO
+            value: end
+          - name: CONSUMER_GROUP
+            value: rtp-debtor-core-banking
+          - name: ACKS
+            value: 1
+

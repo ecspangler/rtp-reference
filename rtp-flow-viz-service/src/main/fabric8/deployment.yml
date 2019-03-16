@@ -10,3 +10,6 @@ spec:
             limits:
               cpu: "1.0"
               memory: 500Mi
+          env:
+            - name: BOOTSTRAP_SERVERS
+              value: "rtp-demo-cluster-kafka-bootstrap:9092"
