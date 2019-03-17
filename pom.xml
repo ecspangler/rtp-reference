@@ -21,6 +21,7 @@
     <module>rtp-creditor-domain-model</module>
     <module>rtp-creditor-payment-acknowledgement</module>
     <module>rtp-creditor-payment-confirmation</module>
+    <module>rtp-creditor-payment-service</module>
     <module>rtp-creditor-receive-payment</module>
     <module>rtp-creditor-validation-model</module>
     <module>rtp-debtor-account-repository-jdg</module>
@@ -38,6 +39,7 @@
     <module>rtp-message-model</module>
     <module>rtp-mock</module>
     <module>rtp-flow-viz-service</module>
+    <module>rtp-transfer-test</module>
   </modules>
 
   <properties>
@@ -60,7 +62,7 @@
     <jackson-databind.versioon>2.9.7</jackson-databind.versioon>
     <jaxb.version>2.3.0</jaxb.version>
     <junit.version>4.12</junit.version>
-    <kafka.version>2.1.0</kafka.version>
+    <kafka.version>1.0.0</kafka.version>
     <kubernetes-assertions>3.0.11.fuse-710023-redhat-00001</kubernetes-assertions>
     <log4j-api.version>2.11.1</log4j-api.version>
     <log4j-core.version>${log4j-api.version}</log4j-core.version>

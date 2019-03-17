@@ -18,7 +18,7 @@ spec:
           - name: DEBTOR_PAYMENTS_TOPIC
             value: debtor-payments
           - name: MOCK_RTP_CREDIT_TRANSFER_TOPIC
-            value: mock-rtp-debtor-credit-transfer
+            value: test-topic
           - name: CONSUMER_MAX_POLL_RECORDS
             value: 500
           - name: CONSUMER_COUNT

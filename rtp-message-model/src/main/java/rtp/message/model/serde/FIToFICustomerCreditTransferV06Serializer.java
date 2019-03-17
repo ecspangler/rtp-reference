@@ -2,11 +2,12 @@ package rtp.message.model.serde;
 
 import java.util.Map;
 
+import iso.std.iso._20022.tech.xsd.pacs_008_001.FIToFICustomerCreditTransferV06;
 import org.apache.kafka.common.serialization.Serializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class FIToFICustomerCreditTransferV06Serializer implements Serializer {
+public class FIToFICustomerCreditTransferV06Serializer implements Serializer<FIToFICustomerCreditTransferV06> {
 
 	@Override
 	public void close() {
@@ -20,7 +21,7 @@ public class FIToFICustomerCreditTransferV06Serializer implements Serializer {
 	}
 
 	@Override
-	public byte[] serialize(String arg0, Object arg1) {
+	public byte[] serialize(String arg0, FIToFICustomerCreditTransferV06 arg1) {
 		byte[] retVal = null;
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {

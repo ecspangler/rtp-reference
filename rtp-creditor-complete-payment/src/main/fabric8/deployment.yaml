@@ -3,13 +3,13 @@ spec:
     spec:
       containers:
         -
-          resources:
-            requests:
-              cpu: "0.2"
-              memory: 256Mi
-            limits:
-              cpu: "1.0"
-              memory: 256Mi
+#          resources:
+#            requests:
+#              cpu: "0.2"
+#              memory: 256Mi
+#            limits:
+#              cpu: "1.0"
+#              memory: 256Mi
           env:
             - name: BOOTSTRAP_SERVERS
               value: "rtp-demo-cluster-kafka-bootstrap:9092"

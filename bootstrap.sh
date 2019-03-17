@@ -41,7 +41,7 @@ subjects:
 ' | oc apply -f -
 
 
-# --- AMQ Streams Cluter and Kafka Topics
+# --- AMQ Streams Cluster and Kafka Topics
 oc apply -f kafka/install/cluster-operator/deployment-srtimzi-cluster-operator.yaml -n rtp-reference
 oc apply -f kafka/install/cluster/kafka-ephemeral.yaml -n rtp-reference
 oc get pods -w -n rtp-reference &
@@ -55,21 +55,15 @@ until [ "$(oc get pods --selector strimzi.io/name=rtp-demo-cluster-entity-operat
 kill $cpid
 trap - EXIT
 
-oc apply -f kafka/install/topics/creditor-completed-payments.yaml -n rtp-reference
-oc apply -f kafka/install/topics/creditor-payment-confirmation.yaml -n rtp-reference
-oc apply -f kafka/install/topics/creditor-payments.yaml -n rtp-reference
-oc apply -f kafka/install/topics/debtor-completed-payments.yaml -n rtp-reference
-oc apply -f kafka/install/topics/debtor-payment-confirmation.yaml -n rtp-reference
-oc apply -f kafka/install/topics/debtor-payments.yaml -n rtp-reference
-oc apply -f kafka/install/topics/mock-rtp-creditor-acknowledgement.yaml -n rtp-reference
-oc apply -f kafka/install/topics/mock-rtp-creditor-confirmation.yaml -n rtp-reference
-oc apply -f kafka/install/topics/mock-rtp-creditor-credit-transfer.yaml -n rtp-reference
-oc apply -f kafka/install/topics/mock-rtp-debtor-confirmation.yaml -n rtp-reference
-oc apply -f kafka/install/topics/mock-rtp-debtor-credit-transfer.yaml -n rtp-reference
+shopt -s nullglob
+for topic in kafka/install/topics/*.y{a,}ml; do
+    oc apply -f $topic
+done
+shopt -u nullglob
 
-oc exec -it rtp-demo-cluster-kafka-0 -c kafka -- bin/kafka-topics.sh --zookeeper localhost:2181 --list
-oc exec -it rtp-demo-cluster-kafka-1 -c kafka -- bin/kafka-topics.sh --zookeeper localhost:2181 --list
-oc exec -it rtp-demo-cluster-kafka-2 -c kafka -- bin/kafka-topics.sh --zookeeper localhost:2181 --list
+#oc exec -it rtp-demo-cluster-kafka-0 -c kafka -- bin/kafka-topics.sh --zookeeper localhost:2181 --list
+#oc exec -it rtp-demo-cluster-kafka-1 -c kafka -- bin/kafka-topics.sh --zookeeper localhost:2181 --list
+#oc exec -it rtp-demo-cluster-kafka-2 -c kafka -- bin/kafka-topics.sh --zookeeper localhost:2181 --list
 
 
 # --- JBoss Datagrid Server and Caches
@@ -127,6 +121,24 @@ oc create -n openshift -f ${BASEURL}/fuse-apicurito.yml
 
 oc get template -n openshift
 
+# --- Create an instance of the Confluent Kafka REST Proxy for the Kafka Topics UI
+oc project rtp-reference
+oc new-app \
+    -e KAFKA_REST_BOOTSTRAP_SERVERS=rtp-demo-cluster-kafka-bootstrap:9092 \
+    -e KAFKA_REST_HOST_NAME=cp-kafka-rest \
+    -e KAFKA_REST_LISTENERS="http://0.0.0.0:8082" \
+    --name=cp-kafka-rest \
+    confluentinc/cp-kafka-rest
+oc expose svc/cp-kafka-rest
+
+# --- Create an instance of the Kafka Topics UI
+oc project rtp-reference
+oc new-app \
+    -e KAFKA_REST_PROXY_URL=http://cp-kafka-rest:8082 \
+    -e PROXY=true \
+    --name=kafka-ui \
+    landoop/kafka-topics-ui
+oc expose svc/kafka-ui
 
 # --- MySQL Installation
 oc project rtp-reference
@@ -137,7 +149,6 @@ oc new-app \
     --name=mysql-56-rhel7 \
     registry.access.redhat.com/rhscl/mysql-56-rhel7
 
-# IntelliJ may THINK that this isn't formatted correctly, but don't worry--it is.
 until [ "$(oc get pods --selector app=mysql-56-rhel7 -o jsonpath="{.items[0].status.containerStatuses[?(@.name == \"mysql-56-rhel7\")].ready}" 2> /dev/null)" = "true" ]; do sleep 3; printf "Waiting until container is ready...\n"; done
 
 oc port-forward $(oc get pods --selector app=mysql-56-rhel7 -o jsonpath="{.items[0].metadata.name}") 3306 &> /dev/null &
@@ -155,7 +166,6 @@ trap - EXIT
 
 # --- Deploy the RTP Reference Services
 mvn --non-recursive clean install
-
 for dependency in \
     rtp-message-model \
     rtp-debtor-domain-model \
@@ -174,6 +184,8 @@ do
     cd ..
 done
 
+
+
 for service in \
     rtp-creditor-auditing \
     rtp-creditor-complete-payment \
@@ -181,6 +193,7 @@ for service in \
     rtp-creditor-customer-notification \
     rtp-creditor-payment-acknowledgement \
     rtp-creditor-payment-confirmation \
+    rtp-creditor-payment-service \
     rtp-creditor-receive-payment \
     rtp-debtor-auditing \
     rtp-debtor-complete-payment \
@@ -190,12 +203,37 @@ for service in \
     rtp-debtor-payment-service \
     rtp-debtor-send-payment \
     rtp-flow-viz-service \
-    rtp-mock
+    rtp-mock \
+    rtp-transfer-test
 do
     printf "Deploying $service\n"
     cd $service
     mvn clean fabric8:deploy -Popenshift
     cd ..
 done
+
+# Absolutely slaughters OpenShift, USE AT YOUR OWN RISK
+#parallel '''
+#printf "Deploying {}\n"
+#cd {}
+#mvn clean fabric8:deploy -Popenshift
+#cd ..
+#''' ::: rtp-creditor-auditing \
+#    rtp-creditor-complete-payment \
+#    rtp-creditor-core-banking \
+#    rtp-creditor-customer-notification \
+#    rtp-creditor-payment-acknowledgement \
+#    rtp-creditor-payment-confirmation \
+#    rtp-creditor-receive-payment \
+#    rtp-debtor-auditing \
+#    rtp-debtor-complete-payment \
+#    rtp-debtor-core-banking \
+#    rtp-debtor-customer-notification \
+#    rtp-debtor-payment-confirmation \
+#    rtp-debtor-payment-service \
+#    rtp-debtor-send-payment \
+#    rtp-flow-viz-service \
+#    rtp-mock \
+#    rtp-transfer-test
 
 # --- Deploy the web apps

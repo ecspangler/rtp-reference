@@ -11,17 +11,17 @@
   </parent>
 
   <groupId>rtp.demo</groupId>
-  <artifactId>rtp-flow-viz-service</artifactId>
+  <artifactId>rtp-creditor-payment-service</artifactId>
   <version>1.0.0.0</version>
   <packaging>jar</packaging>
 
-  <name>Visualization Service</name>
-  <description>Visualization Service</description>
+  <name>Creditor Payment Service</name>
+  <description>Creditor Payment Service</description>
 
   <properties>
     <vertx.version>3.5.4.redhat-00002</vertx.version>
     <vertx-maven-plugin.version>1.0.18</vertx-maven-plugin.version>
-    <vertx.verticle>rtp.demo.visualization.service.VisualizationService</vertx.verticle>
+    <vertx.verticle>rtp.demo.creditor.payments.service.CreditorPaymentService</vertx.verticle>
     <fabric8.generator.from>registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift</fabric8.generator.from>
   </properties>
 
@@ -47,14 +47,19 @@
 
     <dependency>
       <groupId>rtp.demo</groupId>
-      <artifactId>rtp-creditor-domain-model</artifactId>
+      <artifactId>rtp-message-model</artifactId>
       <version>1.0.0.0</version>
     </dependency>
 
+    <dependency>
+      <groupId>rtp.demo</groupId>
+      <artifactId>rtp-debtor-account-repository-jdg</artifactId>
+      <version>1.0.0.0</version>
+    </dependency>
 
     <dependency>
       <groupId>rtp.demo</groupId>
-      <artifactId>rtp-message-model</artifactId>
+      <artifactId>rtp-debtor-transaction-repository-mysql</artifactId>
       <version>1.0.0.0</version>
     </dependency>
 
@@ -66,6 +71,11 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-web</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-web-client</artifactId>
       <version>${vertx.version}</version>
     </dependency>
 
