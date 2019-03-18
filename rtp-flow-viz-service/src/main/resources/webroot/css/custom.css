@@ -1,0 +1,23 @@
+body{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Open Sans', sans-serif !important;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    box-sizing: border-box;
+}
+
+.grid-container {
+  display: grid;
+  grid-gap: 50px 20px;
+
+}
+
+.service {
+  padding: 20px;
+}
+
+.fed {
+  grid-row: 1 / span 2;
+}

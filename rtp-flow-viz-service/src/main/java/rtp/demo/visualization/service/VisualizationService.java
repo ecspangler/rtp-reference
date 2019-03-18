@@ -143,14 +143,19 @@ public class VisualizationService extends AbstractVerticle {
 
 	private <T> Thread newConsumerThread(Collection<String> topics, String groupId, String valueDeserializer, BiConsumer<ConsumerRecord<String, T>, Logger> recordAction) {
 		return new Thread(() -> {
-			final Logger THREAD_LOGGER = Logger.getLogger(groupId);
+			String groupIdPrefix = System.getenv("GROUP_ID_PREFIX");
+			final String fullGroupId = (groupIdPrefix == null ? "" : groupIdPrefix) + groupId;
+
+			final Logger THREAD_LOGGER = Logger.getLogger(fullGroupId);
 
 			Properties props = new Properties();
 			props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, System.getenv("BOOTSTRAP_SERVERS"));
-			props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+			props.put(ConsumerConfig.GROUP_ID_CONFIG, fullGroupId);
 			props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 			props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, valueDeserializer);
 			KafkaConsumer<String, T> consumer = new KafkaConsumer<>(props);
+
+			THREAD_LOGGER.info("Created consumer (t=" + topics + "g=" + fullGroupId + ")");
 
 			synchronized (consumers) {
 				consumers.add(consumer);
