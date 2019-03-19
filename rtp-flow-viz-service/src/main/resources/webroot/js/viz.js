@@ -35,37 +35,31 @@ var edges = [
     {from: "rtp-debtor-complete-payment",          to: "rtp-debtor-core-banking"},
 ]
 
-let width = 200;
+let width = 150;
 let height = 100;
 let hSpacing = 100;
 let vSpacing = 50;
 let svgPadding = 5;
 let viz = d3.select("#viz")
+let diagram = viz.select("#diagram")
 
-let gNode = viz.append("g")
+let gNode = diagram.append("g")
     .attr("id", "nodes")
     .selectAll("g")
     .data(nodes)
     .enter().append('g')
     .attr("class", "nodeGroup")
-    // .attr("transform", function (node) {
-    //     let x = (node.shape.from.col - 1) * hSpacing + (node.shape.from.col - 1) * width + svgPadding;
-    //     let y = (node.shape.from.row - 1) * vSpacing + (node.shape.from.row - 1) * height + svgPadding;
-    //     return `translate(${x},${y})`
-    // })
 
 gNode.append("rect")
     .attr("height", node => (node.shape.to.row - node.shape.from.row + 1) * height + (node.shape.to.row - node.shape.from.row) * vSpacing)
     .attr("width", node => (node.shape.to.col - node.shape.from.col + 1) * width + (node.shape.to.col - node.shape.from.col) * hSpacing)
-    .style("fill", "lightblue")
-    .style("stroke", "blue")
-    .style("stroke-width", "5")
     .attr("rx", 20)
     .attr("ry", 20)
     .attr("x", node => (node.shape.from.col - 1) * hSpacing + (node.shape.from.col - 1) * width + svgPadding)
     .attr("y", node => (node.shape.from.row - 1) * vSpacing + (node.shape.from.row - 1) * height + svgPadding)
     .attr("data-shape", node => JSON.stringify(node.shape))
     .attr("id", node => node.id)
+    .attr("class", "service")
 
 gNode.append("text")
     .text(node => node.name)
@@ -74,7 +68,7 @@ gNode.append("text")
     .attr('font-size', 15)
     .call(fit, 10)
 
-let gEdges = viz.append("g")
+let gEdges = diagram.append("g")
     .attr("id", "edges")
     .selectAll("line")
     .data(edges)
@@ -85,7 +79,25 @@ gEdges.append("line")
     .attr("x2", edge => calculateEdgeCoordinates(edge).x2)
     .attr("y1", edge => calculateEdgeCoordinates(edge).y1)
     .attr("y2", edge => calculateEdgeCoordinates(edge).y2)
-    .attr("marker-end", "url(#arrow)")
+    .attr("marker-end", "url(#arrowHead)")
+
+d3.select("#dollarSign")
+    .attr("data-current-location", "rtp-debtor-payment-service")
+
+moveDollarSign("rtp-debtor-payment-service")
+
+
+function moveDollarSign(nodeId) {
+    let node = d3.select(`#${nodeId}`)
+
+    d3.select("#dollarSign")
+        .attr("transform", `translate(${Number(node.attr("x")) + Number(node.attr("width"))/2}, ${Number(node.attr("y")) + Number(node.attr("height"))/2})`)
+
+}
+
+
+// function
+
 
 function calculateEdgeCoordinates(edge) {
     let x1 = calculateXCoordinateOnRect(edge.from, edge.fromPart)
@@ -126,10 +138,6 @@ function calculateXCoordinateOnRect(id, part) {
     return x
 }
 
-function trimY(fromX, toX){
-
-}
-
 
 function calculateCoordinatesOnRect(id, part){
     let x, y
@@ -146,6 +154,7 @@ function calculateCoordinatesOnRect(id, part){
 }
 
 
+// Fit a text element into a sibling rect, wrapping the text so that it fits within the shape and additional padding.
 function fit(selection, padding) {
     selection.each(function (datum) {
         var text = d3.select(this),

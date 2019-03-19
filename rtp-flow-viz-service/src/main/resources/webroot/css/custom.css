@@ -14,5 +14,15 @@ text {
 
 line {
     stroke: rgb(255,0,0);
-    stroke-width: 3
+    stroke-width: 3;
+}
+
+.arrowHead {
+    fill: red;
+}
+
+.service {
+ fill: lightblue;
+ stroke: blue;
+ stroke-width: 5;
 }
