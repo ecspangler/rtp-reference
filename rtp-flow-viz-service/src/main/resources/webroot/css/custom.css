@@ -8,16 +8,11 @@ body{
     box-sizing: border-box;
 }
 
-.grid-container {
-  display: grid;
-  grid-gap: 50px 20px;
-
+text {
+    dominant-baseline: hanging;
 }
 
-.service {
-  padding: 20px;
-}
-
-.fed {
-  grid-row: 1 / span 2;
+line {
+    stroke: rgb(255,0,0);
+    stroke-width: 2
 }

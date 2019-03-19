@@ -12349,7 +12349,7 @@
             return new Dialog(app, {
               title: typeof title === 'undefined' ? defaultDialogTitle() : title,
               text: text,
-              content: '<div class="dialog-input-field item-input"><div class="item-input-wrap"><input type="text" class="dialog-input"></div></div>',
+              content: '<div class="dialog-input-field item-input"><div class="item-input-fit"><input type="text" class="dialog-input"></div></div>',
               buttons: [
                 {
                   text: app.params.dialog.buttonCancel,
@@ -12413,7 +12413,7 @@
             return new Dialog(app, {
               title: typeof title === 'undefined' ? defaultDialogTitle() : title,
               text: text,
-              content: ("\n              <div class=\"dialog-input-field dialog-input-double item-input\">\n                <div class=\"item-input-wrap\">\n                  <input type=\"text\" name=\"dialog-username\" placeholder=\"" + (app.params.dialog.usernamePlaceholder) + "\" class=\"dialog-input\">\n                </div>\n              </div>\n              <div class=\"dialog-input-field dialog-input-double item-input\">\n                <div class=\"item-input-wrap\">\n                  <input type=\"password\" name=\"dialog-password\" placeholder=\"" + (app.params.dialog.passwordPlaceholder) + "\" class=\"dialog-input\">\n                </div>\n              </div>"),
+              content: ("\n              <div class=\"dialog-input-field dialog-input-double item-input\">\n                <div class=\"item-input-fit\">\n                  <input type=\"text\" name=\"dialog-username\" placeholder=\"" + (app.params.dialog.usernamePlaceholder) + "\" class=\"dialog-input\">\n                </div>\n              </div>\n              <div class=\"dialog-input-field dialog-input-double item-input\">\n                <div class=\"item-input-fit\">\n                  <input type=\"password\" name=\"dialog-password\" placeholder=\"" + (app.params.dialog.passwordPlaceholder) + "\" class=\"dialog-input\">\n                </div>\n              </div>"),
               buttons: [
                 {
                   text: app.params.dialog.buttonCancel,
@@ -12448,7 +12448,7 @@
             return new Dialog(app, {
               title: typeof title === 'undefined' ? defaultDialogTitle() : title,
               text: text,
-              content: ("\n              <div class=\"dialog-input-field item-input\">\n                <div class=\"item-input-wrap\">\n                  <input type=\"password\" name=\"dialog-password\" placeholder=\"" + (app.params.dialog.passwordPlaceholder) + "\" class=\"dialog-input\">\n                </div>\n              </div>"),
+              content: ("\n              <div class=\"dialog-input-field item-input\">\n                <div class=\"item-input-fit\">\n                  <input type=\"password\" name=\"dialog-password\" placeholder=\"" + (app.params.dialog.passwordPlaceholder) + "\" class=\"dialog-input\">\n                </div>\n              </div>"),
               buttons: [
                 {
                   text: app.params.dialog.buttonCancel,
@@ -15855,7 +15855,7 @@
 
       var animated = false;
 
-      if ($tabsEl.parent().hasClass('tabs-animated-wrap')) {
+      if ($tabsEl.parent().hasClass('tabs-animated-fit')) {
         $tabsEl.parent()[animate ? 'removeClass' : 'addClass']('not-animated');
 
         var transitionDuration = parseFloat($tabsEl.css('transition-duration').replace(',', '.'));
@@ -16055,7 +16055,7 @@
         if (otherPanel.opened) { return; }
       }
       if (e.target && e.target.nodeName.toLowerCase() === 'input' && e.target.type === 'range') { return; }
-      if ($(e.target).closest('.range-slider, .tabs-swipeable-wrap, .calendar-months, .no-swipe-panel').length > 0) { return; }
+      if ($(e.target).closest('.range-slider, .tabs-swipeable-fit, .calendar-months, .no-swipe-panel').length > 0) { return; }
       touchesStart.x = e.type === 'touchstart' ? e.targetTouches[0].pageX : e.pageX;
       touchesStart.y = e.type === 'touchstart' ? e.targetTouches[0].pageY : e.pageY;
       if (params.swipeOnlyClose && !panel.opened) {
@@ -17831,7 +17831,7 @@
       $barEl.append($barActiveEl);
 
       // Create Knobs
-      var knobHTML = "\n      <div class=\"range-knob-wrap\">\n        <div class=\"range-knob\"></div>\n        " + (range.label ? '<div class="range-knob-label"></div>' : '') + "\n      </div>\n    ";
+      var knobHTML = "\n      <div class=\"range-knob-fit\">\n        <div class=\"range-knob\"></div>\n        " + (range.label ? '<div class="range-knob-label"></div>' : '') + "\n      </div>\n    ";
       var knobs = [$(knobHTML)];
       var labels = [];
 
@@ -18288,8 +18288,8 @@
       var $inputEl;
       if (stepper.params.inputEl) {
         $inputEl = $(stepper.params.inputEl);
-      } else if ($el.find('.stepper-input-wrap').find('input, textarea').length) {
-        $inputEl = $el.find('.stepper-input-wrap').find('input, textarea').eq(0);
+      } else if ($el.find('.stepper-input-fit').find('input, textarea').length) {
+        $inputEl = $el.find('.stepper-input-fit').find('input, textarea').eq(0);
       }
 
       if ($inputEl && $inputEl.length) {
@@ -19003,7 +19003,7 @@
     SmartSelect.prototype.renderSearchbar = function renderSearchbar () {
       var ss = this;
       if (ss.params.renderSearchbar) { return ss.params.renderSearchbar.call(ss); }
-      var searchbarHTML = "\n      <form class=\"searchbar\">\n        <div class=\"searchbar-inner\">\n          <div class=\"searchbar-input-wrap\">\n            <input type=\"search\" placeholder=\"" + (ss.params.searchbarPlaceholder) + "\"/>\n            <i class=\"searchbar-icon\"></i>\n            <span class=\"input-clear-button\"></span>\n          </div>\n          <span class=\"searchbar-disable-button\">" + (ss.params.searchbarDisableText) + "</span>\n        </div>\n      </form>\n    ";
+      var searchbarHTML = "\n      <form class=\"searchbar\">\n        <div class=\"searchbar-inner\">\n          <div class=\"searchbar-input-fit\">\n            <input type=\"search\" placeholder=\"" + (ss.params.searchbarPlaceholder) + "\"/>\n            <i class=\"searchbar-icon\"></i>\n            <span class=\"input-clear-button\"></span>\n          </div>\n          <span class=\"searchbar-disable-button\">" + (ss.params.searchbarDisableText) + "</span>\n        </div>\n      </form>\n    ";
       return searchbarHTML;
     };
 
@@ -31175,20 +31175,20 @@
       },
       tabMounted: function tabMounted(tabEl) {
         var app = this;
-        $(tabEl).find('.swiper-init, .tabs-swipeable-wrap').each(function (index, swiperEl) {
+        $(tabEl).find('.swiper-init, .tabs-swipeable-fit').each(function (index, swiperEl) {
           initSwiper.call(app, swiperEl);
         });
       },
       tabShow: function tabShow(tabEl) {
         var app = this;
-        $(tabEl).find('.swiper-init, .tabs-swipeable-wrap').each(function (index, swiperEl) {
+        $(tabEl).find('.swiper-init, .tabs-swipeable-fit').each(function (index, swiperEl) {
           var swiper = app.swiper.get(swiperEl);
           if (swiper && swiper.update) { swiper.update(); }
         });
       },
       tabBeforeRemove: function tabBeforeRemove(tabEl) {
         var app = this;
-        $(tabEl).find('.swiper-init, .tabs-swipeable-wrap').each(function (index, swiperEl) {
+        $(tabEl).find('.swiper-init, .tabs-swipeable-fit').each(function (index, swiperEl) {
           app.swiper.destroy(swiperEl);
         });
       },
@@ -32591,7 +32591,7 @@
     Autocomplete.prototype.renderSearchbar = function renderSearchbar () {
       var ac = this;
       if (ac.params.renderSearchbar) { return ac.params.renderSearchbar.call(ac); }
-      var searchbarHTML = ("\n      <form class=\"searchbar\">\n        <div class=\"searchbar-inner\">\n          <div class=\"searchbar-input-wrap\">\n            <input type=\"search\" placeholder=\"" + (ac.params.searchbarPlaceholder) + "\"/>\n            <i class=\"searchbar-icon\"></i>\n            <span class=\"input-clear-button\"></span>\n          </div>\n          <span class=\"searchbar-disable-button\">" + (ac.params.searchbarDisableText) + "</span>\n        </div>\n      </form>\n    ").trim();
+      var searchbarHTML = ("\n      <form class=\"searchbar\">\n        <div class=\"searchbar-inner\">\n          <div class=\"searchbar-input-fit\">\n            <input type=\"search\" placeholder=\"" + (ac.params.searchbarPlaceholder) + "\"/>\n            <i class=\"searchbar-icon\"></i>\n            <span class=\"input-clear-button\"></span>\n          </div>\n          <span class=\"searchbar-disable-button\">" + (ac.params.searchbarDisableText) + "</span>\n        </div>\n      </form>\n    ").trim();
       return searchbarHTML;
     };
 
