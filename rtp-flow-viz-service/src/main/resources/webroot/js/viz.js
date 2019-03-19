@@ -81,10 +81,28 @@ let gEdges = viz.append("g")
     .enter()
 
 gEdges.append("line")
-    .attr("x1", edge => calculateXCoordinateOnRect(edge.from, edge.fromPart))
-    .attr("x2", edge => calculateXCoordinateOnRect(edge.to, edge.toPart))
-    .attr("y1", edge => calculateYCoordnateOnRect(edge.from, edge.fromPart))
-    .attr("y2", edge => calculateYCoordnateOnRect(edge.to, edge.toPart))
+    .attr("x1", edge => calculateEdgeCoordinates(edge).x1)
+    .attr("x2", edge => calculateEdgeCoordinates(edge).x2)
+    .attr("y1", edge => calculateEdgeCoordinates(edge).y1)
+    .attr("y2", edge => calculateEdgeCoordinates(edge).y2)
+    .attr("marker-end", "url(#arrow)")
+
+function calculateEdgeCoordinates(edge) {
+    let x1 = calculateXCoordinateOnRect(edge.from, edge.fromPart)
+    let x2 = calculateXCoordinateOnRect(edge.to, edge.toPart)
+    let y1 = calculateYCoordnateOnRect(edge.from, edge.fromPart)
+    let y2 = calculateYCoordnateOnRect(edge.to, edge.toPart)
+
+    let xDirection = (x2 - x1) / Math.abs(x2 - x1) || 0
+    x1 += xDirection * width / 2 // If xDirection is negative (because the line is going backwards) x1 will be moved to the left by half of the width of the rect.
+    x2 -= xDirection * width / 2 // Conversely, if the xDirection is negative, x2 will be moved to the right by half of the width of the rect.
+
+    let yDirection = (y2 - y1) / Math.abs(y2 - y1) || 0
+    y1 += yDirection * height / 2
+    y2 -= yDirection * height / 2
+
+    return {x1, x2, y1, y2}
+}
 
 
 function calculateYCoordnateOnRect(id, part){
@@ -106,6 +124,10 @@ function calculateXCoordinateOnRect(id, part) {
     else
         x = Number(rect.attr("x")) + Number(rect.attr("width")) / 2
     return x
+}
+
+function trimY(fromX, toX){
+
 }
 
 
