@@ -10,7 +10,7 @@ var nodes = [
     {id: "rtp-debtor-send-payment",              shape: {from: {col: 2, row: 1}, to: {col: 2, row: 1}}, name: "ODFI Send Payment"},
     {id: "rtp-mock",                             shape: {from: {col: 3, row: 1}, to: {col: 3, row: 3}}, name: "Fed/TCH"},
     {id: "rtp-creditor-receive-payment",         shape: {from: {col: 4, row: 1}, to: {col: 4, row: 1}}, name: "RDFI Receive Payment"},
-    {id: "rtp-creditor-payment-confirmation",    shape: {from: {col: 4, row: 3}, to: {col: 4, row: 3}}, name: "RDFI Payment Confirmation`"},
+    {id: "rtp-creditor-payment-confirmation",    shape: {from: {col: 4, row: 3}, to: {col: 4, row: 3}}, name: "RDFI Payment Confirmation"},
     {id: "rtp-creditor-payment-acknowledgement", shape: {from: {col: 4, row: 2}, to: {col: 4, row: 2}}, name: "RDFI Payment Acknowledgement"},
     {id: "rtp-creditor-complete-payment",        shape: {from: {col: 5, row: 3}, to: {col: 5, row: 3}}, name: "RDFI Complete Payment"},
     {id: "rtp-debtor-payment-confirmation",      shape: {from: {col: 2, row: 3}, to: {col: 2, row: 3}}, name: "ODFI Payment Confirmation"},
@@ -84,19 +84,25 @@ gEdges.append("line")
 d3.select("#dollarSign")
     .attr("data-current-location", "rtp-debtor-payment-service")
 
-moveDollarSign("rtp-debtor-payment-service")
+// messageAt("SOMEMESSAGEID", "rtp-debtor-payment-service")
 
 
-function moveDollarSign(nodeId) {
+function messageAt(messageId, nodeId, nodePart) {
     let node = d3.select(`#${nodeId}`)
+    let messages = d3.select('#messages')
 
-    d3.select("#dollarSign")
-        .attr("transform", `translate(${Number(node.attr("x")) + Number(node.attr("width"))/2}, ${Number(node.attr("y")) + Number(node.attr("height"))/2})`)
+    let x = calculateXCoordinateOnRect(nodeId, nodePart) - 30
+    let y = calculateYCoordnateOnRect(nodeId, nodePart) - 13
 
+    messages.selectAll(`#${messageId}`)
+        .data([messageId])
+        .join("use")
+        .attr("xlink:href", "#dollarSignDef")
+        .attr("id", messageId)
+        .attr("data-current-location", nodeId)
+        .attr("data-current-location-part", JSON.stringify(nodePart))
+        .attr("transform", `translate(${x}, ${y})`)
 }
-
-
-// function
 
 
 function calculateEdgeCoordinates(edge) {
