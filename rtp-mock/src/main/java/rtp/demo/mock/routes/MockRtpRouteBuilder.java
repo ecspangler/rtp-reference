@@ -2,6 +2,9 @@ package rtp.demo.mock.routes;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.kafka.KafkaComponent;
+import org.apache.camel.component.kafka.KafkaConstants;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -36,18 +39,28 @@ public class MockRtpRouteBuilder extends RouteBuilder {
 				+ "&groupId=" + consumerGroup
 				+ "&valueDeserializer=rtp.message.model.serde.FIToFICustomerCreditTransferV06Deserializer")
 						.log("\\n/// Mock RTP - Sending Credit Transfer Message >>> ${body}")
+						.process(exchange -> {
+							Object key = exchange.getIn().getHeader(KafkaConstants.KEY);
+							LOG.info("Key: " + key + " value: " + new String((byte[]) key));
+
+							LOG.info("From Topic: " + new String((byte[]) exchange.getIn().getHeader(KafkaConstants.TOPIC)));
+							exchange.getIn().setHeader(KafkaConstants.TOPIC, kafkaCreditTransferCreditorTopic);
+							exchange.getIn().setHeader(KafkaConstants.KEY, new String((byte[]) exchange.getIn().getHeader(KafkaConstants.KEY)));
+
+							LOG.info("To Topic: " + kafkaCreditTransferCreditorTopic);
+						})
 						.to("kafka:" + kafkaCreditTransferCreditorTopic
 								+ "?serializerClass=rtp.message.model.serde.FIToFICustomerCreditTransferV06Serializer");
 
-		from("kafka:" + kafkaCreditorAcknowledgementTopic + "?brokers=" + kafkaBootstrap + "&maxPollRecords="
-				+ consumerMaxPollRecords + "&consumersCount=" + consumerCount + "&seekTo=" + consumerSeekTo
-				+ "&groupId=" + consumerGroup
-				+ "&valueDeserializer=rtp.message.model.serde.FIToFIPaymentStatusReportV07Deserializer")
-						.routeId("FromKafka").log("\n/// Mock RTP - Receiving Acknowledgements >>> ${body}")
-						.to("kafka:" + kafkaDebtorConfirmationTopic
-								+ "?serializerClass=rtp.message.model.serde.FIToFIPaymentStatusReportV07Serializer")
-						.to("kafka:" + kafkaCreditorConfirmationTopic
-								+ "?serializerClass=rtp.message.model.serde.FIToFIPaymentStatusReportV07Serializer");
+//		from("kafka:" + kafkaCreditorAcknowledgementTopic + "?brokers=" + kafkaBootstrap + "&maxPollRecords="
+//				+ consumerMaxPollRecords + "&consumersCount=" + consumerCount + "&seekTo=" + consumerSeekTo
+//				+ "&groupId=" + consumerGroup
+//				+ "&valueDeserializer=rtp.message.model.serde.FIToFIPaymentStatusReportV07Deserializer")
+//						.routeId("FromKafka").log("\n/// Mock RTP - Receiving Acknowledgements >>> ${body}")
+//						.to("kafka:" + kafkaDebtorConfirmationTopic
+//								+ "?serializerClass=rtp.message.model.serde.FIToFIPaymentStatusReportV07Serializer")
+//						.to("kafka:" + kafkaCreditorConfirmationTopic
+//								+ "?serializerClass=rtp.message.model.serde.FIToFIPaymentStatusReportV07Serializer");
 
 	}
 
