@@ -39,7 +39,6 @@
     <module>rtp-message-model</module>
     <module>rtp-mock</module>
     <module>rtp-flow-viz-service</module>
-    <module>rtp-transfer-test</module>
   </modules>
 
   <properties>

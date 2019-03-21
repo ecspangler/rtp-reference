@@ -204,7 +204,6 @@ for service in \
     rtp-debtor-send-payment \
     rtp-flow-viz-service \
     rtp-mock
-#    rtp-transfer-test
 do
     printf "Deploying $service\n"
     cd $service
