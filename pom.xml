@@ -54,7 +54,7 @@
     <activation.version>1.1</activation.version>
     <arquillian-cube-openshift.version>1.9.0</arquillian-cube-openshift.version>
     <arquillian-junit-container.version>1.1.12.Final</arquillian-junit-container.version>
-    <camel.version>2.23.0</camel.version>
+    <camel.version>2.21.0.fuse-710018-redhat-00001</camel.version>
     <fabric8-maven-plugin.version>3.5.41</fabric8-maven-plugin.version>
     <fuse.version>7.1.0.fuse-710019-redhat-00002</fuse.version>
     <hibernate-core.version>5.3.7.Final-redhat-00001</hibernate-core.version>
@@ -76,86 +76,84 @@
 
   <repositories>
     <repository>
-      <id>central</id>
-      <url>https://repo.maven.apache.org/maven2/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
+      <id>maven.central</id>
+      <name>Maven Central</name>
+      <url>https://repo1.maven.org/maven2</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
     </repository>
+
     <repository>
-      <id>fusesource</id>
-      <url>http://repo.fusesource.com/nexus/content/groups/public/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
+      <id>redhat.ga</id>
+      <name>Red Hat General Availability Repository</name>
+      <url>https://maven.repository.redhat.com/ga</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
     </repository>
+
     <repository>
-      <id>jboss-ga-repository</id>
-      <url>http://maven.repository.redhat.com/ga</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
+      <id>redhat.ea</id>
+      <name>Red Hat Early Access Repository</name>
+      <url>https://maven.repository.redhat.com/earlyaccess/all</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
-    </repository>
-    <repository>
-      <id>jboss-public-repository</id>
-      <url>http://repository.jboss.org/nexus/content/repositories/public/</url>
       <releases>
         <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
       </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
     </repository>
   </repositories>
+
   <pluginRepositories>
     <pluginRepository>
-      <id>central</id>
-      <url>https://repo.maven.apache.org/maven2/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
+      <id>maven.central</id>
+      <name>Maven Central</name>
+      <url>https://repo1.maven.org/maven2</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
     </pluginRepository>
+
     <pluginRepository>
-      <id>fusesource-plugin</id>
-      <url>http://repo.fusesource.com/nexus/content/groups/public/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
+      <id>redhat.ga</id>
+      <name>Red Hat General Availability Repository</name>
+      <url>https://maven.repository.redhat.com/ga</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
     </pluginRepository>
+
     <pluginRepository>
-      <id>jboss-ga-plugin-repository</id>
-      <url>http://maven.repository.redhat.com/ga</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
+      <id>redhat.ea</id>
+      <name>Red Hat Early Access Repository</name>
+      <url>https://maven.repository.redhat.com/earlyaccess/all</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
-    </pluginRepository>
-    <pluginRepository>
-      <id>jboss-public-plugin-repository</id>
-      <url>http://repository.jboss.org/nexus/content/repositories/public/</url>
       <releases>
         <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
       </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
     </pluginRepository>
   </pluginRepositories>
+
 </project>

@@ -1,4 +1,4 @@
-package rtp.demo.payments.beans;
+package rtp.demo.debtor.payments.beans;
 
 import rtp.demo.debtor.domain.account.Account;
 import rtp.demo.debtor.domain.model.payment.Payment;

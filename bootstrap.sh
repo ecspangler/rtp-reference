@@ -203,37 +203,11 @@ for service in \
     rtp-debtor-payment-service \
     rtp-debtor-send-payment \
     rtp-flow-viz-service \
-    rtp-mock \
-    rtp-transfer-test
+    rtp-mock
+#    rtp-transfer-test
 do
     printf "Deploying $service\n"
     cd $service
-    mvn clean fabric8:deploy -Popenshift
+    mvn clean fabric8:deploy
     cd ..
 done
-
-# Absolutely slaughters OpenShift, USE AT YOUR OWN RISK
-#parallel '''
-#printf "Deploying {}\n"
-#cd {}
-#mvn clean fabric8:deploy -Popenshift
-#cd ..
-#''' ::: rtp-creditor-auditing \
-#    rtp-creditor-complete-payment \
-#    rtp-creditor-core-banking \
-#    rtp-creditor-customer-notification \
-#    rtp-creditor-payment-acknowledgement \
-#    rtp-creditor-payment-confirmation \
-#    rtp-creditor-receive-payment \
-#    rtp-debtor-auditing \
-#    rtp-debtor-complete-payment \
-#    rtp-debtor-core-banking \
-#    rtp-debtor-customer-notification \
-#    rtp-debtor-payment-confirmation \
-#    rtp-debtor-payment-service \
-#    rtp-debtor-send-payment \
-#    rtp-flow-viz-service \
-#    rtp-mock \
-#    rtp-transfer-test
-
-# --- Deploy the web apps

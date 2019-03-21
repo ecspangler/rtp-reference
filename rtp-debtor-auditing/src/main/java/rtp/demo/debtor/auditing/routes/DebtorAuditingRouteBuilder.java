@@ -5,6 +5,7 @@ import org.apache.camel.component.kafka.KafkaComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import rtp.demo.debtor.domain.model.payment.serde.PaymentDeserializer;
 
 @Component
 public class DebtorAuditingRouteBuilder extends RouteBuilder {
@@ -29,7 +30,7 @@ public class DebtorAuditingRouteBuilder extends RouteBuilder {
 		from("kafka:" + kafkaDebtorCompletedPaymentsTopic + "?brokers=" + kafkaBootstrap + "&maxPollRecords="
 				+ consumerMaxPollRecords + "&consumersCount=" + consumerCount + "&seekTo=" + consumerSeekTo
 				+ "&groupId=" + consumerGroup
-				+ "&valueDeserializer=rtp.demo.debtor.domain.model.payment.serde.PaymentDeserializer").routeId("FromKafka")
+				+ "&valueDeserializer=" + PaymentDeserializer.class.getName()).routeId("FromKafka")
 						.log("\n/// Debtor Auditing stub service received payment >>> ${body}");
 	}
 

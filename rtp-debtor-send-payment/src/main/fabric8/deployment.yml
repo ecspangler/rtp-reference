@@ -27,9 +27,5 @@ spec:
             value: end
           - name: CONSUMER_GROUP
             value: rtp-debtor-send-payment
-          - name: DESERIALIZER_CLASS
-            value: rtp.demo.debtor.domain.model.payment.serde.PaymentDeserializer
-          - name: SERIALIZER_CLASS
-            value: rtp.message.model.serde.FIToFICustomerCreditTransferV06Serializer
           - name: ACKS
             value: 1

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 import rtp.demo.creditor.confirmation.beans.MessageStatusReportTransformer;
 import rtp.demo.creditor.domain.rtp.simplified.MessageStatusReport;
+import rtp.demo.creditor.domain.rtp.simplified.serde.MessageStatusReportSerializer;
+import rtp.message.model.serde.FIToFIPaymentStatusReportV07Deserializer;
 
 @Component
 public class CreditorConfirmationRouteBuilder extends RouteBuilder {
@@ -36,18 +38,14 @@ public class CreditorConfirmationRouteBuilder extends RouteBuilder {
 		from("kafka:" + kafkaMockRtpConfirmationTopic + "?brokers=" + kafkaBootstrap + "&maxPollRecords="
 				+ consumerMaxPollRecords + "&consumersCount=" + consumerCount + "&seekTo=" + consumerSeekTo
 				+ "&groupId=" + consumerGroup
-				+ "&valueDeserializer=rtp.message.model.serde.FIToFIPaymentStatusReportV07Deserializer")
+				+ "&valueDeserializer=" + FIToFIPaymentStatusReportV07Deserializer.class.getName())
 						.routeId("FromKafka").log("\n/// Creditor Confirmation Route >>> ${body}")
 						.bean(MessageStatusReportTransformer.class, "toMessageStatusReport")
 						.log("Sending payment message confirmation >>> ${body} >> key ${body.getOriginalMessageId}")
-						.process(new Processor() {
-							@Override
-							public void process(Exchange exchange) throws Exception {
-								exchange.getIn().setHeader(KafkaConstants.KEY,
-										((MessageStatusReport) exchange.getIn().getBody()).getOriginalMessageId());
-							}
-						}).to("kafka:" + kafkaCreditorConfirmationTopic
-								+ "?serializerClass=rtp.demo.creditor.domain.rtp.simplified.serde.MessageStatusReportSerializer");
+						.process(exchange -> exchange.getIn().setHeader(KafkaConstants.KEY,
+								((MessageStatusReport) exchange.getIn().getBody()).getOriginalMessageId()))
+						.to("kafka:" + kafkaCreditorConfirmationTopic
+								+ "?serializerClass=" + MessageStatusReportSerializer.class.getName());
 
 	}
 

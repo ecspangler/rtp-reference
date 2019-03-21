@@ -7,6 +7,7 @@ import org.apache.camel.component.kafka.KafkaComponent;
 import org.apache.camel.component.kafka.KafkaConstants;
 
 import org.apache.kafka.common.serialization.StringSerializer;
+import rtp.demo.creditor.domain.payments.serde.PaymentSerializer;
 import rtp.demo.creditor.repository.account.AccountRepository;
 import rtp.demo.creditor.repository.account.JdgAccountRepository;
 
@@ -18,6 +19,7 @@ import rtp.demo.creditor.intake.beans.PaymentTransformer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import rtp.message.model.serde.FIToFICustomerCreditTransferV06Deserializer;
 
 public class CreditorIntakeRouteBuilder extends RouteBuilder {
 
@@ -54,23 +56,20 @@ public class CreditorIntakeRouteBuilder extends RouteBuilder {
         from("kafka:" + kafkaCreditTransferCreditorTopic + "?brokers=" + kafkaBootstrap + "&maxPollRecords="
                 + consumerMaxPollRecords + "&consumersCount=" + consumerCount + "&seekTo=" + consumerSeekTo
                 + "&groupId=" + consumerGroup
-                + "&valueDeserializer=rtp.message.model.serde.FIToFICustomerCreditTransferV06Deserializer"
+                + "&valueDeserializer=" + FIToFICustomerCreditTransferV06Deserializer.class.getName()
         )
                 .routeId("FromKafka").log("\n/// Creditor Intake Route >>> ${body}")
-                .process(exchange -> {
-                    LOG.info(exchange.getIn().getHeader(KafkaConstants.KEY).toString());
-                })
-                .to("kafka:test-topic-2?serializerClass=rtp.message.model.serde.FIToFICustomerCreditTransferV06Serializer");
-//                .bean(CreditTransferMessageTransformer.class, "toCreditTransferMessage").log(" >>> ${body}")
-//                .log(" Retrieved message >>> ${body}")
-//                .bean(CreditTransferMessageValidationBean.class, "validateCreditTransferMessage")
-//                .log(" Validated payment >>> ${body}").bean(PaymentTransformer.class, "toPayment")
-//                .log(" Transformed payment >>> ${body}  >> key ${body.getCreditTransferMessageId}")
-//                .process(exchange -> exchange.getIn().setHeader(KafkaConstants.KEY, ((Payment) exchange.getIn().getBody()).getCreditTransferMessageId()))
-//                .log(" ++++++ Fake sending to topic:" + kafkaCreditorPaymentsTopic)
-//                .to("kafka:test-topic-2?serializerClass=rtp.demo.creditor.domain.payments.serde.PaymentSerializer");
-////						.log(" Sending payment >>> ${body}").to("kafka:" + kafkaCreditorPaymentsTopic
-////								+ "?serializerClass=rtp.demo.creditor.domain.payments.serde.PaymentSerializer");
+                .process(exchange -> LOG.info(exchange.getIn().getHeader(KafkaConstants.KEY).toString()))
+                .bean(CreditTransferMessageTransformer.class, "toCreditTransferMessage").log(" >>> ${body}")
+                .log(" Retrieved message >>> ${body}")
+                .bean(CreditTransferMessageValidationBean.class, "validateCreditTransferMessage")
+                .log(" Validated payment >>> ${body}")
+                .bean(PaymentTransformer.class, "toPayment")
+                .log(" Transformed payment >>> ${body}  >> key ${body.getCreditTransferMessageId}")
+                .process(exchange -> exchange.getIn().setHeader(KafkaConstants.KEY, ((Payment) exchange.getIn().getBody()).getCreditTransferMessageId()))
+                .log(" Sending payment >>> ${body}")
+                .to("kafka:" + kafkaCreditorPaymentsTopic
+                        + "?serializerClass=" + PaymentSerializer.class.getName());
     }
 
 }
