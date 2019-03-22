@@ -137,7 +137,8 @@ public class VisualizationService extends AbstractVerticle {
 	private void getEvents(RoutingContext routingContext) {
 		if (routingContext.queryParam("poll") != null && routingContext.queryParam("poll").size() == 1 && "long".equals(routingContext.queryParam("poll").get(0))) {
 			try {
-				Event event = events.poll(30L, TimeUnit.SECONDS);
+				LOGGER.info("Waiting for events...");
+				Event event = events.poll(25L, TimeUnit.SECONDS);
 				if (event != null) // If its not null, then we didn't time out, and we need to add it back to be handled below.
 					events.addFirst(event);
 			} catch (InterruptedException ignored) {} // We just continue on and try to return something.

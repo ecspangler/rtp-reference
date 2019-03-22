@@ -1,38 +1,39 @@
-Object.prototype.apply2 = function() {
-    if (typeof this == "function") {
-        return this.apply(this, arguments)
-    }
-    else return this.valueOf()
-}
-
 var nodes = [
-    {id: "rtp-debtor-payment-service",           shape: {from: {col: 1, row: 1}, to: {col: 1, row: 1}}, name: "ODFI Payment Service"},
-    {id: "rtp-debtor-send-payment",              shape: {from: {col: 2, row: 1}, to: {col: 2, row: 1}}, name: "ODFI Send Payment"},
-    {id: "rtp-mock",                             shape: {from: {col: 3, row: 1}, to: {col: 3, row: 3}}, name: "Fed/TCH"},
-    {id: "rtp-creditor-receive-payment",         shape: {from: {col: 4, row: 1}, to: {col: 4, row: 1}}, name: "RDFI Receive Payment"},
-    {id: "rtp-creditor-payment-confirmation",    shape: {from: {col: 4, row: 3}, to: {col: 4, row: 3}}, name: "RDFI Payment Confirmation"},
-    {id: "rtp-creditor-payment-acknowledgement", shape: {from: {col: 4, row: 2}, to: {col: 4, row: 2}}, name: "RDFI Payment Acknowledgement"},
-    {id: "rtp-creditor-complete-payment",        shape: {from: {col: 5, row: 3}, to: {col: 5, row: 3}}, name: "RDFI Complete Payment"},
-    {id: "rtp-debtor-payment-confirmation",      shape: {from: {col: 2, row: 3}, to: {col: 2, row: 3}}, name: "ODFI Payment Confirmation"},
-    {id: "rtp-debtor-complete-payment",          shape: {from: {col: 1, row: 3}, to: {col: 1, row: 3}}, name: "ODFI Complete Payment"},
-    {id: "rtp-creditor-core-banking",            shape: {from: {col: 5, row: 4}, to: {col: 5, row: 4}}, name: "RDFI Core Banking/Ledger"},
-    {id: "rtp-debtor-core-banking",              shape: {from: {col: 1, row: 4}, to: {col: 1, row: 4}}, name: "ODFI Core Banking/Ledger"}
+    {id: "rtp-debtor-payment-service",           shape: {from: {col: 2, row: 1}, to: {col: 2, row: 1}}, name: "ODFI Payment Service"},
+    {id: "rtp-debtor-send-payment",              shape: {from: {col: 3, row: 1}, to: {col: 3, row: 1}}, name: "ODFI Send Payment"},
+    {id: "rtp-mock",                             shape: {from: {col: 4, row: 1}, to: {col: 4, row: 3}}, name: "Fed/TCH"},
+    {id: "rtp-creditor-receive-payment",         shape: {from: {col: 5, row: 1}, to: {col: 5, row: 1}}, name: "RDFI Receive Payment"},
+    {id: "rtp-creditor-payment-confirmation",    shape: {from: {col: 5, row: 3}, to: {col: 5, row: 3}}, name: "RDFI Payment Confirmation"},
+    {id: "rtp-creditor-payment-acknowledgement", shape: {from: {col: 5, row: 2}, to: {col: 5, row: 2}}, name: "RDFI Payment Acknowledgement"},
+    {id: "rtp-creditor-complete-payment",        shape: {from: {col: 6, row: 3}, to: {col: 6, row: 3}}, name: "RDFI Complete Payment"},
+    {id: "rtp-creditor-auditing",                shape: {from: {col: 7, row: 3}, to: {col: 7, row: 3}}, name: "RDFI Auditing"},
+    {id: "rtp-creditor-customer-notification",   shape: {from: {col: 7, row: 4}, to: {col: 7, row: 4}}, name: "RDFI Customer Notification"},
+    {id: "rtp-debtor-payment-confirmation",      shape: {from: {col: 3, row: 3}, to: {col: 3, row: 3}}, name: "ODFI Payment Confirmation"},
+    {id: "rtp-debtor-complete-payment",          shape: {from: {col: 2, row: 3}, to: {col: 2, row: 3}}, name: "ODFI Complete Payment"},
+    {id: "rtp-creditor-core-banking",            shape: {from: {col: 7, row: 2}, to: {col: 7, row: 2}}, name: "RDFI Core Banking/Ledger"},
+    {id: "rtp-debtor-core-banking",              shape: {from: {col: 1, row: 2}, to: {col: 1, row: 2}}, name: "ODFI Core Banking/Ledger"},
+    {id: "rtp-debtor-auditing",                  shape: {from: {col: 1, row: 3}, to: {col: 1, row: 3}}, name: "ODFI Auditing"},
+    {id: "rtp-debtor-customer-notification",     shape: {from: {col: 1, row: 4}, to: {col: 1, row: 4}}, name: "ODFI Customer Notification"}
 ]
 
 var edges = [
-    {from: "rtp-debtor-payment-service",           to: "rtp-debtor-send-payment"},
-    {from: "rtp-debtor-payment-service",           to: "rtp-debtor-complete-payment"},
-    {from: "rtp-debtor-send-payment",              to: "rtp-mock", toPart: {col: 1, row: 1}},
-    {from: "rtp-mock", fromPart: {col: 1, row: 1}, to: "rtp-creditor-receive-payment"},
-    {from: "rtp-mock", fromPart: {col: 1, row: 3}, to: "rtp-creditor-payment-confirmation"},
-    {from: "rtp-mock", fromPart: {col: 1, row: 3}, to: "rtp-debtor-payment-confirmation"},
-    {from: "rtp-creditor-receive-payment",         to: "rtp-creditor-payment-acknowledgement"},
-    {from: "rtp-creditor-receive-payment",         to: "rtp-creditor-complete-payment"},
-    {from: "rtp-creditor-payment-confirmation",    to: "rtp-creditor-complete-payment"},
-    {from: "rtp-creditor-payment-acknowledgement", to: "rtp-mock", toPart: {col: 1, row: 2}},
-    {from: "rtp-creditor-complete-payment",        to: "rtp-creditor-core-banking"},
-    {from: "rtp-debtor-payment-confirmation",      to: "rtp-debtor-complete-payment"},
-    {from: "rtp-debtor-complete-payment",          to: "rtp-debtor-core-banking"},
+    {from: "rtp-debtor-payment-service",           to: "rtp-debtor-send-payment",               topic: "debtor-payments"},
+    {from: "rtp-debtor-payment-service",           to: "rtp-debtor-complete-payment",           topic: "debtor-payments"},
+    {from: "rtp-debtor-send-payment",              to: "rtp-mock", toPart: {col: 1, row: 1},    topic: "mock-rtp-debtor-credit-transfer"},
+    {from: "rtp-mock", fromPart: {col: 1, row: 1}, to: "rtp-creditor-receive-payment",          topic: "mock-rtp-creditor-credit-transfer"},
+    {from: "rtp-mock", fromPart: {col: 1, row: 3}, to: "rtp-creditor-payment-confirmation",     topic: "mock-rtp-creditor-confirmation"},
+    {from: "rtp-mock", fromPart: {col: 1, row: 3}, to: "rtp-debtor-payment-confirmation",       topic: "mock-rtp-debtor-confirmation"},
+    {from: "rtp-creditor-receive-payment",         to: "rtp-creditor-payment-acknowledgement",  topic: "creditor-payments"},
+    {from: "rtp-creditor-receive-payment",         to: "rtp-creditor-complete-payment",         topic: "creditor-payments"},
+    {from: "rtp-creditor-payment-confirmation",    to: "rtp-creditor-complete-payment",         topic: "creditor-payment-confirmation"},
+    {from: "rtp-creditor-payment-acknowledgement", to: "rtp-mock", toPart: {col: 1, row: 2},    topic: "mock-rtp-creditor-acknowledgement"},
+    {from: "rtp-creditor-complete-payment",        to: "rtp-creditor-core-banking",             topic: "creditor-completed-payments"},
+    {from: "rtp-creditor-complete-payment",        to: "rtp-creditor-auditing",                 topic: "creditor-completed-payments"},
+    {from: "rtp-creditor-complete-payment",        to: "rtp-creditor-customer-notification",    topic: "creditor-completed-payments"},
+    {from: "rtp-debtor-payment-confirmation",      to: "rtp-debtor-complete-payment",           topic: "debtor-payment-confirmation"},
+    {from: "rtp-debtor-complete-payment",          to: "rtp-debtor-core-banking",               topic: "debtor-completed-payments"},
+    {from: "rtp-debtor-complete-payment",          to: "rtp-debtor-auditing",                   topic: "debtor-completed-payments"},
+    {from: "rtp-debtor-complete-payment",          to: "rtp-debtor-customer-notification",      topic: "debtor-completed-payments"},
 ]
 
 let width = 150;
@@ -80,21 +81,16 @@ gEdges.append("line")
     .attr("y1", edge => calculateEdgeCoordinates(edge).y1)
     .attr("y2", edge => calculateEdgeCoordinates(edge).y2)
     .attr("marker-end", "url(#arrowHead)")
-
-d3.select("#dollarSign")
-    .attr("data-current-location", "rtp-debtor-payment-service")
-
-// messageAt("SOMEMESSAGEID", "rtp-debtor-payment-service")
+    .attr("data-topic", edge => edge.topic)
 
 
 function messageAt(messageId, nodeId, nodePart) {
-    let node = d3.select(`#${nodeId}`)
     let messages = d3.select('#messages')
 
     let x = calculateXCoordinateOnRect(nodeId, nodePart) - 30
-    let y = calculateYCoordnateOnRect(nodeId, nodePart) - 13
+    let y = calculateYCoordinateOnRect(nodeId, nodePart) - 13
 
-    messages.selectAll(`#${messageId}`)
+    return messages.selectAll(`#${messageId}`)
         .data([messageId])
         .join("use")
         .attr("xlink:href", "#dollarSignDef")
@@ -104,12 +100,26 @@ function messageAt(messageId, nodeId, nodePart) {
         .attr("transform", `translate(${x}, ${y})`)
 }
 
+function moveMessage(messageId, edge) {
+    let fromNode = messageAt(messageId, edge.from, edge.fromPart)
+    fromNode.transition()
+        .duration(500)
+        .attrTween("transform", function(datum) {
+            // TODO: find out how to filter the elements in `this.transform.baseVal` to get just the `translate` transformations
+            let startX = this.transform.baseVal.getItem(0).matrix.e
+            let startY = this.transform.baseVal.getItem(0).matrix.f
+            let endX = calculateXCoordinateOnRect(edge.to, edge.toPart) - 30
+            let endY = calculateYCoordinateOnRect(edge.to, edge.toPart) - 13
+            return t => `translate(${(1-t)*startX + t*endX}, ${(1-t)*startY + t*endY})`
+        })
+}
+
 
 function calculateEdgeCoordinates(edge) {
     let x1 = calculateXCoordinateOnRect(edge.from, edge.fromPart)
     let x2 = calculateXCoordinateOnRect(edge.to, edge.toPart)
-    let y1 = calculateYCoordnateOnRect(edge.from, edge.fromPart)
-    let y2 = calculateYCoordnateOnRect(edge.to, edge.toPart)
+    let y1 = calculateYCoordinateOnRect(edge.from, edge.fromPart)
+    let y2 = calculateYCoordinateOnRect(edge.to, edge.toPart)
 
     let xDirection = (x2 - x1) / Math.abs(x2 - x1) || 0
     x1 += xDirection * width / 2 // If xDirection is negative (because the line is going backwards) x1 will be moved to the left by half of the width of the rect.
@@ -123,7 +133,7 @@ function calculateEdgeCoordinates(edge) {
 }
 
 
-function calculateYCoordnateOnRect(id, part){
+function calculateYCoordinateOnRect(id, part){
     let y
     let rect = d3.select(`#${id}`)
     if (part)
@@ -198,3 +208,24 @@ function fit(selection, padding) {
         }
     });
 }
+
+let root = "http://rtp-flow-viz-service-rtp-reference.192.168.42.144.nip.io";
+let loop = () => {
+    // TODO: Re-enable this when I can figure out how to get long polling working in Vertx
+    // fetch(root + "/events?poll=long")
+    fetch(root + "/events")
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(event => {
+                let eventEdges = edges.filter(edge => edge.topic === event.location)
+                if (eventEdges.length > 1) {
+                    let eventEdge = eventEdges[0]
+                    // messageAt(event.messageId, eventEdge.to)
+                    moveMessage(event.messageId, eventEdge)
+                }
+            })
+        })
+        .finally(() => setTimeout(loop,2000))
+}
+setTimeout(loop, 1)
+

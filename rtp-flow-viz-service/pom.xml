@@ -22,7 +22,6 @@
     <vertx.version>3.5.4.redhat-00002</vertx.version>
     <vertx-maven-plugin.version>1.0.18</vertx-maven-plugin.version>
     <vertx.verticle>rtp.demo.visualization.service.VisualizationService</vertx.verticle>
-    <vertx.options.blockedThreadCheckInterval>12345</vertx.options.blockedThreadCheckInterval>
     <fabric8.generator.from>registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift</fabric8.generator.from>
   </properties>
 
