@@ -183,15 +183,12 @@ function fit(selection, padding) {
             lineHeight = 1.1, // ems
             x = (Number(text.attr("x")) || 0) + padding,
             y = (Number(text.attr("y")) || 0) + padding,
-            // dx = text.attr("dx"),
-            // dy = text.attr("dy"),
             dy = 0,
             tspan = text.text(null)
                 .append("tspan")
                 .attr("x", x)
                 .attr("y", y)
                 .attr("dy", dy + "em")
-                // .attr("dx", dx + "em");
         while (word = words.pop()) {
             line.push(word);
             tspan.text(line.join(" "));
@@ -203,13 +200,13 @@ function fit(selection, padding) {
                     .attr("x", x)
                     .attr("y", y)
                     .attr("dy", ++lineNumber * lineHeight + dy + "em")
-                    // .attr("dx", dx + "em")
                     .text(word);
             }
         }
     });
 }
 
+// Enable this when running locally and hitting a remote REST endpoint.
 // let root = "http://rtp-flow-viz-service-rtp-reference.192.168.42.144.nip.io";
 let root = "";
 let loop = () => {

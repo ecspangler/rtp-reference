@@ -34,6 +34,8 @@ public class MySqlDebitPaymentRepository implements DebitPaymentRepository {
 	@Override
 	public List<DebitPayment> getAllPayments() {
 		log.info("Retrieving all payments");
+
+//		Tried disabling commits for reads to fix the DB issue.
 //		Transaction transaction = session.beginTransaction();
 
 		Criteria cr = session.createCriteria(DebitPayment.class);
