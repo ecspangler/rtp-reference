@@ -65,20 +65,6 @@ shopt -u nullglob
 #oc exec -it rtp-demo-cluster-kafka-1 -c kafka -- bin/kafka-topics.sh --zookeeper localhost:2181 --list
 #oc exec -it rtp-demo-cluster-kafka-2 -c kafka -- bin/kafka-topics.sh --zookeeper localhost:2181 --list
 
-
-# --- JBoss Datagrid Server and Caches
-oc import-image -n openshift registry.access.redhat.com/jboss-datagrid-7/datagrid72-openshift --confirm
-oc get is -n openshift
-oc new-app --name=rtp-demo-cache \
---image-stream=datagrid72-openshift:latest \
--e INFINISPAN_CONNECTORS=hotrod \
--e CACHE_NAMES=debtorAccountCache,creditorAccountCache \
--e HOTROD_SERVICE_NAME=rtp-demo-cache\
--e HOTROD_AUTHENTICATION=true \
--e USERNAME=jdguser \
--e PASSWORD=P@ssword1
-
-
 # --- Install Fuse on the OpenShift Cluster
 oc project openshift
 
@@ -120,6 +106,21 @@ oc create -n openshift -f ${BASEURL}/fis-console-namespace-template.json
 oc create -n openshift -f ${BASEURL}/fuse-apicurito.yml
 
 oc get template -n openshift
+
+
+# --- JBoss Datagrid Server and Caches
+oc project rtp-reference
+oc import-image -n openshift registry.access.redhat.com/jboss-datagrid-7/datagrid72-openshift --confirm
+oc get is -n openshift
+oc new-app --name=rtp-demo-cache \
+--image-stream=datagrid72-openshift:latest \
+-e INFINISPAN_CONNECTORS=hotrod \
+-e CACHE_NAMES=debtorAccountCache,creditorAccountCache \
+-e HOTROD_SERVICE_NAME=rtp-demo-cache\
+-e HOTROD_AUTHENTICATION=true \
+-e USERNAME=jdguser \
+-e PASSWORD=P@ssword1
+
 
 # --- Create an instance of the Confluent Kafka REST Proxy for the Kafka Topics UI
 oc project rtp-reference
