@@ -106,6 +106,7 @@ function moveMessage(messageId, edge) {
         .duration(500)
         .attrTween("transform", function(datum) {
             // TODO: find out how to filter the elements in `this.transform.baseVal` to get just the `translate` transformations
+            // this.transform.baseVal.filter(v => v.type === SVGTransform.SVG_TRANSFORM_TRANSLATE) or something like that
             let startX = this.transform.baseVal.getItem(0).matrix.e
             let startY = this.transform.baseVal.getItem(0).matrix.f
             let endX = calculateXCoordinateOnRect(edge.to, edge.toPart) - 30
@@ -209,7 +210,8 @@ function fit(selection, padding) {
     });
 }
 
-let root = "http://rtp-flow-viz-service-rtp-reference.192.168.42.144.nip.io";
+// let root = "http://rtp-flow-viz-service-rtp-reference.192.168.42.144.nip.io";
+let root = "";
 let loop = () => {
     // TODO: Re-enable this when I can figure out how to get long polling working in Vertx
     // fetch(root + "/events?poll=long")
