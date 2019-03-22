@@ -6,16 +6,24 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.StaticHandler;
+import iso.std.iso._20022.tech.xsd.pacs_002_001.FIToFIPaymentStatusReportV07;
 import iso.std.iso._20022.tech.xsd.pacs_008_001.FIToFICustomerCreditTransferV06;
+import org.apache.camel.component.kafka.KafkaConstants;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.PartitionInfo;
 import org.apache.kafka.common.errors.WakeupException;
+import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import rtp.demo.debtor.domain.model.payment.Payment;
+import rtp.demo.creditor.domain.payments.Payment;
+import rtp.demo.creditor.domain.rtp.simplified.MessageStatusReport;
+import rtp.demo.creditor.domain.rtp.simplified.serde.MessageStatusReportDeserializer;
 import rtp.demo.debtor.domain.model.payment.serde.PaymentDeserializer;
 import rtp.message.model.serde.FIToFICustomerCreditTransferV06Deserializer;
+import rtp.message.model.serde.FIToFIPaymentStatusReportV07Deserializer;
+import rtp.message.model.serde.FIToFIPaymentStatusReportV07Serializer;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -26,6 +34,8 @@ import static io.vertx.core.http.HttpHeaders.CONTENT_TYPE;
 import java.io.Serializable;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.logging.Logger;
 
 public class VisualizationService extends AbstractVerticle {
@@ -45,41 +55,17 @@ public class VisualizationService extends AbstractVerticle {
 
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> consumers.forEach(KafkaConsumer::wakeup)));
 
-		// Create a simple consumer to listen for new transactions from the originator.
-		newConsumerThread(Arrays.asList("debtor-payments"), "visualization-originator", PaymentDeserializer.class.getName(), (ConsumerRecord<String, Payment> record, Logger threadLogger) -> {
-			synchronized (events) {
-				Event event = new Event(record.value().getPaymentId(), "payment-service|send-payments");
-				events.add(event);
-				threadLogger.info("Processed event: " + event);
-			}
-		}).start();
-
-		// Create a simple consumer to listen for new transactions from the odfi.
-		newConsumerThread(Arrays.asList("mock-rtp-debtor-credit-transfer"), "visualization-odfi", FIToFICustomerCreditTransferV06Deserializer.class.getName(), (ConsumerRecord<String, FIToFICustomerCreditTransferV06> record, Logger threadLogger) -> {
-			synchronized (events) {
-				Event event = new Event(record.value().getGrpHdr().getMsgId(), "send-payments|rtp-mock");
-				events.add(event);
-				threadLogger.info("Processed event: " + event);
-			}
-		}).start();
-
-		// Create a simple consumer to listen for new transactions from the rdfi.
-		newConsumerThread(Arrays.asList("mock-rtp-creditor-credit-transfer"), "visualization-rdfi", FIToFICustomerCreditTransferV06Deserializer.class.getName(), (ConsumerRecord<String, FIToFICustomerCreditTransferV06> record, Logger threadLogger) -> {
-			synchronized (events) {
-				Event event = new Event(record.value().getGrpHdr().getMsgId(), "rtp-mock|rtp-creditor-receive-payment");
-				events.add(event);
-				threadLogger.info("Processed event: " + event);
-			}
-		}).start();
-
-		// Create a simple consumer to listen for new transactions from the receiver.
-		newConsumerThread(Arrays.asList("creditor-payments"), "visualization-receiver", rtp.demo.creditor.domain.payments.serde.PaymentDeserializer.class.getName(), (ConsumerRecord<String, rtp.demo.creditor.domain.payments.Payment> record, Logger threadLogger) -> {
-			synchronized (events) {
-				Event event = new Event(record.value().getDebtorId(), "rtp-creditor-receive-payment|rtp-creditor-payment-acknowledgement");
-				events.add(event);
-				threadLogger.info("Processed event: " + event);
-			}
-		}).start();
+		newConsumerThread("creditor-completed-payments", 		rtp.demo.creditor.domain.payments.serde.PaymentDeserializer.class,					record -> record.value().getCreditTransferMessageId()					).start();
+		newConsumerThread("creditor-payment-confirmation", 	MessageStatusReportDeserializer.class, 												record -> record.value().getOriginalMessageId()							).start();
+		newConsumerThread("creditor-payments", 				rtp.demo.creditor.domain.payments.serde.PaymentDeserializer.class, 					record -> record.value().getCreditTransferMessageId()					).start();
+		newConsumerThread("debtor-completed-payments", 		PaymentDeserializer.class, 															record -> record.value().getPaymentId()									).start();
+		newConsumerThread("debtor-payment-confirmation", 		rtp.demo.debtor.domain.rtp.simplified.serde.MessageStatusReportDeserializer.class,	record -> record.value().getOriginalMessageId()							).start();
+		newConsumerThread("debtor-payments", 					PaymentDeserializer.class, 															record -> record.value().getPaymentId()									).start();
+		newConsumerThread("mock-rtp-creditor-acknowledgement",	FIToFIPaymentStatusReportV07Deserializer.class, 									record -> record.value().getOrgnlGrpInfAndSts().get(0).getOrgnlMsgId()	).start();
+		newConsumerThread("mock-rtp-creditor-confirmation", 	FIToFIPaymentStatusReportV07Deserializer.class, 									record -> record.value().getOrgnlGrpInfAndSts().get(0).getOrgnlMsgId()	).start();
+		newConsumerThread("mock-rtp-creditor-credit-transfer",	FIToFICustomerCreditTransferV06Deserializer.class, 									record -> record.value().getGrpHdr().getMsgId()							).start();
+		newConsumerThread("mock-rtp-debtor-confirmation", 		FIToFIPaymentStatusReportV07Deserializer.class, 									record -> record.value().getOrgnlGrpInfAndSts().get(0).getOrgnlMsgId()	).start();
+		newConsumerThread("mock-rtp-debtor-credit-transfer", 	FIToFICustomerCreditTransferV06Deserializer.class, 									record -> record.value().getGrpHdr().getMsgId()							).start();
 
 		router.get("/events").handler(this::getEvents);
 
@@ -141,33 +127,35 @@ public class VisualizationService extends AbstractVerticle {
 		}
 	}
 
-	private <T> Thread newConsumerThread(Collection<String> topics, String groupId, String valueDeserializer, BiConsumer<ConsumerRecord<String, T>, Logger> recordAction) {
+	private <T> Thread newConsumerThread(String topic, Class<? extends Deserializer<T>> valueDeserializer, Function<ConsumerRecord<String, T>, String> getMessageId) {
 		return new Thread(() -> {
-			String groupIdPrefix = System.getenv("GROUP_ID_PREFIX");
-			final String fullGroupId = (groupIdPrefix == null ? "" : groupIdPrefix) + groupId;
-
-			final Logger THREAD_LOGGER = Logger.getLogger(fullGroupId);
+			String groupId = "visualization";
+			final Logger THREAD_LOGGER = Logger.getLogger(groupId);
 
 			Properties props = new Properties();
 			props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, System.getenv("BOOTSTRAP_SERVERS"));
-			props.put(ConsumerConfig.GROUP_ID_CONFIG, fullGroupId);
+			props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
 			props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 			props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, valueDeserializer);
 			KafkaConsumer<String, T> consumer = new KafkaConsumer<>(props);
 
-			THREAD_LOGGER.info("Created consumer (t=" + topics + "g=" + fullGroupId + ")");
+			THREAD_LOGGER.info("Created consumer (t=" + topic + "g=" + groupId + ")");
 
 			synchronized (consumers) {
 				consumers.add(consumer);
 			}
 
 			try {
-				consumer.subscribe(topics);
+				consumer.subscribe(Collections.singletonList(topic));
 				while (running) {
 					ConsumerRecords<String, T> records = consumer.poll(1000);
 					for (ConsumerRecord<String, T> record : records) {
-						THREAD_LOGGER.info("Consumed message: topic=" +record.topic() + ",key=" + record.key());
-						recordAction.accept(record, THREAD_LOGGER);
+						THREAD_LOGGER.info("Consumed message: topic=" + record.topic() + ",key=" + record.key());
+						Event event = new Event(getMessageId.apply(record), record.topic());
+						synchronized (events) {
+							events.add(event);
+							THREAD_LOGGER.info("Processed event: " + event);
+						}
 					}
 				}
 			} catch (WakeupException ignored) {

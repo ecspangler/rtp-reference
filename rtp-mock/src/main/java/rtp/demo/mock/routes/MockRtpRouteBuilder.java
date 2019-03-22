@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import rtp.message.model.serde.FIToFICustomerCreditTransferV06Deserializer;
 import rtp.message.model.serde.FIToFICustomerCreditTransferV06Serializer;
+import rtp.message.model.serde.FIToFIPaymentStatusReportV07Deserializer;
 import rtp.message.model.serde.FIToFIPaymentStatusReportV07Serializer;
 
 @Component
@@ -39,23 +40,13 @@ public class MockRtpRouteBuilder extends RouteBuilder {
 				+ "&groupId=" + consumerGroup
 				+ "&valueDeserializer=" + FIToFICustomerCreditTransferV06Deserializer.class.getName())
 						.log("\\n/// Mock RTP - Sending Credit Transfer Message >>> ${body}")
-//						.process(exchange -> {
-//							Object key = exchange.getIn().getHeader(KafkaConstants.KEY);
-//							LOG.info("Key: " + key + " value: " + new String((byte[]) key));
-//
-//							LOG.info("From Topic: " + new String((byte[]) exchange.getIn().getHeader(KafkaConstants.TOPIC)));
-//							exchange.getIn().setHeader(KafkaConstants.TOPIC, kafkaCreditorCreditTransferTopic);
-//							exchange.getIn().setHeader(KafkaConstants.KEY, new String((byte[]) exchange.getIn().getHeader(KafkaConstants.KEY)));
-//
-//							LOG.info("To Topic: " + kafkaCreditorCreditTransferTopic);
-//						})
 						.to("kafka:" + kafkaCreditorCreditTransferTopic
 								+ "?serializerClass=" + FIToFICustomerCreditTransferV06Serializer.class.getName());
 
 		from("kafka:" + kafkaCreditorAcknowledgementTopic + "?brokers=" + kafkaBootstrap + "&maxPollRecords="
 				+ consumerMaxPollRecords + "&consumersCount=" + consumerCount + "&seekTo=" + consumerSeekTo
 				+ "&groupId=" + consumerGroup
-				+ "&valueDeserializer=rtp.message.model.serde.FIToFIPaymentStatusReportV07Deserializer")
+				+ "&valueDeserializer=" + FIToFIPaymentStatusReportV07Deserializer.class.getName())
 						.routeId("FromKafka").log("\n/// Mock RTP - Receiving Acknowledgements >>> ${body}")
 						.to("kafka:" + kafkaDebtorConfirmationTopic
 								+ "?serializerClass=" + FIToFIPaymentStatusReportV07Serializer.class.getName())
