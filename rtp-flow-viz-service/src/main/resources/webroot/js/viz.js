@@ -230,7 +230,7 @@ let loop = () => {
                     } else if (edge.tree === "leaf") {
                         setParentCb(event, edge, setTimeout(() => {
                             d3.select(`#${event.correlationId}.${edge.from}.${edge.to}`).remove()
-                        }, 2))
+                        }, 2000))
                     } else {
                         setParentCb(event, edge, () => {
                             moveRootAndChildren(event, edge)
@@ -250,8 +250,8 @@ function moveRootAndChildren(event, edge) {
             childEdges.forEach(childEdge => {
                 let child = childEdge.events[event.correlationId]
                 d3.select(`#${event.correlationId}.${edge.from}.${edge.to}`).remove()
-                moveRootAndChildren(event, child)
-                edge.events.delete(event.correlationId)
+                moveRootAndChildren(child, childEdge)
+                edge.events[event.correlationId] = undefined
             })
         }
     })
@@ -266,10 +266,10 @@ function setParentCb(event, edge, afterMoveCb) {
         if (parentDomNode.node() && parentDomNode.attr("data-transitioned") === "false") {
             parentDomNode.transition().on("end", () => {
                 parentDomNode.remove()
-                parentEdge.events.delete(event.correlationId)
+                parentEdge.events[event.correlationId] = undefined
                 moveMessage(`${event.correlationId}.${edge.from}.${edge.to}`, edge, afterMoveCb(event, edge))
             })
-        } else if (parentDomNode && parentDomNode.attr("data-transitioned") === "true") {
+        } else if (parentDomNode.node() && parentDomNode.attr("data-transitioned") === "true") {
             moveMessage(`${event.correlationId}.${edge.from}.${edge.to}`, edge, afterMoveCb(event, edge))
         }
     }
