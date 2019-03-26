@@ -6,6 +6,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.kafka.KafkaComponent;
 import org.apache.camel.component.kafka.KafkaConstants;
 
+import rtp.demo.creditor.domain.payments.serde.PaymentSerializer;
 import rtp.demo.creditor.repository.account.AccountRepository;
 import rtp.demo.creditor.repository.account.JdgAccountRepository;
 import rtp.demo.repository.CreditPaymentRepository;
@@ -18,6 +19,7 @@ import rtp.demo.creditor.intake.beans.PaymentTransformer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import rtp.message.model.serde.FIToFICustomerCreditTransferV06Deserializer;
 
 public class CreditorIntakeRouteBuilder extends RouteBuilder {
 
@@ -50,12 +52,14 @@ public class CreditorIntakeRouteBuilder extends RouteBuilder {
 		KafkaComponent kafka = new KafkaComponent();
 		kafka.setBrokers(kafkaBootstrap);
 		this.getContext().addComponent("kafka", kafka);
+		LOG.info(kafkaCreditorPaymentsTopic);
 
 		from("kafka:" + kafkaCreditTransferCreditorTopic + "?brokers=" + kafkaBootstrap + "&maxPollRecords="
 				+ consumerMaxPollRecords + "&consumersCount=" + consumerCount + "&seekTo=" + consumerSeekTo
-				+ "&groupId=" + consumerGroup
-				+ "&valueDeserializer=rtp.message.model.serde.FIToFICustomerCreditTransferV06Deserializer")
-						.routeId("FromKafka").log("\n/// Creditor Intake Route >>> ${body}")
+				+ "&groupId=" + consumerGroup + "&valueDeserializer="
+				+ FIToFICustomerCreditTransferV06Deserializer.class.getName()).routeId("FromKafka")
+						.log("\n/// Creditor Intake Route >>> ${body}")
+						.process(exchange -> LOG.info(exchange.getIn().getHeader(KafkaConstants.KEY).toString()))
 						.bean(CreditTransferMessageTransformer.class, "toCreditTransferMessage").log(" >>> ${body}")
 						.log(" Retrieved message >>> ${body}")
 						.bean(CreditTransferMessageValidationBean.class, "validateCreditTransferMessage")
@@ -69,7 +73,7 @@ public class CreditorIntakeRouteBuilder extends RouteBuilder {
 								creditPaymentRepoistory.addPayment((Payment) exchange.getIn().getBody());
 							}
 						}).log(" Sending payment >>> ${body}").to("kafka:" + kafkaCreditorPaymentsTopic
-								+ "?serializerClass=rtp.demo.creditor.domain.payments.serde.PaymentSerializer");
+								+ "?serializerClass=" + PaymentSerializer.class.getName());
 	}
 
 }

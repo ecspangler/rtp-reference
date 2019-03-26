@@ -1,0 +1,45 @@
+openapi: 3.0.2
+info:
+  title: Events
+  version: 1.0.0
+paths:
+  /events:
+    get:
+      summary: Get the events that have occured within the simulation
+      responses:
+        200:
+          description: Got Events
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/events'
+              examples:
+                events:
+                  value: |-
+                    [
+                        {
+                            "transId": "1",
+                            "location": "debtor-payment-service"
+                        },
+                        {
+                            "transId": "1",
+                            "location": "debtor-send-payment"
+                        }
+                    ]
+components:
+  schemas:
+    events:
+      description: Events
+      type: array
+      items:
+        $ref: '#/components/schemas/event'
+    event:
+      type: object
+      required:
+        - transId
+        - location
+      properties:
+        transId:
+          type: string
+        location:
+          type: string

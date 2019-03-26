@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import rtp.demo.debtor.domain.model.payment.Payment;
 
-public class PaymentDeserializer implements Deserializer {
+public class PaymentDeserializer implements Deserializer<Payment> {
 
 	@Override
 	public void close() {
@@ -19,7 +19,7 @@ public class PaymentDeserializer implements Deserializer {
 	}
 
 	@Override
-	public Object deserialize(String arg0, byte[] arg1) {
+	public Payment deserialize(String arg0, byte[] arg1) {
 		ObjectMapper mapper = new ObjectMapper();
 		Payment payment = null;
 		try {

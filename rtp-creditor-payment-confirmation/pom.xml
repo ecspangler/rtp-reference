@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>rtp.demo</groupId>
+    <artifactId>rtp-reference</artifactId>
+    <version>1.0.0.0</version>
+  </parent>
 
   <groupId>rtp.demo</groupId>
   <artifactId>rtp-creditor-payment-confirmation</artifactId>
@@ -9,20 +16,6 @@
 
   <name>Creditor Payment Confirmation</name>
   <description>Creditor Payment Confirmation</description>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-    <!-- configure the Fuse version you want to use here -->
-    <fuse.version>7.1.0.fuse-710019-redhat-00002</fuse.version>
-    <camel.version>2.23.0</camel.version>
-    <!--  <spring.boot.version>2.1.1.RELEASE</spring.boot.version>
-    <junit.version>4.12</junit.version>-->
-
-    <!-- maven plugin versions -->
-    <maven-compiler-plugin.version>3.6.0</maven-compiler-plugin.version>
-    <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
-  </properties>
 
   <dependencyManagement>
     <dependencies>
@@ -57,28 +50,33 @@
       <version>1.0.0.0</version>
     </dependency>
 
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-kafka</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-stream</artifactId>
-		</dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-core</artifactId>
+      <version>${camel.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-kafka</artifactId>
+      <version>${camel.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-stream</artifactId>
+      <version>${camel.version}</version>
+    </dependency>
 
 
     <!-- Enabling health checks -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
+      <version>${spring-boot-starter.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
+      <version>${spring-boot-starter.version}</version>
       <exclusions>
         <exclusion>
           <groupId>org.springframework.boot</groupId>
@@ -89,32 +87,38 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-undertow</artifactId>
+      <version>${spring-boot-starter.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-spring-boot-starter</artifactId>
+      <version>${camel.version}</version>
     </dependency>
 
     <!-- testing -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.jboss.arquillian.junit</groupId>
       <artifactId>arquillian-junit-container</artifactId>
+      <version>${arquillian-junit-container.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.arquillian.cube</groupId>
       <artifactId>arquillian-cube-openshift</artifactId>
+      <version>${arquillian-cube-openshift.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-assertions</artifactId>
+      <version>${kubernetes-assertions}</version>
       <scope>test</scope>
     </dependency>
 
@@ -127,10 +131,6 @@
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven-compiler-plugin.version}</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -157,19 +157,27 @@
           </execution>
         </executions>
       </plugin>
-
       <plugin>
-        <groupId>org.jboss.redhat-fuse</groupId>
+        <groupId>io.fabric8</groupId>
         <artifactId>fabric8-maven-plugin</artifactId>
-        <version>${fuse.version}</version>
+        <version>${fabric8-maven-plugin.version}</version>
         <executions>
           <execution>
+            <id>fmp</id>
             <goals>
               <goal>resource</goal>
               <goal>build</goal>
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <enricher>
+            <excludes>
+              <exclude>f8-maven-scm</exclude>
+            </excludes>
+            <!-- ADD HEALTH CHECK HERE -->
+          </enricher>
+        </configuration>
       </plugin>
     </plugins>
   </build>

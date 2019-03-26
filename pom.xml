@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <groupId>org.example</groupId>
+  <groupId>rtp.demo</groupId>
   <artifactId>rtp-reference</artifactId>
   <version>1.0.0.0</version>
   <packaging>pom</packaging>
@@ -11,43 +12,149 @@
   <description>Real Time Payments Reference Example</description>
 
   <modules>
-    <module>rtp-message-model</module>
-    <module>rtp-debtor-domain-model</module>
-    <module>rtp-creditor-domain-model</module>
-    <module>rtp-creditor-validation-model</module>
-    <module>rtp-debtor-transaction-repository</module>
-    <module>rtp-debtor-transaction-repository-mysql</module>
-    <module>rtp-debtor-account-repository</module>
-    <module>rtp-debtor-account-repository-jdg</module>
-    <module>rtp-creditor-account-repository</module>
     <module>rtp-creditor-account-repository-jdg</module>
-    <!--<module>rtp-debtor-payment-service</module>-->
-    <module>rtp-debtor-send-payment</module>
-    <module>rtp-debtor-payment-confirmation</module>
-    <module>rtp-debtor-complete-payment</module>
-    <module>rtp-debtor-core-banking</module>
-    <module>rtp-debtor-customer-notification</module>
-    <module>rtp-debtor-auditing</module>
-    <module>rtp-mock</module>
-    <module>rtp-creditor-receive-payment</module>
-    <module>rtp-creditor-payment-acknowledgement</module>
-    <module>rtp-creditor-payment-confirmation</module>
+    <module>rtp-creditor-account-repository</module>
+    <module>rtp-creditor-auditing</module>
     <module>rtp-creditor-complete-payment</module>
     <module>rtp-creditor-core-banking</module>
     <module>rtp-creditor-customer-notification</module>
-    <module>rtp-creditor-auditing</module>
+    <module>rtp-creditor-domain-model</module>
+    <module>rtp-message-model</module>
+    <module>rtp-creditor-transaction-repository</module>
+    <module>rtp-creditor-transaction-repository-mysql</module>
+    <module>rtp-creditor-payment-acknowledgement</module>
+    <module>rtp-creditor-payment-confirmation</module>
+    <module>rtp-creditor-payment-service</module>
+    <module>rtp-creditor-receive-payment</module>
+    <module>rtp-creditor-validation-model</module>
+    <module>rtp-debtor-transaction-repository</module>
+    <module>rtp-debtor-transaction-repository-mysql</module>
+    <module>rtp-debtor-account-repository-jdg</module>
+    <module>rtp-debtor-account-repository</module>
+    <module>rtp-debtor-auditing</module>
+    <module>rtp-debtor-complete-payment</module>
+    <module>rtp-debtor-core-banking</module>
+    <module>rtp-debtor-customer-notification</module>
+    <module>rtp-debtor-domain-model</module>
+    <module>rtp-debtor-payment-confirmation</module>
+    <module>rtp-debtor-payment-service</module>
+    <module>rtp-debtor-send-payment</module>
+    <module>rtp-mock</module>
+    <module>rtp-flow-viz-service</module>
   </modules>
 
-  <profiles>
-    <profile>
-     <!-- When built in OpenShift the 'openshift' profile will be used when invoking mvn. -->
-     <!-- Use this profile for any OpenShift specific customization your app will need. -->
-     <!-- By default that is to put the resulting archive into the 'deployments' folder. -->
-     <!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
-     <id>openshift</id>
-     <build>
-     </build>
-    </profile>
-  </profiles>
+  <properties>
+    <maven.min.version>3.3.9</maven.min.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <jdk.min.version>${maven.compiler.source}</jdk.min.version>
+
+    <!--Dependency & Plugin Versions-->
+    <activation.version>1.1</activation.version>
+    <arquillian-cube-openshift.version>1.9.0</arquillian-cube-openshift.version>
+    <arquillian-junit-container.version>1.1.12.Final</arquillian-junit-container.version>
+    <camel.version>2.21.0.fuse-710018-redhat-00001</camel.version>
+    <fabric8-maven-plugin.version>3.5.41</fabric8-maven-plugin.version>
+    <fuse.version>7.1.0.fuse-710019-redhat-00002</fuse.version>
+    <hibernate-core.version>5.3.7.Final-redhat-00001</hibernate-core.version>
+    <infinispan-client-hotrod.version>8.5.3.Final-redhat-00002</infinispan-client-hotrod.version>
+    <jackson-databind.versioon>2.9.7</jackson-databind.versioon>
+    <jaxb.version>2.3.0</jaxb.version>
+    <junit.version>4.12</junit.version>
+    <kafka.version>1.0.0</kafka.version>
+    <kubernetes-assertions>3.0.11.fuse-710023-redhat-00001</kubernetes-assertions>
+    <log4j-api.version>2.11.1</log4j-api.version>
+    <log4j-core.version>${log4j-api.version}</log4j-core.version>
+    <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+    <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
+    <maven-war-plugin.version>2.3</maven-war-plugin.version>
+    <slf4j-simple.version>1.6.2</slf4j-simple.version>
+    <spring-boot-starter.version>1.5.13.RELEASE</spring-boot-starter.version>
+    <spring-cloud-kubernetes-core.version>0.1.6.fuse-710004-redhat-00001</spring-cloud-kubernetes-core.version>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>maven.central</id>
+      <name>Maven Central</name>
+      <url>https://repo1.maven.org/maven2</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+    </repository>
+
+    <repository>
+      <id>redhat.ga</id>
+      <name>Red Hat General Availability Repository</name>
+      <url>https://maven.repository.redhat.com/ga</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+    </repository>
+
+    <repository>
+      <id>redhat.ea</id>
+      <name>Red Hat Early Access Repository</name>
+      <url>https://maven.repository.redhat.com/earlyaccess/all</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>maven.central</id>
+      <name>Maven Central</name>
+      <url>https://repo1.maven.org/maven2</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+    </pluginRepository>
+
+    <pluginRepository>
+      <id>redhat.ga</id>
+      <name>Red Hat General Availability Repository</name>
+      <url>https://maven.repository.redhat.com/ga</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+    </pluginRepository>
+
+    <pluginRepository>
+      <id>redhat.ea</id>
+      <name>Red Hat Early Access Repository</name>
+      <url>https://maven.repository.redhat.com/earlyaccess/all</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
 
 </project>

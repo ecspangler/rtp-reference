@@ -1,0 +1,131 @@
+openapi: 3.0.2
+info:
+  title: Payments-v1
+  version: 1.0.0
+paths:
+  /payments:
+    post:
+      summary: Post method is used to send fast payments
+      description: |-
+        creditOrDebit=DR field determines if the the customer wants to send payment.
+        creditOrDebit=CR field determines if the the customer wants to request payment.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/payments'
+            examples:
+              payments:
+                value: |-
+                  [
+                      {
+                          "debtorAccountNumber": "123456789",
+                          "amount": "10.00",
+                          "receiverFirstName": "Liz",
+                          "receiverLastName": "Spangler",
+                          "receiverEmail": "abc@redhat.com",
+                          "receiverCellPhone": 7326628053
+                      }
+                  ]
+        required: true
+      responses:
+        201:
+          description: Payments created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payments'
+              examples:
+                payments:
+                  value: |-
+                  [
+                      {
+                          "debtorAccountNumber": "123456789",
+                          "amount": "10.00",
+                          "receiverFirstName": "Liz",
+                          "receiverLastName": "Spangler",
+                          "receiverEmail": "abc@redhat.com",
+                          "receiverCellPhone": 7326628053
+                      }
+                  ]
+  /transactions:
+    get:
+      responses:
+        200:
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transactions'
+              examples:
+                transactions:
+                  value: |-
+                    [
+                        {
+                            "transId": "1",
+                            "reciverOrSenderName": "Liz Spangler",
+                            "amount": 39.92,
+                            "status": "Successful",
+                            "creditOrDebit": "DR"
+                        },
+                        {
+                            "transId": "2",
+                            "reciverOrSenderName": "Justin Goldsmith",
+                            "amount": 63.65,
+                            "status": "Pending",
+                            "creditOrDebit": "CR"
+                        }
+                    ]
+components:
+  schemas:
+    payments:
+      description: Payments
+      type: array
+      items:
+        type: object
+        required:
+        - debtorAccountNumber
+        - amount
+        - receiverFirstName
+        - receiverLastName
+        properties:
+          debtorAccountNumber:
+            type: string
+          amount:
+            type: number
+            format: currency
+          receiverFirstName:
+            type: string
+          receiverLastName:
+            type: string
+          receiverEmail:
+            type: string
+          receiverCellPhone:
+            format: int64
+            type: integer
+    transactions:
+      description: Transactions
+      type: array
+      items:
+        $ref: '#/components/schemas/debitTransaction'
+    debitTransaction:
+        type: object
+        required:
+        - transId
+        - receiverFirstName
+        - receiverLastName
+        - amount
+        - status
+        properties:
+          transId:
+            type: string
+          receiverFirstName:
+            type: string
+          receiverLastName:
+            type: string
+          amount:
+            type: number
+            format: currency
+          status:
+            description: Successful or Failed
+            type: string

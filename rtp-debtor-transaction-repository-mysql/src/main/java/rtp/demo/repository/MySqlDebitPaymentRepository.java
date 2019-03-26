@@ -34,23 +34,25 @@ public class MySqlDebitPaymentRepository implements DebitPaymentRepository {
 	@Override
 	public List<DebitPayment> getAllPayments() {
 		log.info("Retrieving all payments");
-		Transaction transaction = session.beginTransaction();
+
+//		Tried disabling commits for reads to fix the DB issue.
+//		Transaction transaction = session.beginTransaction();
 
 		Criteria cr = session.createCriteria(DebitPayment.class);
 		List<DebitPayment> results = cr.list();
 
-		transaction.commit();
+//		transaction.commit();
 		return results;
 	}
 
 	@Override
 	public DebitPayment getPayment(BigInteger id) {
 		log.info("Retrieving payment with id: {}", id);
-		Transaction transaction = session.beginTransaction();
+//		Transaction transaction = session.beginTransaction();
 
 		DebitPayment payment = (DebitPayment) session.get(DebitPayment.class, id);
 
-		transaction.commit();
+//		transaction.commit();
 		return payment;
 	}
 
@@ -83,20 +85,20 @@ public class MySqlDebitPaymentRepository implements DebitPaymentRepository {
 	@Override
 	public List<DebitPayment> getPayments(String accountNumber) {
 		log.info("Retrieving all payments by account number");
-		Transaction transaction = session.beginTransaction();
+//		Transaction transaction = session.beginTransaction();
 
 		Criteria cr = session.createCriteria(DebitPayment.class);
 		cr.add(Restrictions.eq("senderAccountNumber", accountNumber));
 		List<DebitPayment> results = cr.list();
 
-		transaction.commit();
+//		transaction.commit();
 		return results;
 	}
 
 	@Override
 	public DebitPayment getPaymentByPaymentKey(String paymentKey) {
 		log.info("Retrieving payment by payment key: " + paymentKey);
-		Transaction transaction = session.beginTransaction();
+//		Transaction transaction = session.beginTransaction();
 
 		Criteria cr = session.createCriteria(DebitPayment.class);
 		cr.add(Restrictions.eq("paymentId", paymentKey));
@@ -107,7 +109,7 @@ public class MySqlDebitPaymentRepository implements DebitPaymentRepository {
 			result = results.get(0);
 		}
 
-		transaction.commit();
+//		transaction.commit();
 
 		return result;
 	}

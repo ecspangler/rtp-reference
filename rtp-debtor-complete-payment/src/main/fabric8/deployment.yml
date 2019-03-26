@@ -1,0 +1,31 @@
+spec:
+  template:
+    spec:
+      containers:
+        -
+#          resources:
+#            requests:
+#              cpu: "0.2"
+#              memory: 256Mi
+#            limits:
+#              cpu: "1.0"
+#              memory: 256Mi
+          env:
+            - name: BOOTSTRAP_SERVERS
+              value: "rtp-demo-cluster-kafka-bootstrap:9092"
+            - name: DEBTOR_COMPLETED_PAYMENTS_TOPIC
+              value: debtor-completed-payments
+            - name: DEBTOR_PAYMENTS_TOPIC
+              value: debtor-payments
+            - name: DEBTOR_CONFIRMATION_TOPIC
+              value: debtor-payment-confirmation
+            - name: APPLICATION_ID
+              value: debtor-complete-payment
+            - name: CLIENT_ID
+              value: debtor-complete-payment-client
+            - name: DATABASE_URL
+              value: "jdbc:mysql://mysql-56-rhel7:3306/rtpdb?autoReconnect=true"
+            - name: DATABASE_USER
+              value: dbuser
+            - name: DATABASE_PASS
+              value: dbpass

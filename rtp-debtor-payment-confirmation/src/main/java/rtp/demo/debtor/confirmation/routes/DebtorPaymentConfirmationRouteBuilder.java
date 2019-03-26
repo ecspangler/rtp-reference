@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 import rtp.demo.debtor.confirmation.beans.MessageStatusReportTransformer;
 import rtp.demo.debtor.domain.rtp.simplified.MessageStatusReport;
+import rtp.demo.debtor.domain.rtp.simplified.serde.MessageStatusReportSerializer;
+import rtp.message.model.serde.FIToFIPaymentStatusReportV07Deserializer;
 
 @Component
 public class DebtorPaymentConfirmationRouteBuilder extends RouteBuilder {
@@ -36,7 +38,7 @@ public class DebtorPaymentConfirmationRouteBuilder extends RouteBuilder {
 		from("kafka:" + kafkaMockRtpConfirmationTopic + "?brokers=" + kafkaBootstrap + "&maxPollRecords="
 				+ consumerMaxPollRecords + "&consumersCount=" + consumerCount + "&seekTo=" + consumerSeekTo
 				+ "&groupId=" + consumerGroup
-				+ "&valueDeserializer=rtp.message.model.serde.FIToFIPaymentStatusReportV07Deserializer")
+				+ "&valueDeserializer=" + FIToFIPaymentStatusReportV07Deserializer.class.getName())
 						.routeId("FromKafka").log("\n/// Creditor Confirmation Route >>> ${body}")
 						.bean(MessageStatusReportTransformer.class, "toMessageStatusReport")
 						.log("Sending payment message confirmation >>> ${body} >> key ${body.getOriginalMessageId}")
@@ -47,7 +49,7 @@ public class DebtorPaymentConfirmationRouteBuilder extends RouteBuilder {
 										((MessageStatusReport) exchange.getIn().getBody()).getOriginalMessageId());
 							}
 						}).to("kafka:" + kafkaCreditorConfirmationTopic
-								+ "?serializerClass=rtp.demo.debtor.domain.rtp.simplified.serde.MessageStatusReportSerializer");
+								+ "?serializerClass=" + MessageStatusReportSerializer.class.getName());
 
 	}
 }
