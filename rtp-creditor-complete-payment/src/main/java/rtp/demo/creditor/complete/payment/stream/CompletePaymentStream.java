@@ -2,6 +2,7 @@ package rtp.demo.creditor.complete.payment.stream;
 
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
@@ -12,8 +13,6 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.JoinWindows;
 import org.apache.kafka.streams.kstream.KStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import rtp.demo.creditor.domain.payments.Payment;
 import rtp.demo.creditor.domain.payments.serde.PaymentSerde;
@@ -24,7 +23,7 @@ import rtp.demo.repository.MySqlCreditPaymentRepository;
 
 public class CompletePaymentStream {
 
-	private static final Logger LOG = LoggerFactory.getLogger(CompletePaymentStream.class);
+	private static final Logger LOG = Logger.getLogger(CompletePaymentStream.class.getName());
 
 	private String bootstrapServers = System.getenv("BOOTSTRAP_SERVERS");
 	private String paymentsTopic = System.getenv("CREDITOR_PAYMENTS_TOPIC");
