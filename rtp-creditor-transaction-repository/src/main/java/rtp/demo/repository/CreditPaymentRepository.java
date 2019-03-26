@@ -3,20 +3,22 @@ package rtp.demo.repository;
 import java.math.BigInteger;
 import java.util.List;
 
-import rtp.demo.debtor.domain.model.payment.CreditPayment;
+import rtp.demo.creditor.domain.payments.Payment;
 
 public interface CreditPaymentRepository {
 
-	public void addPayment(CreditPayment payment);
+	public void addPayment(Payment payment);
 
-	public List<CreditPayment> getAllPayments();
+	public List<Payment> getAllPayments();
 
-	public CreditPayment getPayment(BigInteger id);
+	public Payment getPayment(BigInteger id);
 
-	public List<CreditPayment> getPayments(String accountNumber);
+	public List<Payment> getPayments(String accountNumber);
 
-	public void updatePayment(CreditPayment payment);
+	public void updatePayment(Payment payment);
 
-	public void deletePayment(CreditPayment payment);
+	public void deletePayment(Payment payment);
+
+	public Payment getPaymentByPaymentKey(String paymentKey);
 
 }
