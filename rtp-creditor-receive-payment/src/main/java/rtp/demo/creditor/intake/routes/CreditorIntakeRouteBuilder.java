@@ -1,5 +1,7 @@
 package rtp.demo.creditor.intake.routes;
 
+import java.util.logging.Logger;
+
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
@@ -17,13 +19,11 @@ import rtp.demo.creditor.intake.beans.CreditTransferMessageTransformer;
 import rtp.demo.creditor.intake.beans.CreditTransferMessageValidationBean;
 import rtp.demo.creditor.intake.beans.PaymentTransformer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import rtp.message.model.serde.FIToFICustomerCreditTransferV06Deserializer;
 
 public class CreditorIntakeRouteBuilder extends RouteBuilder {
 
-	private static final Logger LOG = LoggerFactory.getLogger(CreditorIntakeRouteBuilder.class);
+	private static final Logger LOG = Logger.getLogger(CreditorIntakeRouteBuilder.class.getName());
 
 	private String kafkaBootstrap = System.getenv("BOOTSTRAP_SERVERS");
 	private String kafkaCreditTransferCreditorTopic = System.getenv("CREDIT_TRANS_CREDITOR_TOPIC");

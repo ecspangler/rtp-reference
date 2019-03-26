@@ -1,7 +1,5 @@
 package rtp.demo.creditor.intake.beans;
 
-import java.time.LocalDateTime;
-
 import rtp.demo.creditor.domain.payments.Payment;
 import rtp.demo.creditor.validation.PaymentValidationRequest;
 
