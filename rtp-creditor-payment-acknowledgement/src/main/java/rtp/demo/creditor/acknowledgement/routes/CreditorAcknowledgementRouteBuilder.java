@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import rtp.demo.creditor.acknowledgement.beans.MessageStatusReportTransformer;
+import rtp.demo.creditor.domain.payments.serde.PaymentDeserializer;
+import rtp.message.model.serde.FIToFIPaymentStatusReportV07Serializer;
 
 @Component
 public class CreditorAcknowledgementRouteBuilder extends RouteBuilder {
@@ -32,12 +34,12 @@ public class CreditorAcknowledgementRouteBuilder extends RouteBuilder {
 		from("kafka:" + kafkaCreditorPaymentsTopic + "?brokers=" + kafkaBootstrap + "&maxPollRecords="
 				+ consumerMaxPollRecords + "&consumersCount=" + consumerCount + "&seekTo=" + consumerSeekTo
 				+ "&groupId=" + consumerGroup
-				+ "&valueDeserializer=rtp.demo.creditor.domain.payments.serde.PaymentDeserializer").routeId("FromKafka")
+				+ "&valueDeserializer=" + PaymentDeserializer.class.getName()).routeId("FromKafka")
 						.log("\n/// Creditor Acknowledegement Route >>> ${body}")
 						.bean(MessageStatusReportTransformer.class, "toMessageStatusReport")
 						.log("Sending payment status report >>> ${body}")
 						.to("kafka:" + kafkaCreditorAcknowledgementTopic
-								+ "?serializerClass=rtp.message.model.serde.FIToFIPaymentStatusReportV07Serializer");
+								+ "?serializerClass=" + FIToFIPaymentStatusReportV07Serializer.class.getName());
 	}
 
 }

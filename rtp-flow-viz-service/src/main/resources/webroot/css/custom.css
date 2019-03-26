@@ -1,0 +1,28 @@
+body{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Open Sans', sans-serif !important;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    box-sizing: border-box;
+}
+
+text {
+    dominant-baseline: hanging;
+}
+
+line {
+    stroke: rgb(255,0,0);
+    stroke-width: 3;
+}
+
+.arrowHead {
+    fill: red;
+}
+
+.service {
+ fill: lightblue;
+ stroke: blue;
+ stroke-width: 5;
+}

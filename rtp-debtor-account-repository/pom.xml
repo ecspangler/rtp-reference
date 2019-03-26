@@ -1,7 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
+  <parent>
+    <groupId>rtp.demo</groupId>
+    <artifactId>rtp-reference</artifactId>
+    <version>1.0.0.0</version>
+  </parent>
+
   <groupId>rtp.demo</groupId>
   <artifactId>rtp-debtor-account-repository</artifactId>
   <packaging>jar</packaging>
@@ -9,36 +15,31 @@
   <name>rtp-debtor-account-repository</name>
 
   <dependencies>
-
-  <dependency>
-    <groupId>rtp.demo</groupId>
-    <artifactId>rtp-debtor-domain-model</artifactId>
-    <version>1.0.0.0</version>
-  </dependency>
+    <dependency>
+      <groupId>rtp.demo</groupId>
+      <artifactId>rtp-debtor-domain-model</artifactId>
+      <version>1.0.0.0</version>
+    </dependency>
   </dependencies>
 
   <build>
     <finalName>rtp-debtor-account-repository</finalName>
-      <plugins>
-    	<plugin>
-        	<artifactId>maven-compiler-plugin</artifactId>
-        	<version>3.1</version>
-        	<configuration>
-            	<source>1.8</source>
-            	<target>1.8</target>
-        	</configuration>
-    	</plugin>
-  	</plugins>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
+      </plugin>
+    </plugins>
   </build>
 
   <profiles>
     <profile>
-     <!-- When built in OpenShift the 'openshift' profile will be used when invoking mvn. -->
-     <!-- Use this profile for any OpenShift specific customization your app will need. -->
-     <!-- By default that is to put the resulting archive into the 'deployments' folder. -->
-     <!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
-     <id>openshift</id>
-     <build>
+      <!-- When built in OpenShift the 'openshift' profile will be used when invoking mvn. -->
+      <!-- Use this profile for any OpenShift specific customization your app will need. -->
+      <!-- By default that is to put the resulting archive into the 'deployments' folder. -->
+      <!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
+      <id>openshift</id>
+      <build>
         <finalName>rtp-debtor-account-repository</finalName>
         <plugins>
         </plugins>

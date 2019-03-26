@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import iso.std.iso._20022.tech.xsd.pacs_008_001.FIToFICustomerCreditTransferV06;
 
-public class FIToFICustomerCreditTransferV06Deserializer implements Deserializer {
+public class FIToFICustomerCreditTransferV06Deserializer implements Deserializer<FIToFICustomerCreditTransferV06> {
 
 	@Override
 	public void close() {
@@ -19,7 +19,7 @@ public class FIToFICustomerCreditTransferV06Deserializer implements Deserializer
 	}
 
 	@Override
-	public Object deserialize(String arg0, byte[] arg1) {
+	public FIToFICustomerCreditTransferV06 deserialize(String arg0, byte[] arg1) {
 		ObjectMapper mapper = new ObjectMapper();
 		FIToFICustomerCreditTransferV06 message = null;
 		try {
