@@ -2,17 +2,15 @@ package rtp.demo.creditor.intake.beans;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.StatelessKieSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rtp.demo.creditor.domain.account.Account;
 import rtp.demo.creditor.domain.rtp.simplified.CreditTransferMessage;
-import rtp.demo.creditor.intake.routes.CreditorIntakeRouteBuilder;
 import rtp.demo.creditor.repository.account.AccountRepository;
 import rtp.demo.creditor.repository.account.JdgAccountRepository;
 import rtp.demo.creditor.validation.PaymentValidationRequest;
@@ -22,7 +20,7 @@ import rtp.demo.creditor.validation.wrappers.CreditorBank;
 @Service
 public class CreditTransferMessageValidationBean {
 
-	private static final Logger LOG = LoggerFactory.getLogger(CreditorIntakeRouteBuilder.class);
+	private static final Logger LOG = Logger.getLogger(CreditTransferMessageValidationBean.class.getName());
 
 	private static final String KSESSION = "payments-validation-ksession";
 

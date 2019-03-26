@@ -63,6 +63,12 @@
       <artifactId>rtp-creditor-account-repository-jdg</artifactId>
       <version>1.0.0.0</version>
     </dependency>
+    
+    <dependency>
+      <groupId>rtp.demo</groupId>
+      <artifactId>rtp-creditor-transaction-repository-mysql</artifactId>
+      <version>1.0.0.0</version>
+    </dependency>
 
     <!-- Decision Manager -->
     <dependency>
@@ -112,6 +118,12 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
       <version>${spring-boot-starter.version}</version>
+      <exclusions>
+      	<exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -132,6 +144,12 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-undertow</artifactId>
       <version>${spring-boot-starter.version}</version>
+      <exclusions>
+      	<exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>

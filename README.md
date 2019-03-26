@@ -29,6 +29,8 @@ Start minishift with enough resources:
 $ minishift start --cpus 4 --disk-size 100GB --memory 12GB
 ```
 
+NOTE: The above command creates a VM with the above specifications. When no longer using Minishift or the VM, run 'minishift delete' to remove the VM and free up space.
+
 Once the Kubernetes cluster is running, login as admin user:
 ```
 $ oc login -u system:admin

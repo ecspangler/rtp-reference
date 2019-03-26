@@ -2,6 +2,7 @@ package rtp.demo.creditor.complete.payment.stream;
 
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
@@ -12,17 +13,17 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.JoinWindows;
 import org.apache.kafka.streams.kstream.KStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import rtp.demo.creditor.domain.payments.Payment;
 import rtp.demo.creditor.domain.payments.serde.PaymentSerde;
 import rtp.demo.creditor.domain.rtp.simplified.MessageStatusReport;
 import rtp.demo.creditor.domain.rtp.simplified.serde.MessageStatusReportSerde;
+import rtp.demo.repository.CreditPaymentRepository;
+import rtp.demo.repository.MySqlCreditPaymentRepository;
 
 public class CompletePaymentStream {
 
-	private static final Logger LOG = LoggerFactory.getLogger(CompletePaymentStream.class);
+	private static final Logger LOG = Logger.getLogger(CompletePaymentStream.class.getName());
 
 	private String bootstrapServers = System.getenv("BOOTSTRAP_SERVERS");
 	private String paymentsTopic = System.getenv("CREDITOR_PAYMENTS_TOPIC");
@@ -39,6 +40,7 @@ public class CompletePaymentStream {
 
 		final Serde<Payment> paymentSerde = new PaymentSerde();
 		final Serde<MessageStatusReport> messageStatusReportSerde = new MessageStatusReportSerde();
+		final CreditPaymentRepository creditPaymentRepository = new MySqlCreditPaymentRepository();
 
 		streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, applicationId);
 		streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -63,6 +65,13 @@ public class CompletePaymentStream {
 
 		LOG.info("Joined stream: ");
 		completedPaymentsStream.print();
+
+		completedPaymentsStream.foreach((key, value) -> {
+			LOG.info("Updating Payment: " + key);
+			Payment debitPayment = creditPaymentRepository.getPaymentByPaymentKey(key);
+			debitPayment.setStatus("COMPLETED");
+			creditPaymentRepository.updatePayment(debitPayment);
+		});
 
 		completedPaymentsStream.to(completedPaymentsTopic);
 

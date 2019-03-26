@@ -99,7 +99,7 @@ public class MySqlCreditPaymentRepository implements CreditPaymentRepository {
 		Transaction transaction = session.beginTransaction();
 
 		Criteria cr = session.createCriteria(Payment.class);
-		cr.add(Restrictions.eq("paymentId", paymentKey));
+		cr.add(Restrictions.eq("creditTransferMessageId", paymentKey));
 		List<Payment> results = cr.list();
 		Payment result = null;
 
