@@ -28,35 +28,35 @@ public class CreditPayment implements Serializable {
 	private BigInteger id;
 	@Column(name = "PAYMENT_ID", unique = true, nullable = false, length = 256)
 	private String paymentId;
-	@Column(name = "SENDER_ROUTING_NUM", unique = true, nullable = true, length = 256)
+	@Column(name = "SENDER_ROUTING_NUM", unique = false, nullable = true, length = 256)
 	private String senderRoutingNumber;
-	@Column(name = "SENDER_ACCT_NUM", unique = true, nullable = true, length = 256)
+	@Column(name = "SENDER_ACCT_NUM", unique = false, nullable = true, length = 256)
 	private String senderAccountNumber;
-	@Column(name = "SENDER_FIRST_NAME", unique = true, nullable = true, length = 256)
+	@Column(name = "SENDER_FIRST_NAME", unique = false, nullable = true, length = 256)
 	private String senderFirstName;
-	@Column(name = "SENDER_LAST_NAME", unique = true, nullable = true, length = 256)
+	@Column(name = "SENDER_LAST_NAME", unique = false, nullable = true, length = 256)
 	private String senderLastName;
-	@Column(name = "SENDER_EMAIL", unique = true, nullable = true, length = 256)
+	@Column(name = "SENDER_EMAIL", unique = false, nullable = true, length = 256)
 	private String senderEmail;
-	@Column(name = "SENDER_CELL_PHONE", unique = true, nullable = true, length = 256)
+	@Column(name = "SENDER_CELL_PHONE", unique = false, nullable = true, length = 256)
 	private String senderCellPhone;
-	@Column(name = "PAYMENT_AMOUNT", unique = true, nullable = true, length = 256)
+	@Column(name = "PAYMENT_AMOUNT", unique = false, nullable = true, length = 256)
 	private BigDecimal amount;
-	@Column(name = "RECEIVER_FIRST_NAME", unique = true, nullable = true, length = 256)
+	@Column(name = "RECEIVER_FIRST_NAME", unique = false, nullable = true, length = 256)
 	private String receiverFirstName;
-	@Column(name = "RECEIVER_LAST_NAME", unique = true, nullable = true, length = 256)
+	@Column(name = "RECEIVER_LAST_NAME", unique = false, nullable = true, length = 256)
 	private String receiverLastName;
-	@Column(name = "RECEIVER_EMAIL", unique = true, nullable = true, length = 256)
+	@Column(name = "RECEIVER_EMAIL", unique = false, nullable = true, length = 256)
 	private String receiverEmail;
-	@Column(name = "RECEIVER_CELL_PHONE", unique = true, nullable = true, length = 256)
+	@Column(name = "RECEIVER_CELL_PHONE", unique = false, nullable = true, length = 256)
 	private String receiverCellPhone;
-	@Column(name = "RECEIVER_ROUTING_NUM", unique = true, nullable = true, length = 256)
+	@Column(name = "RECEIVER_ROUTING_NUM", unique = false, nullable = true, length = 256)
 	private String receiverRoutingNumber;
-	@Column(name = "RECEIVER_ACCT_NUM", unique = true, nullable = true, length = 256)
+	@Column(name = "RECEIVER_ACCT_NUM", unique = false, nullable = true, length = 256)
 	private String receiverAccountNumber;
-	@Column(name = "STATUS", unique = true, nullable = true, length = 256)
+	@Column(name = "STATUS", unique = true, nullable = false, length = 256)
 	private String status = "PENDING";
-	@Column(name = "MESSAGE_STATUS_REPORT_ID", unique = true, nullable = true, length = 256)
+	@Column(name = "MESSAGE_STATUS_REPORT_ID", unique = false, nullable = true, length = 256)
 	private String messageStatusReportId;
 
 	public BigInteger getId() {

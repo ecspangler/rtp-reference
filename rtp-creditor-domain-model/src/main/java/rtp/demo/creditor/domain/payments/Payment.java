@@ -1,48 +1,66 @@
 package rtp.demo.creditor.domain.payments;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import rtp.demo.creditor.domain.error.PaymentValidationError;
-import rtp.demo.creditor.domain.rtp.simplified.CreditTransferMessage;
 import rtp.demo.creditor.domain.rtp.simplified.MessageStatusReport;
 
-public class Payment {
+@Entity
+@Table(name = "CREDITOR_CREDIT_PAYMENT")
+public class Payment implements Serializable {
 
+	private static final long serialVersionUID = -2261149654420343746L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID", updatable = false, unique = true)
+	private BigInteger id;
+	@Column(name = "CREDIT_TRANS_MSG_ID", unique = true, nullable = false, length = 256)
 	private String creditTransferMessageId;
-
+	@Column(name = "PMT_INSTR_ID", unique = false, nullable = false, length = 256)
 	private String paymentInstructionId;
-
+	@Column(name = "END_TO_END_ID", unique = false, nullable = false, length = 256)
 	private String endToEndId;
-
+	@Column(name = "CREATE_TIMESTAMP", unique = false, nullable = false, length = 256)
 	private LocalDateTime creationDateTime;
-
+	@Column(name = "NUMBER_OF_TRANS", unique = false, nullable = false, length = 256)
 	private Integer numberOfTransactions;
-
+	@Column(name = "PAYMENT_AMOUNT", unique = false, nullable = false, length = 256)
 	private BigDecimal paymentAmount;
-
+	@Column(name = "PAYMENT_CURRENCY", unique = false, nullable = false, length = 256)
 	private String paymentCurrency;
-
+	@Column(name = "SETTLEMENT_METHOD", unique = false, nullable = false, length = 256)
 	private String settlementMethod;
-
+	@Column(name = "DEBTOR_ID", unique = false, nullable = false, length = 256)
 	private String debtorId;
-
+	@Column(name = "DEBTOR_ACCT_NUMBERR", unique = false, nullable = false, length = 256)
 	private String debtorAccountNumber;
-
+	@Column(name = "CREDITOR_ID", unique = false, nullable = false, length = 256)
 	private String creditorId;
-
+	@Column(name = "CREDITOR_ACCT_NUMBER", unique = false, nullable = false, length = 256)
 	private String creditorAccountNumber;
-
+	@Column(name = "PMT_STATUS", unique = false, nullable = false, length = 256)
 	private String status = "PENDING";
-
+	@Column(name = "IS_VALIDATED", unique = false, nullable = false, length = 256)
 	private Boolean isValidated = false;
-
+	@Column(name = "REJECT_REASON_CODE", unique = false, nullable = false, length = 256)
 	private String rejectReasonCode;
-
+	@Transient
 	private List<PaymentValidationError> errors = new ArrayList<PaymentValidationError>();
-
+	@Column(name = "MSG_STATUS_RPT_ID", unique = true, nullable = false, length = 256)
 	private String messageStatusReportId;
 
 	public Payment() {

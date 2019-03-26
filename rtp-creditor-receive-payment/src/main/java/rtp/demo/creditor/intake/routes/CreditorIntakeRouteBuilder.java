@@ -8,7 +8,8 @@ import org.apache.camel.component.kafka.KafkaConstants;
 
 import rtp.demo.creditor.repository.account.AccountRepository;
 import rtp.demo.creditor.repository.account.JdgAccountRepository;
-
+import rtp.demo.repository.CreditPaymentRepository;
+import rtp.demo.repository.MySqlCreditPaymentRepository;
 import rtp.demo.creditor.domain.account.Account;
 import rtp.demo.creditor.domain.payments.Payment;
 import rtp.demo.creditor.intake.beans.CreditTransferMessageTransformer;
@@ -31,6 +32,7 @@ public class CreditorIntakeRouteBuilder extends RouteBuilder {
 	private String consumerGroup = System.getenv("CONSUMER_GROUP");
 
 	private AccountRepository accountRepository = new JdgAccountRepository();
+	private CreditPaymentRepository creditPaymentRepoistory = new MySqlCreditPaymentRepository();
 
 	@Override
 	public void configure() throws Exception {
@@ -64,6 +66,7 @@ public class CreditorIntakeRouteBuilder extends RouteBuilder {
 							public void process(Exchange exchange) throws Exception {
 								exchange.getIn().setHeader(KafkaConstants.KEY,
 										((Payment) exchange.getIn().getBody()).getCreditTransferMessageId());
+								creditPaymentRepoistory.addPayment((Payment) exchange.getIn().getBody());
 							}
 						}).log(" Sending payment >>> ${body}").to("kafka:" + kafkaCreditorPaymentsTopic
 								+ "?serializerClass=rtp.demo.creditor.domain.payments.serde.PaymentSerializer");

@@ -19,8 +19,6 @@ import rtp.demo.debtor.domain.model.payment.Payment;
 import rtp.demo.debtor.domain.model.payment.serde.PaymentSerde;
 import rtp.demo.debtor.domain.rtp.simplified.MessageStatusReport;
 import rtp.demo.debtor.domain.rtp.simplified.serde.MessageStatusReportSerde;
-//import rtp.demo.repository.DebitPaymentRepository;
-//import rtp.demo.repository.MySqlDebitPaymentRepository;
 import rtp.demo.repository.DebitPaymentRepository;
 import rtp.demo.repository.MySqlDebitPaymentRepository;
 

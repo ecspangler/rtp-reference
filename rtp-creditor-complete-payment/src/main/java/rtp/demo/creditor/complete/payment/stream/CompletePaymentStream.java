@@ -19,6 +19,8 @@ import rtp.demo.creditor.domain.payments.Payment;
 import rtp.demo.creditor.domain.payments.serde.PaymentSerde;
 import rtp.demo.creditor.domain.rtp.simplified.MessageStatusReport;
 import rtp.demo.creditor.domain.rtp.simplified.serde.MessageStatusReportSerde;
+import rtp.demo.repository.CreditPaymentRepository;
+import rtp.demo.repository.MySqlCreditPaymentRepository;
 
 public class CompletePaymentStream {
 
@@ -39,6 +41,7 @@ public class CompletePaymentStream {
 
 		final Serde<Payment> paymentSerde = new PaymentSerde();
 		final Serde<MessageStatusReport> messageStatusReportSerde = new MessageStatusReportSerde();
+		final CreditPaymentRepository creditPaymentRepository = new MySqlCreditPaymentRepository();
 
 		streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, applicationId);
 		streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -63,6 +66,13 @@ public class CompletePaymentStream {
 
 		LOG.info("Joined stream: ");
 		completedPaymentsStream.print();
+
+		completedPaymentsStream.foreach((key, value) -> {
+			LOG.info("Updating Payment: " + key);
+			Payment debitPayment = creditPaymentRepository.getPaymentByPaymentKey(key);
+			debitPayment.setStatus("COMPLETED");
+			creditPaymentRepository.updatePayment(debitPayment);
+		});
 
 		completedPaymentsStream.to(completedPaymentsTopic);
 
