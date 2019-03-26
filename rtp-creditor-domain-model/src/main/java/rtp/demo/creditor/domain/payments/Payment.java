@@ -46,7 +46,7 @@ public class Payment implements Serializable {
 	private String settlementMethod;
 	@Column(name = "DEBTOR_ID", unique = false, nullable = false, length = 256)
 	private String debtorId;
-	@Column(name = "DEBTOR_ACCT_NUMBERR", unique = false, nullable = false, length = 256)
+	@Column(name = "DEBTOR_ACCT_NUMBER", unique = false, nullable = false, length = 256)
 	private String debtorAccountNumber;
 	@Column(name = "CREDITOR_ID", unique = false, nullable = false, length = 256)
 	private String creditorId;
