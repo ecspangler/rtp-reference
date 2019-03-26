@@ -24,7 +24,6 @@ import rtp.demo.repository.MySqlDebitPaymentRepository;
 
 import static io.vertx.core.http.HttpHeaders.CONTENT_TYPE;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -49,7 +48,7 @@ public class DebtorPaymentService extends AbstractVerticle {
 		router.get("/*").handler(StaticHandler.create());
 
 		vertx.createHttpServer().requestHandler(router::accept).listen(8080);
-		LOGGER.info("THE HTTP APPLICATION HAS STARTED###");
+		LOGGER.info("THE HTTP APPLICATION HAS STARTED");
 
 		// Populate test payees in the cache, for purposes of the reference example
 		Account testAccount1 = new Account();
@@ -121,7 +120,7 @@ public class DebtorPaymentService extends AbstractVerticle {
 			transaction.setAmount(creditPayment.getAmount());
 			transaction.setCreditDebitCode("CREDIT");
 			transaction.setReceiverFirstName(creditPayment.getReceiverFirstName());
-			// transaction.setReceiverLastName(creditPayment.getReceiverLastName());
+			transaction.setReceiverLastName(creditPayment.getReceiverLastName());
 			transaction.setReceiverEmail(creditPayment.getReceiverEmail());
 			transaction.setReceiverCellPhone(creditPayment.getReceiverCellPhone());
 			transaction.setStatus(creditPayment.getStatus());
