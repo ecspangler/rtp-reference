@@ -17,24 +17,26 @@ var nodes = [
 ]
 
 var edges = [
-    {from: "rtp-debtor-payment-service",           to: "rtp-debtor-send-payment",               topic: "debtor-payments"},
-    {from: "rtp-debtor-payment-service",           to: "rtp-debtor-complete-payment",           topic: "debtor-payments"},
-    {from: "rtp-debtor-send-payment",              to: "rtp-mock", toPart: {col: 1, row: 1},    topic: "mock-rtp-debtor-credit-transfer"},
-    {from: "rtp-mock", fromPart: {col: 1, row: 1}, to: "rtp-creditor-receive-payment",          topic: "mock-rtp-creditor-credit-transfer"},
-    {from: "rtp-mock", fromPart: {col: 1, row: 3}, to: "rtp-creditor-payment-confirmation",     topic: "mock-rtp-creditor-confirmation"},
-    {from: "rtp-mock", fromPart: {col: 1, row: 3}, to: "rtp-debtor-payment-confirmation",       topic: "mock-rtp-debtor-confirmation"},
-    {from: "rtp-creditor-receive-payment",         to: "rtp-creditor-payment-acknowledgement",  topic: "creditor-payments"},
-    {from: "rtp-creditor-receive-payment",         to: "rtp-creditor-complete-payment",         topic: "creditor-payments"},
-    {from: "rtp-creditor-payment-confirmation",    to: "rtp-creditor-complete-payment",         topic: "creditor-payment-confirmation"},
-    {from: "rtp-creditor-payment-acknowledgement", to: "rtp-mock", toPart: {col: 1, row: 2},    topic: "mock-rtp-creditor-acknowledgement"},
-    {from: "rtp-creditor-complete-payment",        to: "rtp-creditor-core-banking",             topic: "creditor-completed-payments"},
-    {from: "rtp-creditor-complete-payment",        to: "rtp-creditor-auditing",                 topic: "creditor-completed-payments"},
-    {from: "rtp-creditor-complete-payment",        to: "rtp-creditor-customer-notification",    topic: "creditor-completed-payments"},
-    {from: "rtp-debtor-payment-confirmation",      to: "rtp-debtor-complete-payment",           topic: "debtor-payment-confirmation"},
-    {from: "rtp-debtor-complete-payment",          to: "rtp-debtor-core-banking",               topic: "debtor-completed-payments"},
-    {from: "rtp-debtor-complete-payment",          to: "rtp-debtor-auditing",                   topic: "debtor-completed-payments"},
-    {from: "rtp-debtor-complete-payment",          to: "rtp-debtor-customer-notification",      topic: "debtor-completed-payments"},
+    {from: "rtp-debtor-payment-service",           to: "rtp-debtor-send-payment",               topic: "debtor-payments",                   tree: "root"},
+    {from: "rtp-debtor-payment-service",           to: "rtp-debtor-complete-payment",           topic: "debtor-payments",                   tree: "root"},
+    {from: "rtp-debtor-send-payment",              to: "rtp-mock", toPart: {col: 1, row: 1},    topic: "mock-rtp-debtor-credit-transfer",   tree: "internal"},
+    {from: "rtp-mock", fromPart: {col: 1, row: 1}, to: "rtp-creditor-receive-payment",          topic: "mock-rtp-creditor-credit-transfer", tree: "internal"},
+    {from: "rtp-mock", fromPart: {col: 1, row: 3}, to: "rtp-creditor-payment-confirmation",     topic: "mock-rtp-creditor-confirmation",    tree: "internal"},
+    {from: "rtp-mock", fromPart: {col: 1, row: 3}, to: "rtp-debtor-payment-confirmation",       topic: "mock-rtp-debtor-confirmation",      tree: "internal"},
+    {from: "rtp-creditor-receive-payment",         to: "rtp-creditor-payment-acknowledgement",  topic: "creditor-payments",                 tree: "internal"},
+    {from: "rtp-creditor-receive-payment",         to: "rtp-creditor-complete-payment",         topic: "creditor-payments",                 tree: "internal"},
+    {from: "rtp-creditor-payment-confirmation",    to: "rtp-creditor-complete-payment",         topic: "creditor-payment-confirmation",     tree: "internal"},
+    {from: "rtp-creditor-payment-acknowledgement", to: "rtp-mock", toPart: {col: 1, row: 2},    topic: "mock-rtp-creditor-acknowledgement", tree: "internal"},
+    {from: "rtp-creditor-complete-payment",        to: "rtp-creditor-core-banking",             topic: "creditor-completed-payments",       tree: "leaf"},
+    {from: "rtp-creditor-complete-payment",        to: "rtp-creditor-auditing",                 topic: "creditor-completed-payments",       tree: "leaf"},
+    {from: "rtp-creditor-complete-payment",        to: "rtp-creditor-customer-notification",    topic: "creditor-completed-payments",       tree: "leaf"},
+    {from: "rtp-debtor-payment-confirmation",      to: "rtp-debtor-complete-payment",           topic: "debtor-payment-confirmation",       tree: "leaf"},
+    {from: "rtp-debtor-complete-payment",          to: "rtp-debtor-core-banking",               topic: "debtor-completed-payments",         tree: "leaf"},
+    {from: "rtp-debtor-complete-payment",          to: "rtp-debtor-auditing",                   topic: "debtor-completed-payments",         tree: "leaf"},
+    {from: "rtp-debtor-complete-payment",          to: "rtp-debtor-customer-notification",      topic: "debtor-completed-payments",         tree: "leaf"},
 ]
+
+edges.forEach(edge => edge.events = {})
 
 let width = 150;
 let height = 100;
@@ -100,7 +102,7 @@ function messageAt(messageId, nodeId, nodePart) {
         .attr("transform", `translate(${x}, ${y})`)
 }
 
-function moveMessage(messageId, edge) {
+function moveMessage(messageId, edge, doneCb) {
     let fromNode = messageAt(messageId, edge.from, edge.fromPart)
     fromNode.transition()
         .duration(500)
@@ -113,6 +115,8 @@ function moveMessage(messageId, edge) {
             let endY = calculateYCoordinateOnRect(edge.to, edge.toPart) - 13
             return t => `translate(${(1-t)*startX + t*endX}, ${(1-t)*startY + t*endY})`
         })
+        .attrTween("data-transitioned", () => t => !(!!(t - 1) && true))
+        .on("end", doneCb)
 }
 
 
@@ -209,6 +213,7 @@ function fit(selection, padding) {
 // Enable this when running locally and hitting a remote REST endpoint.
 // let root = "http://rtp-flow-viz-service-rtp-reference.192.168.42.144.nip.io";
 let root = "";
+let events = new Map()
 let loop = () => {
     // TODO: Re-enable this when I can figure out how to get long polling working in Vertx
     // fetch(root + "/events?poll=long")
@@ -217,14 +222,55 @@ let loop = () => {
         .then(data => {
             data.forEach(event => {
                 let eventEdges = edges.filter(edge => edge.topic === event.location)
-                if (eventEdges.length > 1) {
-                    let eventEdge = eventEdges[0]
-                    // messageAt(event.messageId, eventEdge.to)
-                    moveMessage(event.messageId, eventEdge)
-                }
+                eventEdges.forEach(edge => {
+                    event.transitioned = false
+                    edge.events[event.correlationId]= event
+                    if (edge.tree === "root") {
+                        moveRootAndChildren(event, edge)
+                    } else if (edge.tree === "leaf") {
+                        setParentCb(event, edge, setTimeout(() => {
+                            d3.select(`#${event.correlationId}.${edge.from}.${edge.to}`).remove()
+                        }, 2))
+                    } else {
+                        setParentCb(event, edge, () => {
+                            moveRootAndChildren(event, edge)
+                        })
+                    }
+                })
             })
         })
         .finally(() => setTimeout(loop,2000))
 }
 setTimeout(loop, 1)
 
+function moveRootAndChildren(event, edge) {
+    moveMessage(`${event.correlationId}.${edge.from}.${edge.to}`, edge, () => {
+        let childEdges = edges.filter(childEdge => childEdge && edge.to === childEdge.from && !!childEdge.events[event.correlationId])
+        if (childEdges.length > 0) {
+            childEdges.forEach(childEdge => {
+                let child = childEdge.events[event.correlationId]
+                d3.select(`#${event.correlationId}.${edge.from}.${edge.to}`).remove()
+                moveRootAndChildren(event, child)
+                edge.events.delete(event.correlationId)
+            })
+        }
+    })
+}
+
+function setParentCb(event, edge, afterMoveCb) {
+    let parentEdges = edges.filter(parentEdge => parentEdge && edge.from === parentEdge.to && !!parentEdge.events[event.correlationId])
+    if (parentEdges.length > 0){
+        let parentEdge = parentEdges[0]
+        let parent = parentEdge.events[event.correlationId]
+        let parentDomNode = d3.select(`#${event.correlationId}.${parent.from}.${parent.to}`)
+        if (parentDomNode.node() && parentDomNode.attr("data-transitioned") === "false") {
+            parentDomNode.transition().on("end", () => {
+                parentDomNode.remove()
+                parentEdge.events.delete(event.correlationId)
+                moveMessage(`${event.correlationId}.${edge.from}.${edge.to}`, edge, afterMoveCb(event, edge))
+            })
+        } else if (parentDomNode && parentDomNode.attr("data-transitioned") === "true") {
+            moveMessage(`${event.correlationId}.${edge.from}.${edge.to}`, edge, afterMoveCb(event, edge))
+        }
+    }
+}
