@@ -228,9 +228,11 @@ let loop = () => {
                     if (edge.tree === "root") {
                         moveRootAndChildren(event, edge)
                     } else if (edge.tree === "leaf") {
-                        setParentCb(event, edge, setTimeout(() => {
-                            d3.select(`#${event.correlationId}.${edge.from}.${edge.to}`).remove()
-                        }, 2000))
+                        setParentCb(event, edge, () => {
+                            setTimeout(() => {
+                                d3.select(`#${event.correlationId}_${edge.from}_${edge.to}`).remove()
+                            }, 2000)
+                        })
                     } else {
                         setParentCb(event, edge, () => {
                             moveRootAndChildren(event, edge)
@@ -244,12 +246,12 @@ let loop = () => {
 setTimeout(loop, 1)
 
 function moveRootAndChildren(event, edge) {
-    moveMessage(`${event.correlationId}.${edge.from}.${edge.to}`, edge, () => {
+    moveMessage(`${event.correlationId}_${edge.from}_${edge.to}`, edge, () => {
         let childEdges = edges.filter(childEdge => childEdge && edge.to === childEdge.from && !!childEdge.events[event.correlationId])
         if (childEdges.length > 0) {
             childEdges.forEach(childEdge => {
                 let child = childEdge.events[event.correlationId]
-                d3.select(`#${event.correlationId}.${edge.from}.${edge.to}`).remove()
+                d3.select(`#${event.correlationId}_${edge.from}_${edge.to}`).remove()
                 moveRootAndChildren(child, childEdge)
                 edge.events[event.correlationId] = undefined
             })
@@ -262,15 +264,17 @@ function setParentCb(event, edge, afterMoveCb) {
     if (parentEdges.length > 0){
         let parentEdge = parentEdges[0]
         let parent = parentEdge.events[event.correlationId]
-        let parentDomNode = d3.select(`#${event.correlationId}.${parent.from}.${parent.to}`)
+        let parentDomNode = d3.select(`#${event.correlationId}_${parent.from}_${parent.to}`)
         if (parentDomNode.node() && parentDomNode.attr("data-transitioned") === "false") {
             parentDomNode.transition().on("end", () => {
                 parentDomNode.remove()
                 parentEdge.events[event.correlationId] = undefined
-                moveMessage(`${event.correlationId}.${edge.from}.${edge.to}`, edge, afterMoveCb(event, edge))
+                moveMessage(`${event.correlationId}_${edge.from}_${edge.to}`, edge, afterMoveCb(event, edge))
             })
         } else if (parentDomNode.node() && parentDomNode.attr("data-transitioned") === "true") {
-            moveMessage(`${event.correlationId}.${edge.from}.${edge.to}`, edge, afterMoveCb(event, edge))
+            parentDomNode.remove()
+            parentEdge.events[event.correlationId] = undefined
+            moveMessage(`${event.correlationId}_${edge.from}_${edge.to}`, edge, afterMoveCb(event, edge))
         }
     }
 }
