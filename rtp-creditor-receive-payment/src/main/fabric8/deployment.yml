@@ -29,3 +29,9 @@ spec:
             value: rtp-creditor-receive-payment
           - name: ACKS
             value: 1
+          - name: DATABASE_URL
+            value: "jdbc:mysql://mysql-56-rhel7:3306/rtpdb?autoReconnect=true"
+          - name: DATABASE_USER
+            value: dbuser
+          - name: DATABASE_PASS
+            value: dbpass

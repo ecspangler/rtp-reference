@@ -60,7 +60,7 @@ public class DebtorPaymentService extends AbstractVerticle {
 
 	private void createPayments(RoutingContext routingContext) {
 		Payments payments = routingContext.getBodyAsJson().mapTo(Payments.class);
-		LOGGER.info("Creating payments!: " + payments);
+		LOGGER.info("Creating payments: " + payments);
 
 		DebtorPaymentsProducer debtorPaymentsProducer = new DebtorPaymentsProducer();
 		payments.getPayments().forEach(payment -> {
