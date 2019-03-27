@@ -57,24 +57,24 @@ public class DebtorPaymentService extends AbstractVerticle {
 		accountRepository.addAccount("walter.law@company.com", testAccount1);
 
 		Account testAccount2 = new Account();
-		testAccount1.setRoutingNumber("020010001");
-		testAccount1.setAccountNumber("asingh");
-		accountRepository.addAccount("andrew.singh@company.com", testAccount2);
+		testAccount2.setRoutingNumber("020010001");
+		testAccount2.setAccountNumber("ashaw");
+		accountRepository.addAccount("abi.shaw@company.com", testAccount2);
 
 		Account testAccount3 = new Account();
-		testAccount1.setRoutingNumber("020010001");
-		testAccount1.setAccountNumber("mkemp");
+		testAccount3.setRoutingNumber("020010001");
+		testAccount3.setAccountNumber("mkemp");
 		accountRepository.addAccount("mary.kemp@company.com", testAccount3);
 
 		Account testAccount4 = new Account();
-		testAccount1.setRoutingNumber("020010001");
-		testAccount1.setAccountNumber("egarcia");
-		accountRepository.addAccount("edward.garcia@mail.io", testAccount4);
+		testAccount4.setRoutingNumber("020010001");
+		testAccount4.setAccountNumber("egarcia");
+		accountRepository.addAccount("edward.garcia@mail.org", testAccount4);
 
 		Account testAccount5 = new Account();
-		testAccount1.setRoutingNumber("020010001");
-		testAccount1.setAccountNumber("sli");
-		accountRepository.addAccount("sam.li@mail.io", testAccount5);
+		testAccount5.setRoutingNumber("020010001");
+		testAccount5.setAccountNumber("syoung");
+		accountRepository.addAccount("sam.young@mail.org", testAccount5);
 
 		LOGGER.info("JDG CACHE: " + accountRepository.toString());
 
