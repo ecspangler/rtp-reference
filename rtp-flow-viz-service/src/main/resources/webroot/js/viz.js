@@ -23,6 +23,7 @@ var edges = [
     {from: "rtp-mock", fromPart: {col: 1, row: 1}, to: "rtp-creditor-receive-payment",          topic: "mock-rtp-creditor-credit-transfer", tree: "internal"},
     {from: "rtp-mock", fromPart: {col: 1, row: 3}, to: "rtp-creditor-payment-confirmation",     topic: "mock-rtp-creditor-confirmation",    tree: "internal"},
     {from: "rtp-mock", fromPart: {col: 1, row: 3}, to: "rtp-debtor-payment-confirmation",       topic: "mock-rtp-debtor-confirmation",      tree: "internal"},
+    {from: "rtp-mock", fromPart: {col: 1, row: 2}, to: "rtp-mock", toPart: {col: 1, row: 3},    topic: "mock-rtp-creditor-acknowledgement", tree: "internal", virtual: true}, // Virtual edge
     {from: "rtp-creditor-receive-payment",         to: "rtp-creditor-payment-acknowledgement",  topic: "creditor-payments",                 tree: "internal"},
     {from: "rtp-creditor-receive-payment",         to: "rtp-creditor-complete-payment",         topic: "creditor-payments",                 tree: "internal"},
     {from: "rtp-creditor-payment-confirmation",    to: "rtp-creditor-complete-payment",         topic: "creditor-payment-confirmation",     tree: "internal"},
@@ -74,7 +75,7 @@ gNode.append("text")
 let gEdges = diagram.append("g")
     .attr("id", "edges")
     .selectAll("line")
-    .data(edges)
+    .data(edges.filter(edge => !edge.virtual))
     .enter()
 
 gEdges.append("line")
@@ -247,7 +248,7 @@ setTimeout(loop, 1)
 
 function moveRootAndChildren(event, edge) {
     moveMessage(`${event.correlationId}_${edge.from}_${edge.to}`, edge, () => {
-        let childEdges = edges.filter(childEdge => childEdge && edge.to === childEdge.from && !!childEdge.events[event.correlationId])
+        let childEdges = edges.filter(childEdge => childEdge && isConnectedTo(edge, childEdge) && !!childEdge.events[event.correlationId])
         if (childEdges.length > 0) {
             childEdges.forEach(childEdge => {
                 let child = childEdge.events[event.correlationId]
@@ -260,7 +261,7 @@ function moveRootAndChildren(event, edge) {
 }
 
 function setParentCb(event, edge, afterMoveCb) {
-    let parentEdges = edges.filter(parentEdge => parentEdge && edge.from === parentEdge.to && !!parentEdge.events[event.correlationId])
+    let parentEdges = edges.filter(parentEdge => parentEdge && isConnectedTo(parentEdge, edge) && !!parentEdge.events[event.correlationId])
     if (parentEdges.length > 0){
         let parentEdge = parentEdges[0]
         let parent = parentEdge.events[event.correlationId]
@@ -278,3 +279,9 @@ function setParentCb(event, edge, afterMoveCb) {
         }
     }
 }
+
+function isConnectedTo(from, to) {
+    return from && to && from.to === to.from && (!(!!from.toPart && !!to.fromPart) || (from.toPart.col === to.fromPart.col && from.toPart.row === to.fromPart.row))
+}
+
+
