@@ -71,7 +71,7 @@ function getTransationRow(item) {
             <div class="item-before stat-status"><div>' + '<i class="fas ' + icon + '"></i>' + '</div></div>\
             <div class="item-inner">\
                 <div class="item-title-row toggle-item">\
-                    <div class="item-title stat-title">' + firstName + ' ' + lastName + '</div>\
+                    <div class="item-title stat-title">' + firstName + '</div>\
                 </div>\
                 <div class="item-subtitle stat-transaction"> Reference no.:' + item.transId + '</div>\
                 <div class="orderdetail">Status: ' + item.status + '</div>\
