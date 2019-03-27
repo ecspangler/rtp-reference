@@ -33,7 +33,7 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.StaticHandler;
-import iso.std.iso._20022.tech.xsd.pacs_008_001.FIToFICustomerCreditTransferV06;
+import iso.std.iso._20022.tech.xsd.pacs_002_001.FIToFIPaymentStatusReportV07;
 import rtp.demo.creditor.domain.rtp.simplified.serde.MessageStatusReportDeserializer;
 import rtp.demo.debtor.domain.model.payment.serde.PaymentDeserializer;
 import rtp.message.model.serde.FIToFICustomerCreditTransferV06Deserializer;
@@ -112,11 +112,11 @@ public class VisualizationService extends AbstractVerticle {
 		String confirmationTopic = "mock-rtp-debtor-confirmation";
 
 		// use consumer for interacting with Apache Kafka
-		io.vertx.kafka.client.consumer.KafkaConsumer<String, FIToFICustomerCreditTransferV06> consumer = io.vertx.kafka.client.consumer.KafkaConsumer
+		io.vertx.kafka.client.consumer.KafkaConsumer<String, FIToFIPaymentStatusReportV07> consumer = io.vertx.kafka.client.consumer.KafkaConsumer
 				.create(vertx, config);
 		consumer.subscribe(confirmationTopic);
 		consumer.handler(record -> {
-			ledgerSumation.addPayment(record.value().getCdtTrfTxInf().get(0).getIntrBkSttlmAmt().getValue());
+			ledgerSumation.addPayment(record.value().getTxInfAndSts().get(0).getOrgnlTxRef().getIntrBkSttlmAmt().getValue());
 		});
 
 		router.get("/events").handler(this::getEvents);
