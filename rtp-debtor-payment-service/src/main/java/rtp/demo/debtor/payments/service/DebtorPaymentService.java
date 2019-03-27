@@ -56,6 +56,12 @@ public class DebtorPaymentService extends AbstractVerticle {
 		testAccount1.setAccountNumber("wlaw");
 		accountRepository.addAccount("wlaw@company.com", testAccount1);
 
+		LOGGER.info("JDG CACHE: " + accountRepository.toString());
+
+		Account retrievedAccount = accountRepository.getAccount("wlaw@company.com");
+
+		LOGGER.info("RETRIEVED ACCT: " + retrievedAccount);
+
 	}
 
 	private void createPayments(RoutingContext routingContext) {

@@ -13,6 +13,7 @@ public class JdgAccountRepository implements AccountRepository {
 
 	public JdgAccountRepository() {
 		accountCache = containerProvider.getBasicCacheContainer().getCache(JDG_CACHE_NAME);
+		System.out.println("CACHE: " + accountCache);
 	}
 
 	@Override
