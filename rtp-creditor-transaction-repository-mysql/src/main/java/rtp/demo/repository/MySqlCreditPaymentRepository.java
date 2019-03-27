@@ -46,6 +46,7 @@ public class MySqlCreditPaymentRepository implements CreditPaymentRepository {
 	@Override
 	public Payment getPayment(BigInteger id) {
 		log.info("Retrieving payment with id: {}", id);
+		session.clear();
 		Transaction transaction = session.beginTransaction();
 
 		Payment payment = (Payment) session.get(Payment.class, id);
@@ -85,6 +86,7 @@ public class MySqlCreditPaymentRepository implements CreditPaymentRepository {
 		log.info("Retrieving all payments by account number");
 		Transaction transaction = session.beginTransaction();
 
+		session.clear();
 		Criteria cr = session.createCriteria(Payment.class);
 		cr.add(Restrictions.eq("creditorAccountNumber", accountNumber));
 		List<Payment> results = cr.list();

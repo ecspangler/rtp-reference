@@ -49,7 +49,7 @@ public class MySqlDebitPaymentRepository implements DebitPaymentRepository {
 	public DebitPayment getPayment(BigInteger id) {
 		log.info("Retrieving payment with id: {}", id);
 //		Transaction transaction = session.beginTransaction();
-
+		session.clear();
 		DebitPayment payment = (DebitPayment) session.get(DebitPayment.class, id);
 
 //		transaction.commit();
@@ -86,7 +86,7 @@ public class MySqlDebitPaymentRepository implements DebitPaymentRepository {
 	public List<DebitPayment> getPayments(String accountNumber) {
 		log.info("Retrieving all payments by account number");
 //		Transaction transaction = session.beginTransaction();
-
+		session.clear();
 		Criteria cr = session.createCriteria(DebitPayment.class);
 		cr.add(Restrictions.eq("senderAccountNumber", accountNumber));
 		List<DebitPayment> results = cr.list();
