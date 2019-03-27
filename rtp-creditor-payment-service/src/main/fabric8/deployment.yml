@@ -10,3 +10,10 @@ spec:
             limits:
               cpu: "1.0"
               memory: 500Mi
+          env:
+          - name: DATABASE_URL
+            value: "jdbc:mysql://mysql-56-rhel7:3306/rtpdb?autoReconnect=true"
+          - name: DATABASE_USER
+            value: dbuser
+          - name: DATABASE_PASS
+            value: dbpass
