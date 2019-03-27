@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "LedgerSumation")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class LedgerSumation {
+public class LedgerSummation {
 
 	private double creditor;
 	private double debitor;
@@ -55,7 +55,7 @@ public class LedgerSumation {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		LedgerSumation other = (LedgerSumation) obj;
+		LedgerSummation other = (LedgerSummation) obj;
 		if (Double.doubleToLongBits(creditor) != Double.doubleToLongBits(other.creditor))
 			return false;
 		if (Double.doubleToLongBits(debitor) != Double.doubleToLongBits(other.debitor))
@@ -65,7 +65,7 @@ public class LedgerSumation {
 
 	@Override
 	public String toString() {
-		return "LedgerSumation [creditor=" + creditor + ", debitor=" + debitor + "]";
+		return "LedgerSummation [creditor=" + creditor + ", debitor=" + debitor + "]";
 	}
 
 }

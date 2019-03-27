@@ -45,7 +45,7 @@ public class VisualizationService extends AbstractVerticle {
 
 	private final BlockingDeque<Event> events = new LinkedBlockingDeque<>();
 	private final List<KafkaConsumer<?, ?>> consumers = new LinkedList<>();
-	private final LedgerSumation ledgerSumation = new LedgerSumation();
+	private final LedgerSummation ledgerSummation = new LedgerSummation();
 
 	private boolean running = true;
 
@@ -100,8 +100,8 @@ public class VisualizationService extends AbstractVerticle {
 				record -> record.value().getGrpHdr().getMsgId(), record -> record.value().getGrpHdr().getMsgId())
 						.start();
 
-		ledgerSumation.setCreditor(1000000);
-		ledgerSumation.setDebitor(1000000);
+		ledgerSummation.setCreditor(1000000);
+		ledgerSummation.setDebitor(1000000);
 
 		Map<String, String> config = new HashMap<>();
 		config.put("bootstrap.servers", System.getenv("BOOTSTRAP_SERVERS"));
@@ -116,11 +116,11 @@ public class VisualizationService extends AbstractVerticle {
 				.create(vertx, config);
 		consumer.subscribe(confirmationTopic);
 		consumer.handler(record -> {
-			ledgerSumation.addPayment(record.value().getAmount();
+			ledgerSummation.addPayment(record.value().getAmount());
 		});
 
 		router.get("/events").handler(this::getEvents);
-		router.get("/sumation-ledger").handler(this::getLedgerSumation);
+		router.get("/summation-ledger").handler(this::getLedgerSummation);
 
 		router.get("/*").handler(StaticHandler.create());
 
@@ -153,9 +153,9 @@ public class VisualizationService extends AbstractVerticle {
 				.putHeader("Access-Control-Allow-Origin", "*").end(Json.encodePrettily(removedEvents));
 	}
 
-	private void getLedgerSumation(RoutingContext routingContext) {
+	private void getLedgerSummation(RoutingContext routingContext) {
 		routingContext.response().putHeader(CONTENT_TYPE, "application/json; charset=utf-8")
-				.putHeader("Access-Control-Allow-Origin", "*").end(Json.encodePrettily(ledgerSumation));
+				.putHeader("Access-Control-Allow-Origin", "*").end(Json.encodePrettily(ledgerSummation));
 	}
 
 	@XmlRootElement(name = "Event")
