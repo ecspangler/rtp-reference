@@ -86,7 +86,7 @@ public class MySqlCreditPaymentRepository implements CreditPaymentRepository {
 		Transaction transaction = session.beginTransaction();
 
 		Criteria cr = session.createCriteria(Payment.class);
-		cr.add(Restrictions.eq("receiverAccountNumber", accountNumber));
+		cr.add(Restrictions.eq("creditorAccountNumber", accountNumber));
 		List<Payment> results = cr.list();
 
 		transaction.commit();

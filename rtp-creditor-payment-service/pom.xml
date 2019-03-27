@@ -41,7 +41,7 @@
     <!-- Project depdencies -->
     <dependency>
       <groupId>rtp.demo</groupId>
-      <artifactId>rtp-debtor-domain-model</artifactId>
+      <artifactId>rtp-creditor-domain-model</artifactId>
       <version>1.0.0.0</version>
     </dependency>
 
@@ -53,13 +53,13 @@
 
     <dependency>
       <groupId>rtp.demo</groupId>
-      <artifactId>rtp-debtor-account-repository-jdg</artifactId>
+      <artifactId>rtp-creditor-account-repository-jdg</artifactId>
       <version>1.0.0.0</version>
     </dependency>
 
     <dependency>
       <groupId>rtp.demo</groupId>
-      <artifactId>rtp-debtor-transaction-repository-mysql</artifactId>
+      <artifactId>rtp-creditor-transaction-repository-mysql</artifactId>
       <version>1.0.0.0</version>
     </dependency>
 
