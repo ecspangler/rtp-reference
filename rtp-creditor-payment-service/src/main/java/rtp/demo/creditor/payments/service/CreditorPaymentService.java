@@ -52,10 +52,8 @@ public class CreditorPaymentService extends AbstractVerticle {
 			transaction.setTransId(creditPayment.getCreditTransferMessageId());
 			transaction.setAmount(creditPayment.getPaymentAmount());
 			transaction.setCreditDebitCode("CREDIT");
-			transaction.setReceiverFirstName(creditPayment.getCreditorAccountNumber());
-			// transaction.setReceiverLastName(creditPayment.getReceiverLastName());
-			// transaction.setReceiverEmail(creditPayment.getReceiverEmail());
-			// transaction.setReceiverCellPhone(creditPayment.getReceiverCellPhone());
+			transaction.setSenderFirstName(creditPayment.getDebtorAccountNumber());
+			transaction.setSenderLastName("");
 			transaction.setStatus(creditPayment.getStatus());
 			transactions.getTransactions().add(transaction);
 		});

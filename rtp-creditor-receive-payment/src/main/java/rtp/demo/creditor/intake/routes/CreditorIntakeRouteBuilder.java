@@ -42,12 +42,24 @@ public class CreditorIntakeRouteBuilder extends RouteBuilder {
 
 		// Populate test data, valid accounts for reference example
 		Account testAccount1 = new Account();
-		testAccount1.setAccountNumber("12000194212199001");
+		testAccount1.setAccountNumber("wlaw");
 		accountRepository.addAccount(testAccount1);
 
 		Account testAccount2 = new Account();
-		testAccount1.setAccountNumber("12000194212199002");
+		testAccount1.setAccountNumber("asingh");
 		accountRepository.addAccount(testAccount2);
+
+		Account testAccount3 = new Account();
+		testAccount1.setAccountNumber("mkemp");
+		accountRepository.addAccount(testAccount3);
+
+		Account testAccount4 = new Account();
+		testAccount1.setAccountNumber("egarcia");
+		accountRepository.addAccount(testAccount4);
+
+		Account testAccount5 = new Account();
+		testAccount1.setAccountNumber("sli");
+		accountRepository.addAccount(testAccount5);
 
 		KafkaComponent kafka = new KafkaComponent();
 		kafka.setBrokers(kafkaBootstrap);
