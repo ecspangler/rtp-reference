@@ -253,7 +253,11 @@ function moveRootAndChildren(event, edge) {
             childEdges.forEach(childEdge => {
                 let child = childEdge.events[event.correlationId]
                 d3.select(`#${event.correlationId}_${edge.from}_${edge.to}`).remove()
-                moveRootAndChildren(child, childEdge)
+                if (!(event.location === "debtor-payments" && edge.to === "rtp-debtor-complete-payment") && !(event.location === "creditor-payments" && edge.to === "rtp-creditor-complete-payment")) {
+                    moveRootAndChildren(child, childEdge)
+                } else {
+
+                }
                 edge.events[event.correlationId] = undefined
             })
         }
