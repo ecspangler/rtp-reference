@@ -309,3 +309,14 @@ setInterval(() => {
     })
 }, 1000)
 
+setInterval(() => {
+    fetch(root + "/summation-ledger")
+        .then(response => response.json())
+        .then(data => {
+            Object.keys(data).forEach(key => {
+                d3.select(`#${key}`)
+                    .text(`$${data[key]}`)
+            })
+        })
+},2000)
+
