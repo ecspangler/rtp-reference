@@ -101,7 +101,7 @@ public class VisualizationService extends AbstractVerticle {
 						.start();
 
 		ledgerSummation.setCreditor(1000000);
-		ledgerSummation.setDebitor(1000000);
+		ledgerSummation.setDebtor(1000000);
 
 		Map<String, String> config = new HashMap<>();
 		config.put("bootstrap.servers", System.getenv("BOOTSTRAP_SERVERS"));
@@ -116,6 +116,7 @@ public class VisualizationService extends AbstractVerticle {
 				.create(vertx, config);
 		consumer.subscribe(confirmationTopic);
 		consumer.handler(record -> {
+			LOGGER.info("Adding $" + record.value().getAmount() + " payment to ledger balance. ");
 			ledgerSummation.addPayment(record.value().getAmount());
 		});
 

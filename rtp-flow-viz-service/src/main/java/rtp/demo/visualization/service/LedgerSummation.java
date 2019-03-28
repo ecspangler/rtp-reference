@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class LedgerSummation {
 
 	private double creditor;
-	private double debitor;
+	private double debtor;
 
 	public double getCreditor() {
 		return creditor;
@@ -21,18 +21,18 @@ public class LedgerSummation {
 		this.creditor = creditor;
 	}
 
-	public double getDebitor() {
-		return debitor;
+	public double getDebtor() {
+		return debtor;
 	}
 
-	public void setDebitor(double debitor) {
-		this.debitor = debitor;
+	public void setDebtor(double debtor) {
+		this.debtor = debtor;
 	}
-	
+
 	public void addPayment(BigDecimal value) {
 		creditor+=value.doubleValue();
-		debitor-=value.doubleValue();
-		
+		debtor-=value.doubleValue();
+
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class LedgerSummation {
 		long temp;
 		temp = Double.doubleToLongBits(creditor);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(debitor);
+		temp = Double.doubleToLongBits(debtor);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
@@ -58,14 +58,14 @@ public class LedgerSummation {
 		LedgerSummation other = (LedgerSummation) obj;
 		if (Double.doubleToLongBits(creditor) != Double.doubleToLongBits(other.creditor))
 			return false;
-		if (Double.doubleToLongBits(debitor) != Double.doubleToLongBits(other.debitor))
+		if (Double.doubleToLongBits(debtor) != Double.doubleToLongBits(other.debtor))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "LedgerSummation [creditor=" + creditor + ", debitor=" + debitor + "]";
+		return "LedgerSummation [creditor=" + creditor + ", debtor=" + debtor + "]";
 	}
 
 }

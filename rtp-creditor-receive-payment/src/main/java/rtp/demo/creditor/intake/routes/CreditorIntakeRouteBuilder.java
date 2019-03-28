@@ -46,7 +46,7 @@ public class CreditorIntakeRouteBuilder extends RouteBuilder {
 		accountRepository.addAccount(testAccount1);
 
 		Account testAccount2 = new Account();
-		testAccount1.setAccountNumber("12000194212199002");
+		testAccount2.setAccountNumber("12000194212199002");
 		accountRepository.addAccount(testAccount2);
 
 		KafkaComponent kafka = new KafkaComponent();
