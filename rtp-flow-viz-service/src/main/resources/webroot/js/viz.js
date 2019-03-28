@@ -105,7 +105,7 @@ function messageAt(messageId, nodeId, nodePart) {
 
 function moveMessage(messageId, edge, doneCb) {
     let fromNode = messageAt(messageId, edge.from, edge.fromPart)
-    fromNode.transition()
+    return fromNode.transition()
         .duration(500)
         .attrTween("transform", function(datum) {
             // TODO: find out how to filter the elements in `this.transform.baseVal` to get just the `translate` transformations
@@ -258,7 +258,7 @@ function moveRootAndChildren(event, edge) {
                 } else {
 
                 }
-                edge.events[event.correlationId] = undefined
+                delete edge.events[event.correlationId]
             })
         }
     })
@@ -273,12 +273,12 @@ function setParentCb(event, edge, afterMoveCb) {
         if (parentDomNode.node() && parentDomNode.attr("data-transitioned") === "false") {
             parentDomNode.transition().on("end", () => {
                 parentDomNode.remove()
-                parentEdge.events[event.correlationId] = undefined
+                delete parentEdge.events[event.correlationId]
                 moveMessage(`${event.correlationId}_${edge.from}_${edge.to}`, edge, afterMoveCb(event, edge))
             })
         } else if (parentDomNode.node() && parentDomNode.attr("data-transitioned") === "true") {
             parentDomNode.remove()
-            parentEdge.events[event.correlationId] = undefined
+            delete parentEdge.events[event.correlationId]
             moveMessage(`${event.correlationId}_${edge.from}_${edge.to}`, edge, afterMoveCb(event, edge))
         }
     }
@@ -288,4 +288,24 @@ function isConnectedTo(from, to) {
     return from && to && from.to === to.from && (!(!!from.toPart && !!to.fromPart) || (from.toPart.col === to.fromPart.col && from.toPart.row === to.fromPart.row))
 }
 
+times = {}
+setInterval(() => {
+
+    edges.forEach(edge => {
+
+        Object.keys(edge.events).forEach(key => {
+            if (times[`#${edge.events[key].correlationId}_${edge.from}_${edge.to}`] === undefined) {
+                times[`#${edge.events[key].correlationId}_${edge.from}_${edge.to}`] = 1
+            } else if (times[`#${edge.events[key].correlationId}_${edge.from}_${edge.to}`] > 3) {
+
+                let parentDomNode = d3.select(`#${edge.events[key].correlationId}_${edge.from}_${edge.to}`)
+                if (parentDomNode.node())
+                    parentDomNode.remove()
+                delete edge.events[key]
+            } else {
+                times[`#${edge.events[key].correlationId}_${edge.from}_${edge.to}`]++
+            }
+        })
+    })
+}, 1000)
 
