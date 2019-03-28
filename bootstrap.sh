@@ -161,6 +161,8 @@ printf "Loading create_debtor_credit_payment.sql\n"
 mysql -w --host localhost -P 3306 --protocol tcp -u dbuser -D rtpdb -pdbpass < ./rtp-debtor-transaction-repository-mysql/src/main/resources/database-scripts/create_debtor_credit_payment.sql
 printf "Loading create_debtor_debit_payment.sql\n"
 mysql --host localhost -P 3306 --protocol tcp -u dbuser -D rtpdb -pdbpass < ./rtp-debtor-transaction-repository-mysql/src/main/resources/database-scripts/create_debtor_debit_payment.sql
+printf "Loading create_creditor_debit_payment.sql\n"
+mysql --host localhost -P 3306 --protocol tcp -u dbuser -D rtpdb -pdbpass < ./rtp-creditor-transaction-repository-mysql/src/main/resources/database-scripts/create_creditor_credit_payment.sql
 kill $cpid
 trap - EXIT
 
