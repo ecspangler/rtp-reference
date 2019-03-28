@@ -177,7 +177,9 @@ for dependency in \
     rtp-creditor-domain-model \
     rtp-creditor-validation-model \
     rtp-creditor-account-repository \
-    rtp-creditor-account-repository-jdg ;
+    rtp-creditor-account-repository-jdg \
+    rtp-creditor-transaction-repository \
+    rtp-creditor-transaction-repository-mysql;
 do
     printf "Building $dependency\n"
     cd $dependency
