@@ -24,7 +24,6 @@ import rtp.demo.repository.MySqlDebitPaymentRepository;
 
 import static io.vertx.core.http.HttpHeaders.CONTENT_TYPE;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -54,8 +53,14 @@ public class DebtorPaymentService extends AbstractVerticle {
 		// Populate test payees in the cache, for purposes of the reference example
 		Account testAccount1 = new Account();
 		testAccount1.setRoutingNumber("020010001");
-		testAccount1.setAccountNumber("12000194212199001");
-		accountRepository.addAccount("alopez@company.com", testAccount1);
+		testAccount1.setAccountNumber("wlaw");
+		accountRepository.addAccount("wlaw@company.com", testAccount1);
+
+		LOGGER.info("JDG CACHE: " + accountRepository.toString());
+
+		Account retrievedAccount = accountRepository.getAccount("wlaw@company.com");
+
+		LOGGER.info("RETRIEVED ACCT: " + retrievedAccount);
 
 	}
 
@@ -73,7 +78,7 @@ public class DebtorPaymentService extends AbstractVerticle {
 				// Payment key generated based on timestamp for the reference example
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
 				LocalDateTime now = LocalDateTime.now();
-				payment.setPaymentId("ABCBANK" + formatter.format(now));
+				payment.setPaymentId("KEYFORTHBANK" + formatter.format(now));
 
 				debtorPaymentsProducer.sendMessage(payment.getPaymentId(), payment);
 				debitPaymentRepository.addPayment(new DebitPayment(payment));
@@ -91,7 +96,6 @@ public class DebtorPaymentService extends AbstractVerticle {
 
 		response.end(Json.encode(payments));
 	}
-
 
 	private void getTransactionsByAccount(RoutingContext routingContext) {
 		TransactionsRequest transactionsRequest = routingContext.getBodyAsJson().mapTo(TransactionsRequest.class);
@@ -120,7 +124,7 @@ public class DebtorPaymentService extends AbstractVerticle {
 			Transaction transaction = new Transaction();
 			transaction.setTransId(creditPayment.getPaymentId());
 			transaction.setAmount(creditPayment.getAmount());
-			transaction.setCreditDebitCode("DEBIT");
+			transaction.setCreditDebitCode("CREDIT");
 			transaction.setReceiverFirstName(creditPayment.getReceiverFirstName());
 			transaction.setReceiverLastName(creditPayment.getReceiverLastName());
 			transaction.setReceiverEmail(creditPayment.getReceiverEmail());
@@ -134,4 +138,5 @@ public class DebtorPaymentService extends AbstractVerticle {
 		routingContext.response().putHeader(CONTENT_TYPE, "application/json; charset=utf-8")
 				.putHeader("Access-Control-Allow-Origin", "*").end(Json.encodePrettily(transactions));
 	}
+
 }

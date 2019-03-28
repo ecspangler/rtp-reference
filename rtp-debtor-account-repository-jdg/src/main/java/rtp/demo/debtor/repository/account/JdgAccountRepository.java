@@ -17,7 +17,7 @@ public class JdgAccountRepository implements AccountRepository {
 
 	@Override
 	public void addAccount(String key, Account account) {
-		accountCache.put(key, account);
+		accountCache.put(AccountManager.encode(key), account);
 	}
 
 	@Override

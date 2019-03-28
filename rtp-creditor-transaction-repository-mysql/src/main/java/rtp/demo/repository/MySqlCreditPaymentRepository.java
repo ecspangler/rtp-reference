@@ -10,18 +10,18 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
-import rtp.demo.debtor.domain.model.payment.DebitPayment;
-import rtp.demo.repository.DebitPaymentRepository;
+import rtp.demo.creditor.domain.payments.Payment;
+import rtp.demo.repository.CreditPaymentRepository;
 import rtp.demo.repository.util.HibernateUtil;
 
-public class MySqlDebitPaymentRepository implements DebitPaymentRepository {
+public class MySqlCreditPaymentRepository implements CreditPaymentRepository {
 
-	private static final Logger log = LogManager.getLogger(MySqlDebitPaymentRepository.class);
+	private static final Logger log = LogManager.getLogger(MySqlCreditPaymentRepository.class);
 
 	protected Session session = HibernateUtil.getHibernateSession();
 
 	@Override
-	public void addPayment(DebitPayment payment) {
+	public void addPayment(Payment payment) {
 		// In a real application the full object would not be logged at info level
 		log.info("Saving payment: {}", payment);
 
@@ -32,32 +32,31 @@ public class MySqlDebitPaymentRepository implements DebitPaymentRepository {
 	}
 
 	@Override
-	public List<DebitPayment> getAllPayments() {
+	public List<Payment> getAllPayments() {
 		log.info("Retrieving all payments");
+		Transaction transaction = session.beginTransaction();
 
-//		Tried disabling commits for reads to fix the DB issue.
-//		Transaction transaction = session.beginTransaction();
+		Criteria cr = session.createCriteria(Payment.class);
+		List<Payment> results = cr.list();
 
-		Criteria cr = session.createCriteria(DebitPayment.class);
-		List<DebitPayment> results = cr.list();
-
-//		transaction.commit();
+		transaction.commit();
 		return results;
 	}
 
 	@Override
-	public DebitPayment getPayment(BigInteger id) {
+	public Payment getPayment(BigInteger id) {
 		log.info("Retrieving payment with id: {}", id);
-//		Transaction transaction = session.beginTransaction();
 		session.clear();
-		DebitPayment payment = (DebitPayment) session.get(DebitPayment.class, id);
+		Transaction transaction = session.beginTransaction();
 
-//		transaction.commit();
+		Payment payment = (Payment) session.get(Payment.class, id);
+
+		transaction.commit();
 		return payment;
 	}
 
 	@Override
-	public void updatePayment(DebitPayment payment) {
+	public void updatePayment(Payment payment) {
 		// In a real application the full object would not be logged at info level
 		log.info("Updating payment: {}", payment);
 		Transaction transaction = session.beginTransaction();
@@ -68,7 +67,7 @@ public class MySqlDebitPaymentRepository implements DebitPaymentRepository {
 	}
 
 	@Override
-	public void deletePayment(DebitPayment payment) {
+	public void deletePayment(Payment payment) {
 		// In a real application the full object would not be logged at info level
 		log.info("Deleting payment: {}", payment);
 		Transaction transaction = session.beginTransaction();
@@ -83,33 +82,34 @@ public class MySqlDebitPaymentRepository implements DebitPaymentRepository {
 	}
 
 	@Override
-	public List<DebitPayment> getPayments(String accountNumber) {
+	public List<Payment> getPayments(String accountNumber) {
 		log.info("Retrieving all payments by account number");
-//		Transaction transaction = session.beginTransaction();
-		session.clear();
-		Criteria cr = session.createCriteria(DebitPayment.class);
-		cr.add(Restrictions.eq("senderAccountNumber", accountNumber));
-		List<DebitPayment> results = cr.list();
+		Transaction transaction = session.beginTransaction();
 
-//		transaction.commit();
+		session.clear();
+		Criteria cr = session.createCriteria(Payment.class);
+		cr.add(Restrictions.eq("creditorAccountNumber", accountNumber));
+		List<Payment> results = cr.list();
+
+		transaction.commit();
 		return results;
 	}
 
 	@Override
-	public DebitPayment getPaymentByPaymentKey(String paymentKey) {
+	public Payment getPaymentByPaymentKey(String paymentKey) {
 		log.info("Retrieving payment by payment key: " + paymentKey);
-//		Transaction transaction = session.beginTransaction();
+		Transaction transaction = session.beginTransaction();
 
-		Criteria cr = session.createCriteria(DebitPayment.class);
-		cr.add(Restrictions.eq("paymentId", paymentKey));
-		List<DebitPayment> results = cr.list();
-		DebitPayment result = null;
+		Criteria cr = session.createCriteria(Payment.class);
+		cr.add(Restrictions.eq("creditTransferMessageId", paymentKey));
+		List<Payment> results = cr.list();
+		Payment result = null;
 
 		if (results != null) {
 			result = results.get(0);
 		}
 
-//		transaction.commit();
+		transaction.commit();
 
 		return result;
 	}

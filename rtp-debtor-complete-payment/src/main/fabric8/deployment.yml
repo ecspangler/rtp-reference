@@ -24,7 +24,7 @@ spec:
             - name: CLIENT_ID
               value: debtor-complete-payment-client
             - name: DATABASE_URL
-              value: "jdbc:mysql://mysql-56-rhel7:3306/rtpdb"
+              value: "jdbc:mysql://mysql-56-rhel7:3306/rtpdb?autoReconnect=true"
             - name: DATABASE_USER
               value: dbuser
             - name: DATABASE_PASS
