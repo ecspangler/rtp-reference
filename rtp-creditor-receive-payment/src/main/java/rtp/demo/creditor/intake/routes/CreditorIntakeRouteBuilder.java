@@ -34,20 +34,31 @@ public class CreditorIntakeRouteBuilder extends RouteBuilder {
 	private String consumerGroup = System.getenv("CONSUMER_GROUP");
 
 	private AccountRepository accountRepository = new JdgAccountRepository();
-	private CreditPaymentRepository creditPaymentRepoistory = new MySqlCreditPaymentRepository();
 
 	@Override
 	public void configure() throws Exception {
 		LOG.info("Configuring Creditor Intake Routes");
 
-		// Populate test data, valid accounts for reference example
+		// Populate test data, valid accounts for the reference example
 		Account testAccount1 = new Account();
-		testAccount1.setAccountNumber("12000194212199001");
+		testAccount1.setAccountNumber("wlaw");
 		accountRepository.addAccount(testAccount1);
 
 		Account testAccount2 = new Account();
-		testAccount2.setAccountNumber("12000194212199002");
+		testAccount2.setAccountNumber("ashaw");
 		accountRepository.addAccount(testAccount2);
+
+		Account testAccount3 = new Account();
+		testAccount3.setAccountNumber("mkemp");
+		accountRepository.addAccount(testAccount3);
+
+		Account testAccount4 = new Account();
+		testAccount4.setAccountNumber("egarcia");
+		accountRepository.addAccount(testAccount4);
+
+		Account testAccount5 = new Account();
+		testAccount5.setAccountNumber("syoung");
+		accountRepository.addAccount(testAccount5);
 
 		KafkaComponent kafka = new KafkaComponent();
 		kafka.setBrokers(kafkaBootstrap);

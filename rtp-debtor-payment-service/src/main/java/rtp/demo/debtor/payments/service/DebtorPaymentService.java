@@ -54,11 +54,31 @@ public class DebtorPaymentService extends AbstractVerticle {
 		Account testAccount1 = new Account();
 		testAccount1.setRoutingNumber("020010001");
 		testAccount1.setAccountNumber("wlaw");
-		accountRepository.addAccount("wlaw@company.com", testAccount1);
+		accountRepository.addAccount("walter.law@company.com", testAccount1);
+
+		Account testAccount2 = new Account();
+		testAccount2.setRoutingNumber("020010001");
+		testAccount2.setAccountNumber("ashaw");
+		accountRepository.addAccount("abi.shaw@company.com", testAccount2);
+
+		Account testAccount3 = new Account();
+		testAccount3.setRoutingNumber("020010001");
+		testAccount3.setAccountNumber("mkemp");
+		accountRepository.addAccount("mary.kemp@company.com", testAccount3);
+
+		Account testAccount4 = new Account();
+		testAccount4.setRoutingNumber("020010001");
+		testAccount4.setAccountNumber("egarcia");
+		accountRepository.addAccount("edward.garcia@mail.org", testAccount4);
+
+		Account testAccount5 = new Account();
+		testAccount5.setRoutingNumber("020010001");
+		testAccount5.setAccountNumber("syoung");
+		accountRepository.addAccount("sam.young@mail.org", testAccount5);
 
 		LOGGER.info("JDG CACHE: " + accountRepository.toString());
 
-		Account retrievedAccount = accountRepository.getAccount("wlaw@company.com");
+		Account retrievedAccount = accountRepository.getAccount("walterlaw@company.com");
 
 		LOGGER.info("RETRIEVED ACCT: " + retrievedAccount);
 
