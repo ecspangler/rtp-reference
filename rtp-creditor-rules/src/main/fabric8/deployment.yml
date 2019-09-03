@@ -1,0 +1,37 @@
+spec:
+  template:
+    spec:
+      containers:
+        - 
+          resources:
+            requests:
+              cpu: "0.2"
+              memory: 1Gi
+            limits:
+              cpu: "1.0"
+              memory: 1Gi
+          env:
+          - name: SPRING_APPLICATION_JSON
+            value: '{"server":{"undertow":{"io-threads":1, "worker-threads":2 }}}'
+          - name: BOOTSTRAP_SERVERS
+            value: "rtp-demo-cluster-kafka-bootstrap:9092"
+          - name: CREDIT_TRANS_CREDITOR_TOPIC
+            value: mock-rtp-creditor-credit-transfer
+          - name: CREDITOR_PAYMENTS_TOPIC
+            value: creditor-payments
+          - name: CONSUMER_MAX_POLL_RECORDS
+            value: 500
+          - name: CONSUMER_COUNT
+            value: 1
+          - name: CONSUMER_SEEK_TO
+            value: end
+          - name: CONSUMER_GROUP
+            value: rtp-creditor-receive-payment
+          - name: ACKS
+            value: 1
+          - name: DATABASE_URL
+            value: "jdbc:mysql://mysql-56-rhel7:3306/rtpdb?autoReconnect=true"
+          - name: DATABASE_USER
+            value: dbuser
+          - name: DATABASE_PASS
+            value: dbpass

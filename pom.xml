@@ -20,6 +20,7 @@
     <module>rtp-creditor-customer-notification</module>
     <module>rtp-creditor-domain-model</module>
     <module>rtp-message-model</module>
+    <module>rtp-creditor-rules</module>
     <module>rtp-creditor-transaction-repository</module>
     <module>rtp-creditor-transaction-repository-mysql</module>
     <module>rtp-creditor-payment-acknowledgement</module>
