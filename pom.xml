@@ -19,6 +19,7 @@
     <module>rtp-creditor-core-banking</module>
     <module>rtp-creditor-customer-notification</module>
     <module>rtp-creditor-domain-model</module>
+    <module>rtp-creditor-validation-model</module>
     <module>rtp-message-model</module>
     <module>rtp-creditor-rules</module>
     <module>rtp-creditor-transaction-repository</module>
@@ -27,6 +28,7 @@
     <module>rtp-creditor-payment-confirmation</module>
     <module>rtp-creditor-payment-service</module>
     <module>rtp-creditor-receive-payment</module>
+    <module>rtp-creditor-fraud-detection</module>
     <module>rtp-creditor-validation-model</module>
     <module>rtp-debtor-transaction-repository</module>
     <module>rtp-debtor-transaction-repository-mysql</module>

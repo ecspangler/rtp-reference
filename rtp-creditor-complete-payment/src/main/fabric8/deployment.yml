@@ -16,7 +16,7 @@ spec:
             - name: CREDITOR_COMPLETED_PAYMENTS_TOPIC
               value: creditor-completed-payments
             - name: CREDITOR_PAYMENTS_TOPIC
-              value: creditor-payments
+              value: creditor-processed-payments
             - name: CREDITOR_CONFIRMATION_TOPIC
               value: creditor-payment-confirmation
             - name: APPLICATION_ID

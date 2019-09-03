@@ -215,6 +215,7 @@ for service in \
     rtp-creditor-payment-confirmation \
     rtp-creditor-payment-service \
     rtp-creditor-receive-payment \
+    rtp-creditor-fraud-detection \
     rtp-debtor-auditing \
     rtp-debtor-complete-payment \
     rtp-debtor-core-banking \

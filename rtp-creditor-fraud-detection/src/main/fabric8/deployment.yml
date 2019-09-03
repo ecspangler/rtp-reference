@@ -16,9 +16,9 @@ spec:
           - name: BOOTSTRAP_SERVERS
             value: "rtp-demo-cluster-kafka-bootstrap:9092"
           - name: CREDITOR_PAYMENTS_TOPIC
+            value: creditor-payments
+          - name: CREDITOR_PROCESSED_PAYMENTS_TOPIC
             value: creditor-processed-payments
-          - name: MOCK_RTP_CREDITOR_ACK_TOPIC
-            value: mock-rtp-creditor-acknowledgement
           - name: CONSUMER_MAX_POLL_RECORDS
             value: 500
           - name: CONSUMER_COUNT
@@ -26,6 +26,6 @@ spec:
           - name: CONSUMER_SEEK_TO
             value: end
           - name: CONSUMER_GROUP
-            value: rtp-creditor-payment-acknowledgement
+            value: rtp-creditor-fraud-detection
           - name: ACKS
             value: 1
