@@ -18,10 +18,29 @@ posix_read "Password: " password
 read -p "Email: " email
 
 
-# --- Setup
-minishift start --cpus 4 --disk-size 100GB --memory 12GB
-oc login -u system:admin
-minishift addon apply admin-user
+# --- Minishift Setup
+# minishift start --cpus 4 --disk-size 100GB --memory 12GB
+# oc login -u system:admin
+# minishift addon apply admin-user
+
+sudo yum install mysql -y
+
+sudo yum install java-1.8.0-openjdk -y
+
+wget http://apache.mirrors.tds.net/maven/maven-3/3.6.1/binaries/apache-maven-3.6.1-bin.tar.gz
+tar xvzf apache-maven-3.6.1-bin.tar.gz
+
+#tar xvzf jdk-8u201-linux-x64.tar.gz
+
+#export JAVA_HOME=$home/rtp-reference/jdk1.8.0_201/
+#export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.191.b12-1.el7_6.x86_64
+
+echo $PATH
+export PATH=$PATH:$home/rtp-reference/apache-maven-3.6.1/bin
+
+echo "Installed Maven"
+mvn -v
+
 oc new-project rtp-reference
 
 echo '
