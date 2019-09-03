@@ -56,6 +56,10 @@ public class Payment implements Serializable {
 	private String status = "PENDING";
 	@Column(name = "IS_VALIDATED", unique = false, nullable = false, length = 256)
 	private Boolean isValidated = false;
+	@Column(name = "IS_FRAUD_VALIDATED", unique = false, nullable = false, length = 256)
+	private Boolean isFraudValidated = false;
+	@Column(name = "FRAUD_SCORE", unique = false, nullable = false, length = 256)
+	private BigDecimal fraudScore;
 	@Column(name = "REJECT_REASON_CODE", unique = false, nullable = false, length = 256)
 	private String rejectReasonCode;
 	@Transient
@@ -83,10 +87,20 @@ public class Payment implements Serializable {
 		this.creditorAccountNumber = payment.getCreditorAccountNumber();
 		this.status = payment.getStatus();
 		this.isValidated = payment.getIsValidated();
+		this.isFraudValidated = payment.getIsFraudValidated();
+		this.fraudScore = payment.getFraudScore();
 		this.rejectReasonCode = payment.getRejectReasonCode();
 		this.errors = payment.getErrors();
 		this.status = status;
 		this.messageStatusReportId = messageStatusReport.getMessageStatusReportId();
+	}
+
+	public BigInteger getId() {
+		return id;
+	}
+
+	public void setId(BigInteger id) {
+		this.id = id;
 	}
 
 	public String getCreditTransferMessageId() {
@@ -201,6 +215,22 @@ public class Payment implements Serializable {
 		this.isValidated = isValidated;
 	}
 
+	public Boolean getIsFraudValidated() {
+		return isFraudValidated;
+	}
+
+	public void setIsFraudValidated(Boolean isFraudValidated) {
+		this.isFraudValidated = isFraudValidated;
+	}
+
+	public BigDecimal getFraudScore() {
+		return fraudScore;
+	}
+
+	public void setFraudScore(BigDecimal fraudScore) {
+		this.fraudScore = fraudScore;
+	}
+
 	public String getRejectReasonCode() {
 		return rejectReasonCode;
 	}
@@ -237,6 +267,9 @@ public class Payment implements Serializable {
 		result = prime * result + ((debtorId == null) ? 0 : debtorId.hashCode());
 		result = prime * result + ((endToEndId == null) ? 0 : endToEndId.hashCode());
 		result = prime * result + ((errors == null) ? 0 : errors.hashCode());
+		result = prime * result + ((fraudScore == null) ? 0 : fraudScore.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((isFraudValidated == null) ? 0 : isFraudValidated.hashCode());
 		result = prime * result + ((isValidated == null) ? 0 : isValidated.hashCode());
 		result = prime * result + ((messageStatusReportId == null) ? 0 : messageStatusReportId.hashCode());
 		result = prime * result + ((numberOfTransactions == null) ? 0 : numberOfTransactions.hashCode());
@@ -298,6 +331,21 @@ public class Payment implements Serializable {
 				return false;
 		} else if (!errors.equals(other.errors))
 			return false;
+		if (fraudScore == null) {
+			if (other.fraudScore != null)
+				return false;
+		} else if (!fraudScore.equals(other.fraudScore))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (isFraudValidated == null) {
+			if (other.isFraudValidated != null)
+				return false;
+		} else if (!isFraudValidated.equals(other.isFraudValidated))
+			return false;
 		if (isValidated == null) {
 			if (other.isValidated != null)
 				return false;
@@ -348,14 +396,15 @@ public class Payment implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Payment [creditTransferMessageId=" + creditTransferMessageId + ", paymentInstructionId="
+		return "Payment [id=" + id + ", creditTransferMessageId=" + creditTransferMessageId + ", paymentInstructionId="
 				+ paymentInstructionId + ", endToEndId=" + endToEndId + ", creationDateTime=" + creationDateTime
 				+ ", numberOfTransactions=" + numberOfTransactions + ", paymentAmount=" + paymentAmount
 				+ ", paymentCurrency=" + paymentCurrency + ", settlementMethod=" + settlementMethod + ", debtorId="
 				+ debtorId + ", debtorAccountNumber=" + debtorAccountNumber + ", creditorId=" + creditorId
 				+ ", creditorAccountNumber=" + creditorAccountNumber + ", status=" + status + ", isValidated="
-				+ isValidated + ", rejectReasonCode=" + rejectReasonCode + ", errors=" + errors
-				+ ", messageStatusReportId=" + messageStatusReportId + "]";
+				+ isValidated + ", isFraudValidated=" + isFraudValidated + ", fraudScore=" + fraudScore
+				+ ", rejectReasonCode=" + rejectReasonCode + ", errors=" + errors + ", messageStatusReportId="
+				+ messageStatusReportId + "]";
 	}
 
 }
