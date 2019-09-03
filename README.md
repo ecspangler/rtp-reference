@@ -255,6 +255,7 @@ default schema: rtpdb
 Open a connection to the database and run the DDL scripts located in:
 ```
 rtp-debtor-transaction-repository-mysql/src/main/resources/database-scripts
+rtp-creditor-transaction-repository-mysql/src/main/resources/database-scripts
 ```
 
 
