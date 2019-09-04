@@ -29,7 +29,6 @@
     <module>rtp-creditor-payment-service</module>
     <module>rtp-creditor-receive-payment</module>
     <module>rtp-creditor-fraud-detection</module>
-    <module>rtp-creditor-validation-model</module>
     <module>rtp-debtor-transaction-repository</module>
     <module>rtp-debtor-transaction-repository-mysql</module>
     <module>rtp-debtor-account-repository-jdg</module>
