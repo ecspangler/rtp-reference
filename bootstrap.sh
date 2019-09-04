@@ -12,7 +12,7 @@ posix_read() {
 
 }
 
-printf "Enter your RHN credentials and base directory into which this repository was cloned (these will be used later):\n"
+printf "Enter your RHN credentials and base directory into which the rtp-reference was cloned (these will be used later):\n"
 read -p "Username: " username
 posix_read "Password: " password
 read -p "Email: " email
