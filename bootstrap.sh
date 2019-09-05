@@ -193,6 +193,7 @@ for dependency in \
     rtp-debtor-transaction-repository-mysql \
     rtp-creditor-domain-model \
     rtp-creditor-validation-model \
+    rtp-creditor-rules \
     rtp-creditor-account-repository \
     rtp-creditor-account-repository-jdg \
     rtp-creditor-transaction-repository \
