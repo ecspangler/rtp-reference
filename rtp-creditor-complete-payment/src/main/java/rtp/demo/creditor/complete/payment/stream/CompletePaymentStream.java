@@ -37,10 +37,10 @@ public class CompletePaymentStream {
 
 	public CompletePaymentStream() {
 		LOG.info("Configuring Creditor Payments Stream");
-
+		
 		final Serde<Payment> paymentSerde = new PaymentSerde();
 		final Serde<MessageStatusReport> messageStatusReportSerde = new MessageStatusReportSerde();
-		final CreditPaymentRepository creditPaymentRepository = new MySqlCreditPaymentRepository();
+		CreditPaymentRepository creditPaymentRepository = new MySqlCreditPaymentRepository();
 
 		streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, applicationId);
 		streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -60,20 +60,25 @@ public class CompletePaymentStream {
 				(payment, confirmation) -> new Payment(payment, confirmation, "COMPLETED"),
 				JoinWindows.of(TimeUnit.MINUTES.toMillis(5)), Serdes.String(), paymentSerde, messageStatusReportSerde);
 
-		paymentsStream.print();
-		confirmationsStream.print();
+                try {
+			paymentsStream.print();
+			confirmationsStream.print();
 
-		LOG.info("Joined stream: ");
-		completedPaymentsStream.print();
+			LOG.info("Joined stream: ");
+			completedPaymentsStream.print();
 
-		completedPaymentsStream.foreach((key, value) -> {
-			LOG.info("Updating Payment: " + key);
-			Payment debitPayment = creditPaymentRepository.getPaymentByPaymentKey(key);
-			debitPayment.setStatus("COMPLETED");
-			creditPaymentRepository.updatePayment(debitPayment);
-		});
+			completedPaymentsStream.foreach((key, value) -> {
+				LOG.info("Updating Payment: " + key);
+				Payment debitPayment = creditPaymentRepository.getPaymentByPaymentKey(key);
+				debitPayment.setStatus("COMPLETED");
+				creditPaymentRepository.updatePayment(debitPayment);
+			});
 
-		completedPaymentsStream.to(completedPaymentsTopic);
+			completedPaymentsStream.to(completedPaymentsTopic);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 
 		KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfiguration);
 

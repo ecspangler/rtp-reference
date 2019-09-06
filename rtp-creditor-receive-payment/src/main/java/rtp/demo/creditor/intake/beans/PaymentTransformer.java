@@ -41,8 +41,12 @@ public class PaymentTransformer {
 			payment.setStatus("REJECTED");
 		}
 
-		// TODO: Move this to a more obvious place
-		creditPaymentRepoistory.addPayment(payment);
+                try {
+			// TODO: Move this to a more obvious place
+			creditPaymentRepoistory.addPayment(payment);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		return payment;
 	}
