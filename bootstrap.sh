@@ -200,7 +200,7 @@ oc project rtp-reference
 
 oc new-app -f templates/rhpam72-trial-ephemeral.yaml
 
-until [ "$(oc get pods --selector app=myapp-kieserver -o jsonpath="{.items[0].status.containerStatuses[?(@.name == \"myapp-kieserver\")].ready}" 2> /dev/null)" = "true" ]; do sleep 3; printf "Waiting until KIE server container is ready...\n"; done
+until [ "$(oc get pods --selector app=rhpam72-trial-ephemeral -o jsonpath="{.items[0].status.containerStatuses[?(@.name == \"myapp-kieserver\")].ready}" 2> /dev/null)" = "true" ]; do sleep 3; printf "Waiting until KIE server container is ready...\n"; done
 
 
 cd ../rtp-reference
@@ -247,7 +247,12 @@ for service in \
     rtp-debtor-payment-confirmation \
     rtp-debtor-payment-service \
     rtp-debtor-send-payment \
-    rtp-mock
+    rtp-mock \
+    rtp-creditor-payment-received-glue \
+    rtp-creditor-account-validation-glue \
+    rtp-creditor-fraud-validation-glue \
+    rtp-creditor-complete-case-glue \
+    rtp-creditor-elastic-glue 
 do
     printf "Deploying $service\n"
     cd $service
