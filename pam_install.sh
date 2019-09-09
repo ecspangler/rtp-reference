@@ -20,7 +20,6 @@ oc create -f rhpam72-image-streams.yaml
 oc get imagestreamtag -n openshift | grep rhpam72-businesscentral-openshift
 oc get imagestreamtag -n openshift | grep rhpam72-kieserver-openshift
 
-oc new-project pam-server
-oc project pam-server
+oc project rtp-reference
 
 oc new-app -f templates/rhpam72-trial-ephemeral.yaml 
