@@ -3,10 +3,10 @@
 bc_host=`oc get routes --selector app=rhpam72-trial-ephemeral --selector service=myapp-kieserver -o jsonpath="{.items[0].spec.host}"`
 
 oc create configmap rtp-creditor-pam-url-http-config \
-            --from-literal=BC_PATH="http://${bootstrap}"
+            --from-literal=BC_PATH="http://${bc_host}"
 
 oc create configmap rtp-creditor-pam-url-config \
-            --from-literal=BC_HOST="host=executionUser:Redhat@${bootstrap}"
+            --from-literal=BC_HOST="host=executionUser:Redhat@${bc_host}"
 
 
 oc set env dc/rtp-account-validation-payment-glue --from configmap/rtp-creditor-pam-url-http-config
