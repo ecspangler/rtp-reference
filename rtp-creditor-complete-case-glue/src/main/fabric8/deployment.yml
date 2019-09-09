@@ -24,9 +24,8 @@ spec:
             - name: BC_PATH
               value: http://rhpam7-install-kieserver-rhpam7-install-opentlc-mgr.apps.florida-2e55.open.redhat.com
             - name: BC_USER_NAME
-              value: pamAdmin
+              value: executionUser
             - name: BC_PASSWORD
-              value: redhatpam1!
+              value: RedHat
             - name: ELASTIC_URL
               value: https://elasticsearch-sample-elastic.apps.florida-2e55.open.redhat.com
-

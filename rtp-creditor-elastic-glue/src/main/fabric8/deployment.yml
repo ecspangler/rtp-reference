@@ -28,4 +28,4 @@ spec:
           - name: ACKS
             value: 1
           - name: BC_HOST
-            value: host=pamAdmin:redhatpam1!@rhpam7-install-kieserver-rhpam7-install-opentlc-mgr.apps.florida-2e55.open.redhat.com
+            value: host=executionUser:Redhat@rhpam7-install-kieserver-rhpam7-install-opentlc-mgr.apps.florida-2e55.open.redhat.com
