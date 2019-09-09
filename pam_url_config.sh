@@ -6,7 +6,7 @@ oc create configmap rtp-creditor-pam-url-http-config \
             --from-literal=BC_PATH="http://${bc_host}"
 
 oc create configmap rtp-creditor-pam-url-config \
-            --from-literal=BC_HOST="host=executionUser:Redhat@${bc_host}"
+            --from-literal=BC_HOST="host=executionUser:RedHat@${bc_host}"
 
 
 oc set env dc/rtp-account-validation-payment-glue --from configmap/rtp-creditor-pam-url-http-config
