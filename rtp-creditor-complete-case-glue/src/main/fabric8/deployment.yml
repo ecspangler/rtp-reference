@@ -1,0 +1,32 @@
+spec:
+  template:
+    spec:
+      containers:
+        -
+#          resources:
+#            requests:
+#              cpu: "0.2"
+#              memory: 256Mi
+#            limits:
+#              cpu: "1.0"
+#              memory: 256Mi
+          env:
+            - name: BOOTSTRAP_SERVERS
+              value: "rtp-demo-cluster-kafka-bootstrap:9092"
+            - name: CREDITOR_PAYMENTS_TOPIC
+              value: creditor-completed-payments
+            - name: CASE_ID_GLUE
+              value: rtp-case-list
+            - name: APPLICATION_ID
+              value: complete-glue
+            - name: CLIENT_ID
+              value: complete-glue
+            - name: BC_PATH
+              value: http://rhpam7-install-kieserver-rhpam7-install-opentlc-mgr.apps.florida-2e55.open.redhat.com
+            - name: BC_USER_NAME
+              value: pamAdmin
+            - name: BC_PASSWORD
+              value: redhatpam1!
+            - name: ELASTIC_URL
+              value: https://elasticsearch-sample-elastic.apps.florida-2e55.open.redhat.com
+

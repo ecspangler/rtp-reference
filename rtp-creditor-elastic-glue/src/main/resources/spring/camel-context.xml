@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
+  <bean
+    class="rtp.demo.workflow.routes.RtpWorkflowRouteBuilder"
+    id="rtpWorkflowRouteBuilder"/>
+  <camelContext id="camelContext-48c97806-6b36-49d5-b4eb-dcf36b2538a8" xmlns="http://camel.apache.org/schema/spring">
+    <routeBuilder ref="rtpWorkflowRouteBuilder"/>
+  </camelContext>
+</beans>

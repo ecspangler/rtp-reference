@@ -1,0 +1,31 @@
+spec:
+  template:
+    spec:
+      containers:
+        - 
+          resources:
+            requests:
+              cpu: "0.2"
+              memory: 256Mi
+            limits:
+              cpu: "1.0"
+              memory: 256Mi
+          env:
+          - name: SPRING_APPLICATION_JSON
+            value: '{"server":{"undertow":{"io-threads":1, "worker-threads":2 }}}'
+          - name: BOOTSTRAP_SERVERS
+            value: "rtp-demo-cluster-kafka-bootstrap:9092"
+          - name: CREDIT_TRANS_CREDITOR_TOPIC
+            value: rtp-case-file-elastic
+          - name: CONSUMER_MAX_POLL_RECORDS
+            value: 500
+          - name: CONSUMER_COUNT
+            value: 1
+          - name: CONSUMER_SEEK_TO
+            value: end
+          - name: CONSUMER_GROUP
+            value: elstic-glue
+          - name: ACKS
+            value: 1
+          - name: BC_HOST
+            value: host=pamAdmin:redhatpam1!@rhpam7-install-kieserver-rhpam7-install-opentlc-mgr.apps.florida-2e55.open.redhat.com
