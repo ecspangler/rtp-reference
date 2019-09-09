@@ -141,11 +141,18 @@ public class UpdateValidationStatusGlue {
 
 			LOG.info("caseFile" + caseMetrics);
 
-			LinkedHashMap<String,String> map = new Gson().fromJson(caseMetrics,LinkedHashMap.class);
+			LinkedHashMap<String,Object> map = new Gson().fromJson(caseMetrics,LinkedHashMap.class);
 			System.out.println("keyset"+map.keySet());
 
 			caseFile = caseFile.substring(1,caseFile.length()-2);
-			caseFile+=",\"case-started-at\":\""+String.valueOf(map.get("case-started-at"))+"\",\"case-completed-at\":\""+String.valueOf(map.get("case-completed-at"))+"\"";
+
+			Double doubleStarted =(Double)map.get("case-started-at");
+			Double doubleEnded = (Double)map.get("case-completed-at");
+			Double duration = (doubleEnded-doubleStarted)/1000;
+			System.out.println(doubleStarted);
+			String slaViolation = (Double)map.get("case-sla-compliance") == 2.0 ? "Met" : "Violated";
+
+			caseFile+=",\"case-duration\":"+duration+",\"case-sla-complaince\":\""+slaViolation+"\"";
 			System.out.println("{"+caseFile+"}");
 
 			return "{"+caseFile+"}";
