@@ -1,4 +1,4 @@
-package rtp.demo.creditor.validation.steps;
+package rtp.validation.steps;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

@@ -1,4 +1,4 @@
-package rtp.demo.creditor.validation.steps;
+package rtp.validation.steps;
 
 import java.util.ArrayList;
 import java.util.HashSet;
