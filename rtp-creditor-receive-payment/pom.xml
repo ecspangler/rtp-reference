@@ -57,7 +57,7 @@
       <artifactId>rtp-message-model</artifactId>
       <version>1.0.0.0</version>
     </dependency>
-    
+
     <dependency>
       <groupId>rtp.demo</groupId>
       <artifactId>rtp-creditor-rules</artifactId>
@@ -69,7 +69,7 @@
       <artifactId>rtp-creditor-account-repository-jdg</artifactId>
       <version>1.0.0.0</version>
     </dependency>
-    
+
     <dependency>
       <groupId>rtp.demo</groupId>
       <artifactId>rtp-creditor-transaction-repository-mysql</artifactId>
@@ -92,6 +92,11 @@
       <groupId>org.kie</groupId>
       <artifactId>kie-api</artifactId>
       <version>${kie.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-workbench-models-guided-dtable</artifactId>
+      <version>7.23.0.Final-redhat-00003</version>
     </dependency>
 
     <!-- Fuse Camel -->
@@ -257,6 +262,12 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.kie</groupId>
+        <artifactId>kie-maven-plugin</artifactId>
+        <version>7.23.0.Final-redhat-00003</version>
+        <extensions>true</extensions>
       </plugin>
       <plugin>
         <groupId>io.fabric8</groupId>
