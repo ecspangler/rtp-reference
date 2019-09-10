@@ -82,6 +82,12 @@
     </dependency>
 
     <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-workbench-models-guided-dtable</artifactId>
+      <version>7.23.0.Final-redhat-00003</version>
+    </dependency>
+
+    <dependency>
       <groupId>info.cukes</groupId>
       <artifactId>cucumber-junit</artifactId>
       <version>${cucumber.version}</version>
