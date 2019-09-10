@@ -87,11 +87,6 @@
       <artifactId>kie-api</artifactId>
       <version>${kie.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.drools</groupId>
-      <artifactId>drools-workbench-models-guided-dtable</artifactId>
-      <version>7.23.0.Final-redhat-00003</version>
-    </dependency>
 
     <!-- Fuse Camel -->
     <dependency>
