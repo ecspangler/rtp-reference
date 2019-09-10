@@ -213,13 +213,14 @@ $pvr : PaymentValidationRequest( creditTransferMessage.creditorId != $rtn )</tex
       <definition>
         <org.drools.workbench.models.datamodel.rule.FreeFormLine>
           <text>$accts : Accounts()
-$pvr : PaymentValidationRequest( $payAcct : creditTransferMessage.creditorAccountNumber )</text>
+$pvr : PaymentValidationRequest( $payAcct : creditTransferMessage.creditorAccountNumber )
+not Account( accountNumber == $payAcct ) from $accts.accounts</text>
         </org.drools.workbench.models.datamodel.rule.FreeFormLine>
       </definition>
       <childColumns>
         <org.drools.workbench.models.guided.dtable.shared.model.BRLConditionVariableColumn>
           <hideColumn>false</hideColumn>
-          <width>182</width>
+          <width>100</width>
           <header>CTM Unknown Account</header>
           <constraintValueType>1</constraintValueType>
           <fieldType>Boolean</fieldType>
@@ -414,6 +415,9 @@ $pvr : PaymentValidationRequest( $payAcct : creditTransferMessage.creditorAccoun
       </org.kie.soup.project.datamodel.imports.Import>
       <org.kie.soup.project.datamodel.imports.Import>
         <type>rtp.demo.creditor.validation.wrappers.Accounts</type>
+      </org.kie.soup.project.datamodel.imports.Import>
+      <org.kie.soup.project.datamodel.imports.Import>
+        <type>rtp.demo.creditor.domain.account.Account</type>
       </org.kie.soup.project.datamodel.imports.Import>
     </imports>
   </imports>
