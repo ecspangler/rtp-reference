@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import rtp.demo.creditor.domain.payments.serde.PaymentSerializer;
+import rtp.demo.creditor.fraud.beans.CreditorPaymentFraudDetectionBean;
 import rtp.demo.creditor.domain.payments.serde.PaymentDeserializer;
 
 @Component
@@ -33,11 +34,11 @@ public class CreditorFraudDetectionRouteBuilder extends RouteBuilder {
 
 		from("kafka:" + kafkaCreditorPaymentsTopic + "?brokers=" + kafkaBootstrap + "&maxPollRecords="
 				+ consumerMaxPollRecords + "&consumersCount=" + consumerCount + "&seekTo=" + consumerSeekTo
-				+ "&groupId=" + consumerGroup
-				+ "&valueDeserializer=" + PaymentDeserializer.class.getName())
+				+ "&groupId=" + consumerGroup + "&valueDeserializer=" + PaymentDeserializer.class.getName())
 						.log("\\n/// Creditor Fraud Detection - Sending Payment Message >>> ${body}")
-						.to("kafka:" + kafkaCreditorProcessedPaymentsTopic
-								+ "?serializerClass=" + PaymentSerializer.class.getName());
+						.log(" Fraud detection >>> ${body}").bean(CreditorPaymentFraudDetectionBean.class, "evaluate")
+						.to("kafka:" + kafkaCreditorProcessedPaymentsTopic + "?serializerClass="
+								+ PaymentSerializer.class.getName());
 
 	}
 
