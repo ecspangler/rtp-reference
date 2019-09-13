@@ -87,6 +87,12 @@
       <artifactId>kie-api</artifactId>
       <version>${kie.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-workbench-models-guided-dtable</artifactId>
+      <version>${drools.version}</version>
+    </dependency>
+
 
     <!-- Fuse Camel -->
     <dependency>
@@ -238,6 +244,12 @@
             <exclude>**/*KT.java</exclude>
           </excludes>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.kie</groupId>
+        <artifactId>kie-maven-plugin</artifactId>
+        <version>${kie.version}</version>
+        <extensions>true</extensions>
       </plugin>
 
       <plugin>
