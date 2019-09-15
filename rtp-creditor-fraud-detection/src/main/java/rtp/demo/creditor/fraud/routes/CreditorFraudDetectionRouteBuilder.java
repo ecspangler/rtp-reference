@@ -37,8 +37,8 @@ public class CreditorFraudDetectionRouteBuilder extends RouteBuilder {
 				+ "&groupId=" + consumerGroup + "&valueDeserializer=" + PaymentDeserializer.class.getName())
 						.log("\\n/// Creditor Fraud Detection - Sending Payment Message >>> ${body}")
 						.log(" Fraud detection >>> ${body}").bean(CreditorPaymentFraudDetectionBean.class, "evaluate")
-						.to("kafka:" + kafkaCreditorProcessedPaymentsTopic + "?serializerClass="
-								+ PaymentSerializer.class.getName());
+						.log(" Fraud detected payment >>> ${body}").to("kafka:" + kafkaCreditorProcessedPaymentsTopic
+								+ "?serializerClass=" + PaymentSerializer.class.getName());
 
 	}
 
