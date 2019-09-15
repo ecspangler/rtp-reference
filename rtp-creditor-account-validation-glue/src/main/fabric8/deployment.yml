@@ -22,7 +22,7 @@ spec:
             - name: CLIENT_ID
               value: account-validation-glue
             - name: BC_PATH
-              value: http://rhpam7-install-kieserver-rhpam7-install-opentlc-mgr.apps.florida-2e55.open.redhat.com
+              value: http://myapp-kieserver-rtp-reference.console.keyforth.com
             - name: BC_USER_NAME
               value: executionUser
             - name: BC_PASSWORD

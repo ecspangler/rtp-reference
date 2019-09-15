@@ -67,7 +67,11 @@ public class UpdateValidationStatusGlue {
 		LOG.info("Joined stream: ");
 
 		joined.foreach((key, value) -> {
-			triggerAdhocTask(key, value);
+			try {
+				triggerAdhocTask(key, value);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 		});
 

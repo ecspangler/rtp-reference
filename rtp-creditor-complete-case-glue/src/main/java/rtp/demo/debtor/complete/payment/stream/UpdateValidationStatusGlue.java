@@ -16,7 +16,6 @@ import rtp.demo.debtor.complete.payment.pojo.BusinessCentralTaskInterface;
 import rtp.demo.debtor.complete.payment.pojo.CaseDataTransformer;
 import rtp.demo.debtor.complete.payment.pojo.ElasticInterface;
 
-
 import javax.net.ssl.*;
 import javax.ws.rs.client.WebTarget;
 import java.io.IOException;
@@ -34,9 +33,7 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-
 public class UpdateValidationStatusGlue {
-
 
 	private static final Logger LOG = Logger.getLogger(UpdateValidationStatusGlue.class.getName());
 
@@ -55,9 +52,6 @@ public class UpdateValidationStatusGlue {
 	public UpdateValidationStatusGlue() {
 		LOG.info("Configuring Debtor Payments Stream");
 
-
-
-
 		streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, applicationId);
 		streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 		streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
@@ -70,34 +64,35 @@ public class UpdateValidationStatusGlue {
 				Consumed.with(Serdes.String(), Serdes.String()));
 
 		KStream<String, String> rtpCaseListStream = builder.stream(glueTopic,
-				Consumed.with(Serdes.String(),  Serdes.String()));
+				Consumed.with(Serdes.String(), Serdes.String()));
 
 		KStream<String, String> joined = rtpCaseListStream.join(paymentsStream,
 				(leftValue, rightValue) -> leftValue + "|" + rightValue, /* ValueJoiner */
-				JoinWindows.of(TimeUnit.MINUTES.toMillis(5)),
-				Serdes.String(), /* key */
-				Serdes.String(),   /* left value */
+				JoinWindows.of(TimeUnit.MINUTES.toMillis(5)), Serdes.String(), /* key */
+				Serdes.String(), /* left value */
 				Serdes.String() /* right value */
 		);
-
-
 
 		joined.print();
 
 		LOG.info("Joined stream: ");
 
 		joined.foreach((key, value) -> {
-			triggerAdhocTask(key, value);
-
+			try {
+				triggerAdhocTask(key, value);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		});
+
 		CaseDataTransformer caseDataTransformer = new CaseDataTransformer();
 
-		KStream<String, String> elasticStream = joined.map((k,v) -> new KeyValue<>(v.split("\\|")[0],caseDataTransformer.caseDataForElastic(v)));
+		KStream<String, String> elasticStream = joined
+				.map((k, v) -> new KeyValue<>(v.split("\\|")[0], caseDataTransformer.caseDataForElastic(v)));
 
-		KStream<String, String> caseDataStream = elasticStream.map((k,v) -> new KeyValue<String,String>(k,invokeElasticURL(v)));
+		KStream<String, String> caseDataStream = elasticStream
+				.map((k, v) -> new KeyValue<String, String>(k, invokeElasticURL(v)));
 		caseDataStream.to("rtp-case-file-elastic");
-
-
 
 		KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfiguration);
 
@@ -117,9 +112,10 @@ public class UpdateValidationStatusGlue {
 			BusinessCentralTaskInterface customerProxy = tgt.proxy(BusinessCentralTaskInterface.class);
 			String[] val = value.split("\\|");
 			Payment payment = new Gson().fromJson(val[1], Payment.class);
-			customerProxy.triggerAdhocTask(new Gson().fromJson(val[0], String.class), "{\"caseFile_caseCompleted\":true}");
+			customerProxy.triggerAdhocTask(new Gson().fromJson(val[0], String.class),
+					"{\"caseFile_caseCompleted\":true}");
 			customerProxy.closeCase(new Gson().fromJson(new Gson().fromJson(val[0], String.class), String.class));
-		}catch (Exception e) {
+		} catch (Exception e) {
 			LOG.info(e.getMessage());
 		}
 	}
@@ -138,33 +134,29 @@ public class UpdateValidationStatusGlue {
 			LOG.info("caseFile" + caseFile);
 			String caseMetrics = customerProxy.getCaseMetrics(new Gson().fromJson(val[0], String.class));
 
-
 			LOG.info("caseFile" + caseMetrics);
 
-			LinkedHashMap<String,Object> map = new Gson().fromJson(caseMetrics,LinkedHashMap.class);
-			System.out.println("keyset"+map.keySet());
+			LinkedHashMap<String, Object> map = new Gson().fromJson(caseMetrics, LinkedHashMap.class);
+			System.out.println("keyset" + map.keySet());
 
-			caseFile = caseFile.substring(1,caseFile.length()-2);
+			caseFile = caseFile.substring(1, caseFile.length() - 2);
 
-			Double doubleStarted =(Double)map.get("case-started-at");
-			Double doubleEnded = (Double)map.get("case-completed-at");
-			Double duration = (doubleEnded-doubleStarted)/1000;
+			Double doubleStarted = (Double) map.get("case-started-at");
+			Double doubleEnded = (Double) map.get("case-completed-at");
+			Double duration = (doubleEnded - doubleStarted) / 1000;
 			System.out.println(doubleStarted);
-			String slaViolation = (Double)map.get("case-sla-compliance") == 2.0 ? "Met" : "Violated";
+			String slaViolation = (Double) map.get("case-sla-compliance") == 2.0 ? "Met" : "Violated";
 
-			caseFile+=",\"case-duration\":"+duration+",\"case-sla-complaince\":\""+slaViolation+"\"";
-			System.out.println("{"+caseFile+"}");
+			caseFile += ",\"case-duration\":" + duration + ",\"case-sla-complaince\":\"" + slaViolation + "\"";
+			System.out.println("{" + caseFile + "}");
 
-			return "{"+caseFile+"}";
+			return "{" + caseFile + "}";
 
-
-		}catch (Exception e) {
+		} catch (Exception e) {
 			LOG.info(e.getMessage());
 		}
 		return null;
 	}
-
-
 
 	public void startStream() {
 		LOG.info("Starting Stream");

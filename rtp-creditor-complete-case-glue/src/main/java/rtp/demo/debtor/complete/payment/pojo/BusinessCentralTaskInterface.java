@@ -8,7 +8,7 @@ public interface BusinessCentralTaskInterface {
 	@PUT
 	@Path("/services/rest/server/containers/RTPProcessingEngine_1.0.0-SNAPSHOT/cases/instances/{caseId}/tasks/Acknowledged%20RTP%20Payment%20to%20TCH")
 	@Produces(MediaType.APPLICATION_JSON)
-
+	@Consumes(MediaType.APPLICATION_JSON)
 	public void triggerAdhocTask(@PathParam("caseId") String caseId, String body);
 
 	@POST
