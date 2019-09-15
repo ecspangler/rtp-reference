@@ -43,6 +43,11 @@
     <module>rtp-debtor-send-payment</module>
     <module>rtp-mock</module>
     <module>rtp-flow-viz-service</module>
+    <module>rtp-creditor-account-validation-glue</module>
+    <module>rtp-creditor-complete-case-glue</module>
+    <module>rtp-creditor-elastic-glue</module>
+    <module>rtp-creditor-fraud-validation-glue</module>
+    <module>rtp-creditor-payment-received-glue</module>
   </modules>
 
   <properties>
