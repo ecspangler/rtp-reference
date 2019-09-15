@@ -17,16 +17,12 @@ import org.jboss.resteasy.client.jaxrs.engines.URLConnectionEngine;
 import rtp.demo.creditor.domain.payments.Payment;
 import rtp.demo.debtor.complete.payment.pojo.BusinessCentralTaskInterface;
 
-
-
 import javax.ws.rs.client.WebTarget;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-
 public class UpdateValidationStatusGlue {
-
 
 	private static final Logger LOG = Logger.getLogger(UpdateValidationStatusGlue.class.getName());
 
@@ -45,9 +41,6 @@ public class UpdateValidationStatusGlue {
 	public UpdateValidationStatusGlue() {
 		LOG.info("Configuring Debtor Payments Stream");
 
-
-
-
 		streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, applicationId);
 		streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 		streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
@@ -60,27 +53,26 @@ public class UpdateValidationStatusGlue {
 				Consumed.with(Serdes.String(), Serdes.String()));
 
 		KStream<String, String> rtpCaseListStream = builder.stream(glueTopic,
-				Consumed.with(Serdes.String(),  Serdes.String()));
+				Consumed.with(Serdes.String(), Serdes.String()));
 
 		KStream<String, String> joined = rtpCaseListStream.join(paymentsStream,
 				(leftValue, rightValue) -> leftValue + "|" + rightValue, /* ValueJoiner */
-				JoinWindows.of(TimeUnit.MINUTES.toMillis(5)),
-				Serdes.String(), /* key */
-				Serdes.String(),   /* left value */
+				JoinWindows.of(TimeUnit.MINUTES.toMillis(5)), Serdes.String(), /* key */
+				Serdes.String(), /* left value */
 				Serdes.String() /* right value */
 		);
-
-
 
 		joined.print();
 
 		LOG.info("Joined stream: ");
 
 		joined.foreach((key, value) -> {
-			triggerAdhocTask(key, value);
-
+			try {
+				triggerAdhocTask(key, value);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		});
-
 
 		KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfiguration);
 
@@ -94,15 +86,15 @@ public class UpdateValidationStatusGlue {
 		LOG.info("triggering account validation completion" + key);
 		ResteasyClient client = new ResteasyClientBuilder().httpEngine(new URLConnectionEngine()).build();
 		WebTarget target = client.target(bcPath);
-		ResteasyWebTarget tgt = (ResteasyWebTarget)target;
-		tgt.register(new BasicAuthentication(bcUserName,bcPassword));
+		ResteasyWebTarget tgt = (ResteasyWebTarget) target;
+		tgt.register(new BasicAuthentication(bcUserName, bcPassword));
 		BusinessCentralTaskInterface customerProxy = tgt.proxy(BusinessCentralTaskInterface.class);
 		String[] val = value.split("\\|");
-		Payment payment = new Gson().fromJson(val[1],Payment.class);
-		customerProxy.triggerAdhocTask(new Gson().fromJson(val[0],String.class),"{\"caseFile_fraudValidationComplete\":" +
-				"true, \"caseFile_isFraudValidated\":"+payment.getIsFraudValidated()+"}");
+		Payment payment = new Gson().fromJson(val[1], Payment.class);
+		customerProxy.triggerAdhocTask(new Gson().fromJson(val[0], String.class),
+				"{\"caseFile_fraudValidationComplete\":" + "true, \"caseFile_isFraudValidated\":"
+						+ payment.getIsFraudValidated() + "}");
 	}
-
 
 	public void startStream() {
 		LOG.info("Starting Stream");
