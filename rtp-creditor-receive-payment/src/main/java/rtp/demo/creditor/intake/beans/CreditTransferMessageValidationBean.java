@@ -58,7 +58,12 @@ public class CreditTransferMessageValidationBean {
 		facts.add(validationRequest);
 
 		LOG.info("Incoming Payment Validation Request: " + validationRequest);
-		kSession.execute(facts);
+		try {
+			kSession.execute(facts);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		LOG.info("Outgoing Payment Validation Request: " + validationRequest);
 
 		return validationRequest;
