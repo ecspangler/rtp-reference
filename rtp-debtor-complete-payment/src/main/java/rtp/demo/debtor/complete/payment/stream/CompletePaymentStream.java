@@ -70,7 +70,6 @@ public class CompletePaymentStream {
 		completedPaymentsStream.foreach((key, value) -> {
 			LOG.info("Updating Payment: " + key);
 			DebitPayment debitPayment = debitPaymentRepository.getPaymentByPaymentKey(key);
-			debitPayment.setStatus("COMPLETED");
 			debitPaymentRepository.updatePayment(debitPayment);
 		});
 
