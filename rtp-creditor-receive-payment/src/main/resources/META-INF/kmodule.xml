@@ -1,6 +1,6 @@
-<kmodule xmlns="http://www.drools.org/xsd/kmodule" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<kmodule xmlns="http://www.drools.org/xsd/kmodule">
   <kbase name="payments-validation-kbase" default="true" eventProcessingMode="cloud"
-         packages="rtp.demo">
+         packages="rtp.creditor.validation.rules">
     <ksession name="payments-validation-ksession" type="stateless" default="true"/>
   </kbase>
 </kmodule>

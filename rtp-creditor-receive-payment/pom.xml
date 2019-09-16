@@ -70,12 +70,6 @@
       <version>1.0.0.0</version>
     </dependency>
 
-    <dependency>
-      <groupId>rtp.demo</groupId>
-      <artifactId>rtp-creditor-rules</artifactId>
-      <version>1.0.0.0</version>
-    </dependency>
-
     <!-- Decision Manager -->
     <dependency>
       <groupId>org.kie</groupId>
