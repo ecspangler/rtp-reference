@@ -37,7 +37,7 @@ public class CompletePaymentStream {
 
 	public CompletePaymentStream() {
 		LOG.info("Configuring Creditor Payments Stream");
-		
+
 		final Serde<Payment> paymentSerde = new PaymentSerde();
 		final Serde<MessageStatusReport> messageStatusReportSerde = new MessageStatusReportSerde();
 		CreditPaymentRepository creditPaymentRepository = new MySqlCreditPaymentRepository();
@@ -60,7 +60,8 @@ public class CompletePaymentStream {
 				(payment, confirmation) -> new Payment(payment, confirmation, "COMPLETED"),
 				JoinWindows.of(TimeUnit.MINUTES.toMillis(5)), Serdes.String(), paymentSerde, messageStatusReportSerde);
 
-                try {
+		try {
+
 			paymentsStream.print();
 			confirmationsStream.print();
 
@@ -79,12 +80,13 @@ public class CompletePaymentStream {
 			e.printStackTrace();
 		}
 
-
-		KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfiguration);
-
-		streams.start();
-
-		Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
+		try {
+			KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfiguration);
+			streams.start();
+			Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
