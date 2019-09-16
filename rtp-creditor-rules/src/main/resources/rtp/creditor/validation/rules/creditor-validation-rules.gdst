@@ -421,7 +421,7 @@ not Account( accountNumber == $payAcct ) from $accts.accounts</text>
       </org.kie.soup.project.datamodel.imports.Import>
     </imports>
   </imports>
-  <packageName>rtp.demo</packageName>
+  <packageName>rtp.creditor.validation.rules</packageName>
   <tableFormat>EXTENDED_ENTRY</tableFormat>
   <hitPolicy>NONE</hitPolicy>
   <data>
