@@ -68,8 +68,11 @@ public class CompletePaymentStream {
 		completedPaymentsStream.print();
 
 		completedPaymentsStream.foreach((key, value) -> {
-			LOG.info("Updating Payment: " + key);
+			LOG.info("Updating Payment Key: " + key);
+			LOG.info("Updating Payment: " + value);
+
 			DebitPayment debitPayment = debitPaymentRepository.getPaymentByPaymentKey(key);
+
 			debitPaymentRepository.updatePayment(debitPayment);
 		});
 
