@@ -58,7 +58,7 @@ public class CompletePaymentStream {
 				Consumed.with(Serdes.String(), messageStatusReportSerde));
 
 		KStream<String, Payment> completedPaymentsStream = paymentsStream.join(confirmationsStream,
-				(payment, confirmation) -> new Payment(payment, confirmation, "COMPLETED"),
+				(payment, confirmation) -> new Payment(payment, confirmation),
 				JoinWindows.of(TimeUnit.MINUTES.toMillis(5)), Serdes.String(), paymentSerde, messageStatusReportSerde);
 
 		paymentsStream.print();

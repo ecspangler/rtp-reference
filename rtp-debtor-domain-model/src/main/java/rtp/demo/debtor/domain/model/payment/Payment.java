@@ -80,6 +80,26 @@ public class Payment implements Serializable {
 		this.messageStatusReportId = messageStatusReport.getMessageStatusReportId();
 	}
 
+	public Payment(Payment payment, MessageStatusReport messageStatusReport) {
+		super();
+		this.id = payment.getId();
+		this.paymentId = payment.getPaymentId();
+		this.senderAccountNumber = payment.getSenderAccountNumber();
+		this.amount = payment.getAmount();
+		this.receiverFirstName = payment.getReceiverFirstName();
+		this.receiverLastName = payment.getReceiverLastName();
+		this.receiverCellPhone = payment.getReceiverCellPhone();
+		this.receiverAccountNumber = payment.getReceiverAccountNumber();
+
+		if (!messageStatusReport.getTransactionStatus().equals("ACCP")) {
+			this.status = "REJECTED";
+		} else {
+			this.status = "COMPLETED";
+		}
+
+		this.messageStatusReportId = messageStatusReport.getMessageStatusReportId();
+	}
+
 	public BigInteger getId() {
 		return id;
 	}
