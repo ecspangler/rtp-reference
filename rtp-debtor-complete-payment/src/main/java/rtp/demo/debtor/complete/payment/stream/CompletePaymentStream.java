@@ -61,29 +61,38 @@ public class CompletePaymentStream {
 				(payment, confirmation) -> new Payment(payment, confirmation),
 				JoinWindows.of(TimeUnit.MINUTES.toMillis(5)), Serdes.String(), paymentSerde, messageStatusReportSerde);
 
-		paymentsStream.print();
-		confirmationsStream.print();
+		try {
+			paymentsStream.print();
+			confirmationsStream.print();
 
-		LOG.info("Joined stream: ");
-		completedPaymentsStream.print();
+			LOG.info("Joined stream: ");
+			completedPaymentsStream.print();
 
-		completedPaymentsStream.foreach((key, value) -> {
-			LOG.info("Updating Payment Key: " + key);
-			LOG.info("Updating Payment: " + value);
+			completedPaymentsStream.foreach((key, value) -> {
+				LOG.info("Updating Payment Key: " + key);
+				LOG.info("Updating Payment: " + value);
 
-			DebitPayment debitPayment = debitPaymentRepository.getPaymentByPaymentKey(key);
-			debitPayment.setStatus(value.getStatus());
+				DebitPayment debitPayment = debitPaymentRepository.getPaymentByPaymentKey(key);
+				debitPayment.setStatus(value.getStatus());
 
-			debitPaymentRepository.updatePayment(debitPayment);
-		});
+				debitPaymentRepository.updatePayment(debitPayment);
+			});
 
-		completedPaymentsStream.to(completedPaymentsTopic);
+			completedPaymentsStream.to(completedPaymentsTopic);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-		KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfiguration);
+		try {
 
-		streams.start();
+			KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfiguration);
 
-		Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
+			streams.start();
+
+			Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
