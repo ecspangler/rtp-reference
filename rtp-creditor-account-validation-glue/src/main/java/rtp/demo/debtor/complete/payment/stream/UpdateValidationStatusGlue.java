@@ -14,10 +14,14 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.jboss.resteasy.client.jaxrs.engines.URLConnectionEngine;
+
+import rtp.demo.creditor.domain.error.PaymentValidationError;
 import rtp.demo.creditor.domain.payments.Payment;
 import rtp.demo.debtor.complete.payment.pojo.BusinessCentralTaskInterface;
 
 import javax.ws.rs.client.WebTarget;
+
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -94,9 +98,20 @@ public class UpdateValidationStatusGlue {
 		BusinessCentralTaskInterface customerProxy = tgt.proxy(BusinessCentralTaskInterface.class);
 		String[] val = value.split("\\|");
 		Payment payment = new Gson().fromJson(val[1], Payment.class);
+
+		String validationStatus = "VALID";
+
+		List<PaymentValidationError> errors = payment.getErrors();
+
+		if (!errors.isEmpty()) {
+			PaymentValidationError error = errors.get(0);
+			validationStatus = error.getErrorCode().toString();
+		}
+
 		customerProxy.triggerAdhocTask(new Gson().fromJson(val[0], String.class),
 				"{\"caseFile_accountValidationComplete\":" + "true, \"caseFile_isValidated\":"
-						+ payment.getIsValidated() + "}");
+						+ payment.getIsValidated() + ", \"caseFile_validationStatus\":\""
+						+ payment.getValidationStatus() + "\"}");
 	}
 
 	public void startStream() {

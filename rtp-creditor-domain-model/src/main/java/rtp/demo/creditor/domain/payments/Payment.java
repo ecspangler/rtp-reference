@@ -55,15 +55,17 @@ public class Payment implements Serializable {
 	@Column(name = "PMT_STATUS", unique = false, nullable = false, length = 256)
 	private String status = "PENDING";
 	@Column(name = "IS_VALIDATED", unique = false, nullable = false, length = 256)
-	private Boolean isValidated = false;
+	private Boolean isValidated = true;
 	@Column(name = "IS_FRAUD_VALIDATED", unique = false, nullable = false, length = 256)
-	private Boolean isFraudValidated = false;
+	private Boolean isFraudValidated = true;
 	@Column(name = "FRAUD_SCORE", unique = false, nullable = false, length = 256)
 	private BigDecimal fraudScore;
 	@Column(name = "REJECT_REASON_CODE", unique = false, nullable = false, length = 256)
 	private String rejectReasonCode;
 	@Transient
 	private List<PaymentValidationError> errors = new ArrayList<PaymentValidationError>();
+	@Transient
+	private String validationStatus = "VALID";
 	@Column(name = "MSG_STATUS_RPT_ID", unique = true, nullable = false, length = 256)
 	private String messageStatusReportId;
 
@@ -247,6 +249,14 @@ public class Payment implements Serializable {
 		this.errors = errors;
 	}
 
+	public String getValidationStatus() {
+		return validationStatus;
+	}
+
+	public void setValidationStatus(String validationStatus) {
+		this.validationStatus = validationStatus;
+	}
+
 	public String getMessageStatusReportId() {
 		return messageStatusReportId;
 	}
@@ -279,6 +289,7 @@ public class Payment implements Serializable {
 		result = prime * result + ((rejectReasonCode == null) ? 0 : rejectReasonCode.hashCode());
 		result = prime * result + ((settlementMethod == null) ? 0 : settlementMethod.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		result = prime * result + ((validationStatus == null) ? 0 : validationStatus.hashCode());
 		return result;
 	}
 
@@ -391,6 +402,11 @@ public class Payment implements Serializable {
 				return false;
 		} else if (!status.equals(other.status))
 			return false;
+		if (validationStatus == null) {
+			if (other.validationStatus != null)
+				return false;
+		} else if (!validationStatus.equals(other.validationStatus))
+			return false;
 		return true;
 	}
 
@@ -403,8 +419,8 @@ public class Payment implements Serializable {
 				+ debtorId + ", debtorAccountNumber=" + debtorAccountNumber + ", creditorId=" + creditorId
 				+ ", creditorAccountNumber=" + creditorAccountNumber + ", status=" + status + ", isValidated="
 				+ isValidated + ", isFraudValidated=" + isFraudValidated + ", fraudScore=" + fraudScore
-				+ ", rejectReasonCode=" + rejectReasonCode + ", errors=" + errors + ", messageStatusReportId="
-				+ messageStatusReportId + "]";
+				+ ", rejectReasonCode=" + rejectReasonCode + ", errors=" + errors + ", validationStatus="
+				+ validationStatus + ", messageStatusReportId=" + messageStatusReportId + "]";
 	}
 
 }

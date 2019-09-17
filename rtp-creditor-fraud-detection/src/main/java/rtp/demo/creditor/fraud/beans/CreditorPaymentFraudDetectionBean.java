@@ -15,7 +15,12 @@ public class CreditorPaymentFraudDetectionBean {
 		LOG.info("Payment Pre-Fraud Check: " + payment);
 
 		payment.setFraudScore(new BigDecimal("92.345"));
-		payment.setIsFraudValidated(true);
+
+		if (payment.getDebtorId().equals("888888888")) {
+			payment.setIsFraudValidated(false);
+		} else {
+			payment.setIsFraudValidated(true);
+		}
 
 		LOG.info("Payment Post-Fraud Check: " + payment);
 
