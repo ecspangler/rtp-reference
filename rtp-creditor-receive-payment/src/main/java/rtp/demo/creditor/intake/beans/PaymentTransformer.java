@@ -34,14 +34,15 @@ public class PaymentTransformer {
 			payment.setRejectReasonCode(error.getRtpReasonCode().toString());
 		});
 
-		if (paymentValidationRequest.getErrors().size() == 0) {
+		if (paymentValidationRequest.getErrors().isEmpty()) {
 			payment.setIsValidated(true);
 			payment.setStatus("ACCEPTED");
 		} else {
 			payment.setStatus("REJECTED");
+			payment.setValidationStatus(payment.getErrors().get(0).getErrorCode().toString());
 		}
 
-                try {
+		try {
 			// TODO: Move this to a more obvious place
 			creditPaymentRepoistory.addPayment(payment);
 		} catch (Exception e) {
