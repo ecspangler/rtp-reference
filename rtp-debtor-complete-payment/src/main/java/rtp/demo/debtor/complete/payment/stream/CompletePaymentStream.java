@@ -73,9 +73,10 @@ public class CompletePaymentStream {
 				LOG.info("Updating Payment: " + value);
 
 				DebitPayment debitPayment = debitPaymentRepository.getPaymentByPaymentKey(key);
-				debitPayment.setStatus(value.getStatus());
-
-				debitPaymentRepository.updatePayment(debitPayment);
+				if (debitPayment != null) {
+					debitPayment.setStatus(value.getStatus());
+					debitPaymentRepository.updatePayment(debitPayment);
+				}
 			});
 
 			completedPaymentsStream.to(completedPaymentsTopic);
