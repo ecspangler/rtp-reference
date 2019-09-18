@@ -105,7 +105,7 @@ public class MySqlDebitPaymentRepository implements DebitPaymentRepository {
 		List<DebitPayment> results = cr.list();
 		DebitPayment result = null;
 
-		if (results != null) {
+		if (!results.isEmpty()) {
 			result = results.get(0);
 		}
 

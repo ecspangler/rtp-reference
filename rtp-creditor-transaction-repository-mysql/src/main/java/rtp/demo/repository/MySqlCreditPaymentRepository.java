@@ -105,7 +105,7 @@ public class MySqlCreditPaymentRepository implements CreditPaymentRepository {
 		List<Payment> results = cr.list();
 		Payment result = null;
 
-		if (results != null) {
+		if (!results.isEmpty()) {
 			result = results.get(0);
 		}
 
