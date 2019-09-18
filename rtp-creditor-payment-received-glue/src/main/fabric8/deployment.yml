@@ -28,4 +28,4 @@ spec:
           - name: ACKS
             value: 1
           - name: BC_HOST
-            value: host=executionUser:RedHat@myapp-kieserver-1-jj8ks:8080
+            value: host=executionUser:RedHat@myapp-kieserver-rtp-reference.console.keyforth.com
