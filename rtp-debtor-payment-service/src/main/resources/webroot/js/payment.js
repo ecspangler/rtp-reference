@@ -56,10 +56,10 @@ class Payment {
     getProfile() {
         return {
             id: this.accountId,
-            firstName: 'Maria',
-            lastName: 'Park',
-            balance: '200',
-            email: 'maria.park@email.com'
+            firstName: 'Keyforth',
+            lastName: 'Demo',
+            balance: '10000',
+            email: 'demo@keyforth.com'
         }
     }
 }

@@ -66,6 +66,7 @@ function getTransationRow(item) {
         firstName = item.receiverFirstName;
         lastName  = item.receiverLastName ;
     }
+    formated_amount = currencyFormat(item.amount);
     return '<li class="tran-' + item.status + '">\
         <div class="item-content"> \
             <div class="item-before stat-status"><div>' + '<i class="fas ' + icon + '"></i>' + '</div></div>\
@@ -76,7 +77,7 @@ function getTransationRow(item) {
                 <div class="item-subtitle stat-transaction"> Reference no.:' + item.transId + '</div>\
                 <div class="orderdetail">Status: ' + item.status + '</div>\
             </div>\
-            <div class="item-after stat-amount">' + item.amount + '</div>\
+            <div class="item-after stat-amount">' + formated_amount + '</div>\
         </div>\
     </li>';
 }
@@ -125,7 +126,7 @@ function sendPayment() {
         $("form[name=from-send-payment]")[0].reset();
         
         $(".ack-account").html(res.payments[0].debtorAccountNumber);
-        $(".ack-amount").html("$" + res.payments[0].amount.toFixed(2));
+        $(".ack-amount").html(currencyFormat(res.payments[0].amount));
         $(".ack-name").html(res.payments[0].receiverFirstName + " " + res.payments[0].receiverLastName);
         var todayDate = getTodayDate();
         $(".ack-date").html(todayDate);
@@ -167,6 +168,10 @@ function validateEmail (elementValue) {
     return status;
 }
 
+function currencyFormat (value) {
+    return "$" + Number(value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+}
+
 function login() {
     var data = {
         accountId: $(".page-current .login-accountId").val(),
@@ -177,6 +182,10 @@ function login() {
             showToast("Please fill all fields.");
             return false;
         }
+    }
+    if(data.password != 'redhat'){
+        showToast("Invalid Username/Password");
+	return false;
     }
 
     paymentApp.setAccountId(data.accountId);
@@ -192,5 +201,5 @@ function showAccount() {
     $(".page-current .account-id").html(profile.id);
     $(".page-current .account-email").html(profile.email);
     $(".page-current .account-name").html(profile.firstName + ' ' + profile.lastName);
-    $(".page-current .account-hero-info").html('$' + profile.balance);
+    $(".page-current .account-hero-info").html(currencyFormat(profile.balance));
 }
