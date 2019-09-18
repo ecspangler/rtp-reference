@@ -39,6 +39,7 @@ public class PaymentTransformer {
 			payment.setStatus("ACCEPTED");
 		} else {
 			payment.setStatus("REJECTED");
+			payment.setIsValidated(false);
 			payment.setValidationStatus(payment.getErrors().get(0).getErrorCode().toString());
 		}
 
