@@ -109,6 +109,7 @@ public class PaymentsValidationSteps {
 			creditTransferMessage.setNumberOfTransactions(Integer.parseInt(row.get("Number of Transactions")));
 			creditTransferMessage.setPaymentAmount(new BigDecimal(row.get("Payment Amount")));
 			creditTransferMessage.setPaymentCurrency(row.get("Payment Currency"));
+			creditTransferMessage.setCreditorId(row.get("Debtor Id"));
 			creditTransferMessage.setCreditorId(row.get("Creditor Id"));
 			creditTransferMessage.setCreditorAccountNumber(row.get("Creditor Account"));
 			creditTransferMessage.setSettlementMethod(row.get("Settlement Method"));
