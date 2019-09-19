@@ -56,3 +56,18 @@ Then I expect the following validation errors:
 | Internal Error Code | RTP Reject Reason Code | Error Message              | 
 | CPVE_003            | 650                    | Invalid Payment Amount     | 
   
+
+
+#=======================================================================================================================
+Scenario: RTP_PRR_001c - Accept Payments equal to 25000
+Given I receive the following Credit Transfer Message:
+| Message Id                          | Creation Date Time  | Number of Transactions | Payment Amount | Payment Currency | Debtor Id | Creditor Id | Creditor Account  | Settlement Method |
+| M2018111511021200201BFFF00000000001 | 2018-11-12T10:05:00 | 1                      | 25000.00       | USD              | 020015555 | 020010001   | 12000194212199001 | CLRG              |
+
+When I validate the Credit Transfer Message
+
+Then I expect no validation errors
+
+
+
+

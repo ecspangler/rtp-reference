@@ -65,8 +65,6 @@ public class CreditTransferMessage {
 	// XML Location: GrpHdr.TtlIntrBkSttlmAmt
 	private BigDecimal paymentAmount;
 
-	private String stringPaymentAmount;
-
 	// Type of currency for the payment transaction
 	// Example: USD
 	// Rule: Only Currency supported by RTP is US Dollar
@@ -153,14 +151,6 @@ public class CreditTransferMessage {
 		this.paymentAmount = paymentAmount;
 	}
 
-	public String getStringPaymentAmount() {
-		String amount = null;
-		if (this.paymentAmount != null) {
-			amount = paymentAmount.toString();
-		}
-		return amount;
-	}
-
 	public String getPaymentCurrency() {
 		return paymentCurrency;
 	}
@@ -225,7 +215,6 @@ public class CreditTransferMessage {
 		result = prime * result + ((paymentCurrency == null) ? 0 : paymentCurrency.hashCode());
 		result = prime * result + ((paymentInstructionId == null) ? 0 : paymentInstructionId.hashCode());
 		result = prime * result + ((settlementMethod == null) ? 0 : settlementMethod.hashCode());
-		result = prime * result + ((stringPaymentAmount == null) ? 0 : stringPaymentAmount.hashCode());
 		return result;
 	}
 
@@ -298,11 +287,6 @@ public class CreditTransferMessage {
 				return false;
 		} else if (!settlementMethod.equals(other.settlementMethod))
 			return false;
-		if (stringPaymentAmount == null) {
-			if (other.stringPaymentAmount != null)
-				return false;
-		} else if (!stringPaymentAmount.equals(other.stringPaymentAmount))
-			return false;
 		return true;
 	}
 
@@ -311,10 +295,9 @@ public class CreditTransferMessage {
 		return "CreditTransferMessage [creditTransferMessageId=" + creditTransferMessageId + ", paymentInstructionId="
 				+ paymentInstructionId + ", endToEndId=" + endToEndId + ", creationDateTime=" + creationDateTime
 				+ ", numberOfTransactions=" + numberOfTransactions + ", paymentAmount=" + paymentAmount
-				+ ", stringPaymentAmount=" + stringPaymentAmount + ", paymentCurrency=" + paymentCurrency
-				+ ", settlementMethod=" + settlementMethod + ", debtorId=" + debtorId + ", debtorAccountNumber="
-				+ debtorAccountNumber + ", creditorId=" + creditorId + ", creditorAccountNumber="
-				+ creditorAccountNumber + "]";
+				+ ", paymentCurrency=" + paymentCurrency + ", settlementMethod=" + settlementMethod + ", debtorId="
+				+ debtorId + ", debtorAccountNumber=" + debtorAccountNumber + ", creditorId=" + creditorId
+				+ ", creditorAccountNumber=" + creditorAccountNumber + "]";
 	}
 
 }
