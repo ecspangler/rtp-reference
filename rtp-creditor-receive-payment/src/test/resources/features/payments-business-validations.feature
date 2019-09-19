@@ -1,3 +1,4 @@
+
 Feature: RTP Incoming Payments Business Validation
 
 Example creditor business validations of incoming RTP Credit Transfer Messages
