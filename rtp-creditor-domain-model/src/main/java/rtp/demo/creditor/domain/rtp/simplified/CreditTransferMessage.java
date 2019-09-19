@@ -154,11 +154,11 @@ public class CreditTransferMessage {
 	}
 
 	public String getStringPaymentAmount() {
-		return stringPaymentAmount;
-	}
-
-	public void setStringPaymentAmount(String stringPaymentAmount) {
-		this.stringPaymentAmount = stringPaymentAmount;
+		String amount = null;
+		if (this.paymentAmount != null) {
+			amount = paymentAmount.toString();
+		}
+		return amount;
 	}
 
 	public String getPaymentCurrency() {
