@@ -23,6 +23,7 @@
     <vertx-maven-plugin.version>1.0.18</vertx-maven-plugin.version>
     <vertx.verticle>rtp.demo.debtor.payments.service.DebtorPaymentService</vertx.verticle>
     <fabric8.generator.from>registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift</fabric8.generator.from>
+    <vertx.health.path>/</vertx.health.path>
   </properties>
 
   <dependencyManagement>
@@ -128,7 +129,12 @@
             <excludes>
               <exclude>f8-maven-scm</exclude>
             </excludes>
-            <!-- ADD HEALTH CHECK HERE -->
+	    <!-- ADD HEALTH CHECK HERE -->
+            <config>
+              <f8-healthcheck-vertx>
+                <path>/health</path>
+              </f8-healthcheck-vertx>
+            </config>
           </enricher>
         </configuration>
       </plugin>
