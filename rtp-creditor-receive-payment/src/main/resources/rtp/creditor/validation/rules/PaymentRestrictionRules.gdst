@@ -29,34 +29,22 @@
                   <index>2147483647</index>
                 </expression>
                 <parameters/>
+                <fieldBinding>$ctm</fieldBinding>
                 <factType>PaymentValidationRequest</factType>
                 <fieldName>creditTransferMessage</fieldName>
                 <fieldType>CreditTransferMessage</fieldType>
               </org.drools.workbench.models.datamodel.rule.SingleFieldConstraint>
               <org.drools.workbench.models.datamodel.rule.SingleFieldConstraint>
-                <value>Source_Routing_Number</value>
-                <operator>==</operator>
-                <constraintValueType>7</constraintValueType>
+                <operator>!= null</operator>
+                <constraintValueType>0</constraintValueType>
                 <expression>
                   <parts/>
                   <index>2147483647</index>
                 </expression>
                 <parameters/>
-                <factType>CreditTransferMessage</factType>
-                <fieldName>debtorId</fieldName>
-                <fieldType>String</fieldType>
-                <parent class="org.drools.workbench.models.datamodel.rule.SingleFieldConstraint">
-                  <operator>!= null</operator>
-                  <constraintValueType>0</constraintValueType>
-                  <expression>
-                    <parts/>
-                    <index>2147483647</index>
-                  </expression>
-                  <parameters/>
-                  <factType>PaymentValidationRequest</factType>
-                  <fieldName>creditTransferMessage</fieldName>
-                  <fieldType>CreditTransferMessage</fieldType>
-                </parent>
+                <factType>PaymentValidationRequest</factType>
+                <fieldName>creditTransferMessage</fieldName>
+                <fieldType>CreditTransferMessage</fieldType>
               </org.drools.workbench.models.datamodel.rule.SingleFieldConstraint>
               <org.drools.workbench.models.datamodel.rule.SingleFieldConstraint>
                 <value>Payment_Amount_Greater_Than</value>
@@ -83,6 +71,20 @@
                   <fieldType>CreditTransferMessage</fieldType>
                 </parent>
               </org.drools.workbench.models.datamodel.rule.SingleFieldConstraint>
+              <org.drools.workbench.models.datamodel.rule.SingleFieldConstraint>
+                <value>Source_Routing_Number</value>
+                <operator>==</operator>
+                <constraintValueType>7</constraintValueType>
+                <expression>
+                  <parts/>
+                  <index>2147483647</index>
+                </expression>
+                <parameters/>
+                <factType>CreditTransferMessage</factType>
+                <fieldName>debtorId</fieldName>
+                <fieldType>String</fieldType>
+                <parent class="org.drools.workbench.models.datamodel.rule.SingleFieldConstraint" reference="../../org.drools.workbench.models.datamodel.rule.SingleFieldConstraint[2]"/>
+              </org.drools.workbench.models.datamodel.rule.SingleFieldConstraint>
             </constraints>
           </constraintList>
           <factType>PaymentValidationRequest</factType>
@@ -92,8 +94,23 @@
             <parameters/>
           </window>
         </org.drools.workbench.models.datamodel.rule.FactPattern>
+        <org.drools.workbench.models.datamodel.rule.FreeFormLine>
+          <text>PaymentValidationRequest( this == $pvr, creditTransferMessage.paymentAmount &gt; new BigDecimal( Payment_Amount_Greater_Than ) )</text>
+        </org.drools.workbench.models.datamodel.rule.FreeFormLine>
       </definition>
       <childColumns>
+        <org.drools.workbench.models.guided.dtable.shared.model.BRLConditionVariableColumn>
+          <hideColumn>false</hideColumn>
+          <width>100</width>
+          <header>Credit Transfer Message</header>
+          <constraintValueType>1</constraintValueType>
+          <factField>paymentAmount</factField>
+          <fieldType>BigDecimal</fieldType>
+          <operator>&gt;</operator>
+          <parameters/>
+          <varName>Payment_Amount_Greater_Than</varName>
+          <factType>PaymentValidationRequest</factType>
+        </org.drools.workbench.models.guided.dtable.shared.model.BRLConditionVariableColumn>
         <org.drools.workbench.models.guided.dtable.shared.model.BRLConditionVariableColumn>
           <hideColumn>false</hideColumn>
           <width>100</width>
@@ -104,18 +121,6 @@
           <operator>==</operator>
           <parameters/>
           <varName>Source_Routing_Number</varName>
-          <factType>PaymentValidationRequest</factType>
-        </org.drools.workbench.models.guided.dtable.shared.model.BRLConditionVariableColumn>
-        <org.drools.workbench.models.guided.dtable.shared.model.BRLConditionVariableColumn>
-          <hideColumn>false</hideColumn>
-          <width>241</width>
-          <header>Credit Transfer Message</header>
-          <constraintValueType>1</constraintValueType>
-          <factField>paymentAmount</factField>
-          <fieldType>BigDecimal</fieldType>
-          <operator>&gt;</operator>
-          <parameters/>
-          <varName>Payment_Amount_Greater_Than</varName>
           <factType>PaymentValidationRequest</factType>
         </org.drools.workbench.models.guided.dtable.shared.model.BRLConditionVariableColumn>
       </childColumns>
@@ -186,7 +191,7 @@
       <childColumns>
         <org.drools.workbench.models.guided.dtable.shared.model.BRLConditionVariableColumn>
           <hideColumn>false</hideColumn>
-          <width>100</width>
+          <width>323</width>
           <header>Payment Amount Greater Than 25000</header>
           <constraintValueType>1</constraintValueType>
           <fieldType>Boolean</fieldType>
@@ -343,7 +348,7 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString></valueString>
+        <valueString>25000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -398,12 +403,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>082737845</valueString>
+        <valueString>15000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>15000</valueString>
+        <valueString>082737845</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -453,12 +458,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>267090594</valueString>
+        <valueString>5000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>5000</valueString>
+        <valueString>267090594</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -508,12 +513,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>067092912</valueString>
+        <valueString>15000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>15000</valueString>
+        <valueString>067092912</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -563,12 +568,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>084201443</valueString>
+        <valueString>15000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>15000</valueString>
+        <valueString>084201443</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -618,12 +623,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>323371076</valueString>
+        <valueString>20000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>20000</valueString>
+        <valueString>323371076</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -673,12 +678,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>062206295</valueString>
+        <valueString>15000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>15000</valueString>
+        <valueString>062206295</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -728,12 +733,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>061120246</valueString>
+        <valueString>22000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>22000</valueString>
+        <valueString>061120246</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -783,12 +788,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>062201708</valueString>
+        <valueString>20000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>20000</valueString>
+        <valueString>062201708</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -838,12 +843,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>062204006</valueString>
+        <valueString>20000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>20000</valueString>
+        <valueString>062204006</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -893,12 +898,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>062205131</valueString>
+        <valueString>15000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>15000</valueString>
+        <valueString>062205131</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -948,12 +953,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>063114690</valueString>
+        <valueString>18000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>18000</valueString>
+        <valueString>063114690</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -1003,12 +1008,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>063114836</valueString>
+        <valueString>10000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>10000</valueString>
+        <valueString>063114836</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -1058,12 +1063,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>067016341</valueString>
+        <valueString>17000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>17000</valueString>
+        <valueString>067016341</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -1113,12 +1118,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>067016341</valueString>
+        <valueString>10000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>10000</valueString>
+        <valueString>067016341</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -1168,12 +1173,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>063114920</valueString>
+        <valueString>10000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>10000</valueString>
+        <valueString>063114920</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -1223,12 +1228,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>067016341</valueString>
+        <valueString>10000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>10000</valueString>
+        <valueString>067016341</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -1278,12 +1283,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>084003900</valueString>
+        <valueString>20000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>20000</valueString>
+        <valueString>084003900</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -1333,12 +1338,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>084201139</valueString>
+        <valueString>10000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>10000</valueString>
+        <valueString>084201139</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -1388,12 +1393,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>923348218</valueString>
+        <valueString>20000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>20000</valueString>
+        <valueString>923348218</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -1443,12 +1448,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>084201443</valueString>
+        <valueString>9999</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>9999</valueString>
+        <valueString>084201443</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -1498,12 +1503,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>113093849</valueString>
+        <valueString>5000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>5000</valueString>
+        <valueString>113093849</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -1553,12 +1558,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>242277882</valueString>
+        <valueString>15000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>15000</valueString>
+        <valueString>242277882</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -1608,12 +1613,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>102301199</valueString>
+        <valueString>15000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>15000</valueString>
+        <valueString>102301199</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -1663,12 +1668,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>104018459</valueString>
+        <valueString>23000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>23000</valueString>
+        <valueString>104018459</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -1718,12 +1723,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>182939456</valueString>
+        <valueString>14000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>14000</valueString>
+        <valueString>182939456</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -1773,12 +1778,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>203928349</valueString>
+        <valueString>5000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>5000</valueString>
+        <valueString>203928349</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -1828,12 +1833,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>945060732</valueString>
+        <valueString>10000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>10000</valueString>
+        <valueString>945060732</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -1883,12 +1888,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>330045698</valueString>
+        <valueString>20000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>20000</valueString>
+        <valueString>330045698</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
@@ -1938,12 +1943,12 @@
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>024958373</valueString>
+        <valueString>22000</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueString>22000</valueString>
+        <valueString>024958373</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
