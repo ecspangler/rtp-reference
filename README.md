@@ -14,12 +14,12 @@ The install script requires Maven in order to run fabric8 builds to deploy to th
 
 As the script will create a namespace for the project, install a Strimzi cluster via operator, and import images into the 'openshift' project, the oc user will need to have the correct permissions to perform these actions.
 
+The Red Hat subscription credentials requested by the script are used to retrieve Red Hat images.
 
 
 ## Install Instructions
 
-Clone this repository to a location from which oc and mvn can be run.
-
+Clone this repository to a location where oc and mvn can run.
 
 Change into the cloned directory and run the script:
 ```

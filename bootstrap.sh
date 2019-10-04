@@ -57,9 +57,9 @@ for topic in kafka/install/topics/*.y{a,}ml; do
 done
 shopt -u nullglob
 
-#oc exec -it rtp-demo-cluster-kafka-0 -c kafka -- bin/kafka-topics.sh --zookeeper localhost:2181 --list
-#oc exec -it rtp-demo-cluster-kafka-1 -c kafka -- bin/kafka-topics.sh --zookeeper localhost:2181 --list
-#oc exec -it rtp-demo-cluster-kafka-2 -c kafka -- bin/kafka-topics.sh --zookeeper localhost:2181 --list
+oc exec -it rtp-demo-cluster-kafka-0 -c kafka -- bin/kafka-topics.sh --zookeeper localhost:2181 --list
+oc exec -it rtp-demo-cluster-kafka-1 -c kafka -- bin/kafka-topics.sh --zookeeper localhost:2181 --list
+oc exec -it rtp-demo-cluster-kafka-2 -c kafka -- bin/kafka-topics.sh --zookeeper localhost:2181 --list
 
 # --- Install Fuse on the OpenShift Cluster
 oc project openshift
@@ -163,28 +163,23 @@ kill $cpid
 trap - EXIT
 
 
-cd ..
-git clone https://github.com/jboss-container-images/rhpam-7-openshift-image.git
+# --- RH PAM and DM
+#cd ..
+#git clone https://github.com/jboss-container-images/rhpam-7-openshift-image.git
+#cd rhpam-7-openshift-image
+#git checkout 7.2.x
+#git pull
 
-cd rhpam-7-openshift-image
-git checkout 7.2.x
-git pull
+#oc project openshift
+#oc create -f rhpam72-image-streams.yaml
+#oc get imagestreamtag -n openshift | grep rhpam72-businesscentral-openshift
+#oc get imagestreamtag -n openshift | grep rhpam72-kieserver-openshift
 
-oc project openshift
+#oc project rtp-reference
+#oc new-app -f templates/rhpam72-trial-ephemeral.yaml
+#until [ "$(oc get pods --selector app=rhpam72-trial-ephemeral -o jsonpath="{.items[0].status.containerStatuses[?(@.name == \"myapp-kieserver\")].ready}" 2> /dev/null)" = "true" ]; do sleep 3; printf "Waiting until KIE server container is ready...\n"; done
+#cd ../rtp-reference
 
-oc create -f rhpam72-image-streams.yaml
-
-oc get imagestreamtag -n openshift | grep rhpam72-businesscentral-openshift
-oc get imagestreamtag -n openshift | grep rhpam72-kieserver-openshift
-
-oc project rtp-reference
-
-oc new-app -f templates/rhpam72-trial-ephemeral.yaml
-
-until [ "$(oc get pods --selector app=rhpam72-trial-ephemeral -o jsonpath="{.items[0].status.containerStatuses[?(@.name == \"myapp-kieserver\")].ready}" 2> /dev/null)" = "true" ]; do sleep 3; printf "Waiting until KIE server container is ready...\n"; done
-
-
-cd ../rtp-reference
 
 # --- Deploy the RTP Reference Services
 mvn --non-recursive clean install
@@ -210,7 +205,6 @@ do
 done
 
 
-
 for service in \
     rtp-creditor-auditing \
     rtp-creditor-complete-payment \
@@ -228,6 +222,11 @@ for service in \
     rtp-debtor-payment-confirmation \
     rtp-debtor-payment-service \
     rtp-debtor-send-payment \
+    #rtp-creditor-payment-received-glue \
+    #rtp-creditor-account-validation-glue \
+    #rtp-creditor-fraud-validation-glue \
+    #rtp-creditor-complete-case-glue \
+    #rtp-creditor-elastic-glue \
     rtp-mock
 do
     printf "Deploying $service\n"
