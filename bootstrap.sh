@@ -16,30 +16,7 @@ printf "Enter your RHN credentials and base directory into which the rtp-referen
 read -p "Username: " username
 posix_read "Password: " password
 read -p "Email: " email
-read -p "Home directory: " home
 
-# --- Minishift Setup
-# minishift start --cpus 4 --disk-size 100GB --memory 12GB
-# oc login -u system:admin
-# minishift addon apply admin-user
-
-sudo yum install mysql -y
-sudo yum install java-1.8.0-openjdk-devel -y
-
-wget http://apache.mirrors.tds.net/maven/maven-3/3.6.1/binaries/apache-maven-3.6.1-bin.tar.gz
-tar xvzf apache-maven-3.6.1-bin.tar.gz
-
-// RHPDS Workshop Env
-export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.222.b10-0.el7_6.x86_64
-
-// RHPDS GPU Env
-#export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.191.b12-1.el7_6.x86_64
-
-echo $PATH
-export PATH=$PATH:$home/rtp-reference/apache-maven-3.6.1/bin
-
-echo "Installed Maven"
-mvn -v
 
 oc new-project rtp-reference
 
@@ -251,12 +228,7 @@ for service in \
     rtp-debtor-payment-confirmation \
     rtp-debtor-payment-service \
     rtp-debtor-send-payment \
-    rtp-mock \
-    rtp-creditor-payment-received-glue \
-    rtp-creditor-account-validation-glue \
-    rtp-creditor-fraud-validation-glue \
-    rtp-creditor-complete-case-glue \
-    rtp-creditor-elastic-glue 
+    rtp-mock
 do
     printf "Deploying $service\n"
     cd $service
