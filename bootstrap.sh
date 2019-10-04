@@ -163,24 +163,6 @@ kill $cpid
 trap - EXIT
 
 
-# --- RH PAM and DM
-#cd ..
-#git clone https://github.com/jboss-container-images/rhpam-7-openshift-image.git
-#cd rhpam-7-openshift-image
-#git checkout 7.2.x
-#git pull
-
-#oc project openshift
-#oc create -f rhpam72-image-streams.yaml
-#oc get imagestreamtag -n openshift | grep rhpam72-businesscentral-openshift
-#oc get imagestreamtag -n openshift | grep rhpam72-kieserver-openshift
-
-#oc project rtp-reference
-#oc new-app -f templates/rhpam72-trial-ephemeral.yaml
-#until [ "$(oc get pods --selector app=rhpam72-trial-ephemeral -o jsonpath="{.items[0].status.containerStatuses[?(@.name == \"myapp-kieserver\")].ready}" 2> /dev/null)" = "true" ]; do sleep 3; printf "Waiting until KIE server container is ready...\n"; done
-#cd ../rtp-reference
-
-
 # --- Deploy the RTP Reference Services
 mvn --non-recursive clean install
 for dependency in \
@@ -196,7 +178,7 @@ for dependency in \
     rtp-creditor-account-repository \
     rtp-creditor-account-repository-jdg \
     rtp-creditor-transaction-repository \
-    rtp-creditor-transaction-repository-mysql;
+    rtp-creditor-transaction-repository-mysql
 do
     printf "Building $dependency\n"
     cd $dependency
@@ -222,11 +204,6 @@ for service in \
     rtp-debtor-payment-confirmation \
     rtp-debtor-payment-service \
     rtp-debtor-send-payment \
-    #rtp-creditor-payment-received-glue \
-    #rtp-creditor-account-validation-glue \
-    #rtp-creditor-fraud-validation-glue \
-    #rtp-creditor-complete-case-glue \
-    #rtp-creditor-elastic-glue \
     rtp-mock
 do
     printf "Deploying $service\n"
