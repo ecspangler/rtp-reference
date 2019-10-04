@@ -25,3 +25,69 @@ Change into the cloned directory and run the script:
 ```
 ./bootstrap.sh
 ```
+
+## Validating Installation
+
+Find the route for the Debtor Payment Service:
+
+```
+oc get routes | grep rtp-debtor-payment-service
+rtp-debtor-payment-service             rtp-debtor-payment-service-rtp-reference.apps.nyc-3f5a.open.redhat.com                       rtp-debtor-payment-service             8080                     None
+
+```
+
+Open a browser and navigate to the URL. In the above example, the URL would be http://rtp-debtor-payment-service-rtp-reference.apps.nyc-3f5a.open.redhat.com
+
+Use any username to login and password 'redhat'
+
+Send a payment to a test user:
+First Name: Edward
+Last Name: Garcia
+Amount: <amount>
+Email or Phone Number: edward.garcia@mail.org
+
+
+The send payments REST api can also be accessed at http://<host>/payments-service/payments
+
+Request:
+POST http://<host>/payments-service/payments
+```
+{
+  "payments":[
+    {
+  		"senderAccountNumber":"12000194212199008",
+  		"amount":"25.00",
+  		"receiverFirstName":"Edward",
+  		"receiverLastName":"Garcia",
+      	"receiverEmail":"edward.garcia@mail.org"
+	  }
+  ]
+}
+```
+
+Response:
+```
+{
+    "payments": [
+        {
+            "id": null,
+            "paymentId": "KEYFORTHBANK20191004042945059",
+            "senderRoutingNumber": null,
+            "senderAccountNumber": "12000194212199008",
+            "senderFirstName": null,
+            "senderLastName": null,
+            "senderEmail": null,
+            "senderCellPhone": null,
+            "amount": 25,
+            "receiverFirstName": "Edward",
+            "receiverLastName": "Garcia",
+            "receiverEmail": "edward.garcia@mail.org",
+            "receiverCellPhone": null,
+            "receiverRoutingNumber": "020010001",
+            "receiverAccountNumber": "egarcia",
+            "status": "PENDING",
+            "messageStatusReportId": null
+        }
+    ]
+}
+```
