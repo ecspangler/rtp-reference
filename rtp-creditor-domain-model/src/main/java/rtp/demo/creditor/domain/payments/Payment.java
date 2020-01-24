@@ -65,7 +65,7 @@ public class Payment implements Serializable {
 	@Transient
 	private List<PaymentValidationError> errors = new ArrayList<PaymentValidationError>();
 	@Transient
-	private String validationStatus = "VALID";
+	private String validationStatus = "Valid";
 	@Column(name = "MSG_STATUS_RPT_ID", unique = true, nullable = false, length = 256)
 	private String messageStatusReportId;
 

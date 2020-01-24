@@ -11,6 +11,30 @@
   <name>Real Time Payments Reference:: Aggregate POM</name>
   <description>Real Time Payments Reference Example</description>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>me.snowdrop</groupId>
+        <artifactId>spring-boot-bom</artifactId>
+        <version>${spring-boot-bom.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>bootstrap</artifactId>
+        <version>${bootstrap.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.redhat-fuse</groupId>
+        <artifactId>fuse-springboot-bom</artifactId>
+        <version>${fuse.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <modules>
     <module>rtp-creditor-account-repository-jdg</module>
     <module>rtp-creditor-account-repository</module>
@@ -24,12 +48,30 @@
     <module>rtp-creditor-rules</module>
     <module>rtp-creditor-transaction-repository</module>
     <module>rtp-creditor-transaction-repository-mysql</module>
+    <module>rtp-creditor-payment-acknowledgement</module>
+    <module>rtp-creditor-payment-confirmation</module>
+    <module>rtp-creditor-payment-service</module>
+    <module>rtp-creditor-receive-payment</module>
+    <module>rtp-creditor-fraud-detection</module>
     <module>rtp-debtor-transaction-repository</module>
     <module>rtp-debtor-transaction-repository-mysql</module>
     <module>rtp-debtor-account-repository-jdg</module>
     <module>rtp-debtor-account-repository</module>
+    <module>rtp-debtor-auditing</module>
+    <module>rtp-debtor-complete-payment</module>
+    <module>rtp-debtor-core-banking</module>
+    <module>rtp-debtor-customer-notification</module>
     <module>rtp-debtor-domain-model</module>
+    <module>rtp-debtor-payment-confirmation</module>
     <module>rtp-debtor-payment-service</module>
+    <module>rtp-debtor-send-payment</module>
+    <module>rtp-mock</module>
+    <module>rtp-flow-viz-service</module>
+    <module>rtp-creditor-account-validation-glue</module>
+    <module>rtp-creditor-complete-case-glue</module>
+    <module>rtp-creditor-elastic-glue</module>
+    <module>rtp-creditor-fraud-validation-glue</module>
+    <module>rtp-creditor-payment-received-glue</module>
   </modules>
 
   <properties>
@@ -62,6 +104,16 @@
     <slf4j-simple.version>1.6.2</slf4j-simple.version>
     <spring-boot-starter.version>1.5.13.RELEASE</spring-boot-starter.version>
     <spring-cloud-kubernetes-core.version>0.1.6.fuse-710004-redhat-00001</spring-cloud-kubernetes-core.version>
+
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+    <bootstrap.version>4.3.1</bootstrap.version>
+    <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
+    <spring-boot-bom.version>2.1.6.Final</spring-boot-bom.version>
   </properties>
 
   <repositories>

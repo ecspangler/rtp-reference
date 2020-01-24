@@ -27,34 +27,29 @@ public class RtpWorkflowRouteBuilder extends RouteBuilder {
 	private String consumerSeekTo = System.getenv("CONSUMER_SEEK_TO");
 	private String consumerGroup = System.getenv("CONSUMER_GROUP");
 	private String bcHost = System.getenv("BC_HOST");
+	private String elasticUrl = System.getenv("ELASTIC_URL");
 
 	@Override
 	public void configure() throws Exception {
 		LOG.info("Configuring Creditor Core Banking Routes");
-		String startCase = "rest:post:/services/rest/server/containers/RTPProcessingEngine_1.0.0-SNAPSHOT/cases/RTPProcessingEngine.RTPWorkflow/instances?" +
-				bcHost +
-				"&produces=application/json";
+		String startCase = "rest:post:/services/rest/server/containers/RTPProcessingEngine_1.0.0-SNAPSHOT/cases/RTPProcessingEngine.RTPWorkflow/instances?"
+				+ bcHost + "&produces=application/json";
 
 		HttpComponent httpComponent = getContext().getComponent("https4", HttpComponent.class);
-
 
 		KafkaComponent kafka = new KafkaComponent();
 		kafka.setBrokers(kafkaBootstrap);
 		this.getContext().addComponent("kafka", kafka);
 
 		try {
-
 			from("kafka:" + kafkaCreditorCompletedPaymentsTopic + "?brokers=" + kafkaBootstrap + "&maxPollRecords="
 					+ consumerMaxPollRecords + "&consumersCount=" + consumerCount + "&seekTo=" + consumerSeekTo
-					+ "&groupId=" + consumerGroup
-			).routeId("FromKafka")
-					.removeHeader("*")
-					.to("rest:post:/rtp/rt?host=https://txelgef3x4:4fqo676p85@app-name-kafka-2058344660.us-east-1.bonsaisearch.net:443&produces=application/json");
+					+ "&groupId=" + consumerGroup).routeId("FromKafka").removeHeader("*")
+							.to("rest:post:/rtp/rt?host=" + elasticUrl + "&produces=application/json");
 			;
-		}catch (Exception e) {
-
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
 
 	}
 

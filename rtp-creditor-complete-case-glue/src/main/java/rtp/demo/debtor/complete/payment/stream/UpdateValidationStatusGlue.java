@@ -28,6 +28,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -143,9 +144,16 @@ public class UpdateValidationStatusGlue {
 
 			Double doubleStarted = (Double) map.get("case-started-at");
 			Double doubleEnded = (Double) map.get("case-completed-at");
-			Double duration = (doubleEnded - doubleStarted) / 1000;
-			System.out.println(doubleStarted);
-			String slaViolation = (Double) map.get("case-sla-compliance") == 2.0 ? "Met" : "Violated";
+			Long longnow = new Timestamp(System.currentTimeMillis()).getTime();
+			Double now = longnow.doubleValue();
+
+			LOG.info("CASE STARTED: " + doubleStarted);
+			LOG.info("CASE ENDED: " + doubleEnded);
+			LOG.info("NOW: " + now);
+
+			Double duration = (now - doubleStarted) / 1000;
+
+			String slaViolation = (Double) map.get("case-sla-compliance") == 2.0 ? "Met" : "Not Met";
 
 			caseFile += ",\"case-duration\":" + duration + ",\"case-sla-complaince\":\"" + slaViolation + "\"";
 			System.out.println("{" + caseFile + "}");

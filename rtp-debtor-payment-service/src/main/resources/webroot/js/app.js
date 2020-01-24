@@ -55,7 +55,7 @@ function getTransationRow(item) {
     var lastName ='bb';
     
     if(item.status == "PENDING") {
-        icon = 'fa-question';
+        icon = 'fa-check';
     } else if(item.status == "REJECTED") {
         icon = 'fa-times';
     }

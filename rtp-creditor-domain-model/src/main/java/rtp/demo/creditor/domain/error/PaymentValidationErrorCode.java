@@ -2,9 +2,11 @@ package rtp.demo.creditor.domain.error;
 
 public enum PaymentValidationErrorCode {
 
-	OUTSIDE_OF_DATE_RANGE("CPVE_001"), INVALID_NUM_TRANSACTIONS("CPVE_002"), INVALID_PAYMENT_AMOUNT("CPVE_003"),
-	INVALID_CURRENCY("CPVE_004"), INVALID_CREDITOR("CPVE_005"), INVALID_ACCOUNT("CPVE_006"), ACCOUNT_CLOSED("CPVE_007"),
-	ACCOUNT_BLOCKED("CPVE_008"), INVALID_SETTLEMENT_METHOD("CPVE_009"), RESTRICTED_PAYMENT_SOURCE("CPVE_010");
+	OUTSIDE_OF_DATE_RANGE("Out of Date Range"), INVALID_NUM_TRANSACTIONS("Invalid Number Transactions"),
+	INVALID_PAYMENT_AMOUNT("Invalid Amount"), INVALID_CURRENCY("Invalid Currency"),
+	INVALID_CREDITOR("Invalid Creditor"), INVALID_ACCOUNT("Invalid Account"), ACCOUNT_CLOSED("Account Closed"),
+	ACCOUNT_BLOCKED("Account Blocked"), INVALID_SETTLEMENT_METHOD("Invalid Settlement Method"),
+	RESTRICTED_PAYMENT_SOURCE("Restricted Payment Source");
 
 	private final String errorCode;
 

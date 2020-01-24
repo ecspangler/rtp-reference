@@ -48,7 +48,7 @@
       <artifactId>rtp-creditor-transaction-repository-mysql</artifactId>
       <version>1.0.0.0</version>
     </dependency>
-    
+
     <dependency>
       <groupId>org.apache.kafka</groupId>
       <artifactId>kafka-streams</artifactId>
@@ -61,7 +61,7 @@
       <!--<version>1.0.0</version>-->
       <version>${kafka.version}</version>
     </dependency>
-    
+
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
@@ -132,6 +132,7 @@
   </dependencies>
 
   <build>
+    <finalName>ROOT</finalName>
     <defaultGoal>spring-boot:run</defaultGoal>
 
     <plugins>
@@ -163,28 +164,6 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-maven-plugin</artifactId>
-        <version>${fabric8-maven-plugin.version}</version>
-        <executions>
-          <execution>
-            <id>fmp</id>
-            <goals>
-              <goal>resource</goal>
-              <goal>build</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <enricher>
-            <excludes>
-              <exclude>f8-maven-scm</exclude>
-            </excludes>
-            <!-- ADD HEALTH CHECK HERE -->
-          </enricher>
-        </configuration>
       </plugin>
     </plugins>
   </build>

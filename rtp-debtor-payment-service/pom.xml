@@ -9,8 +9,10 @@
     <artifactId>rtp-reference</artifactId>
     <version>1.0.0.0</version>
   </parent>
- 
+
+  <groupId>rtp.demo</groupId>
   <artifactId>rtp-debtor-payment-service</artifactId>
+  <version>1.0.0.0</version>
   <packaging>jar</packaging>
 
   <name>Debtor Payment Service</name>
@@ -65,10 +67,12 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-core</artifactId>
+      <version>${vertx.version}</version>
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-web</artifactId>
+      <version>${vertx.version}</version>
     </dependency>
 
     <dependency>
@@ -84,6 +88,7 @@
   </dependencies>
 
   <build>
+    <finalName>ROOT</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

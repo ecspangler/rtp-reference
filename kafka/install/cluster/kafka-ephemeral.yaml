@@ -1,20 +1,19 @@
-apiVersion: kafka.strimzi.io/v1alpha1
+apiVersion: kafka.strimzi.io/v1beta1
 kind: Kafka
 metadata:
   name: rtp-demo-cluster
 spec:
   kafka:
+    version: 2.3.0
     replicas: 3
     listeners:
-      external:
-        type: loadbalancer
-        authentication:
-          type: tls
       plain: {}
+      tls: {}
     config:
       offsets.topic.replication.factor: 3
       transaction.state.log.replication.factor: 3
       transaction.state.log.min.isr: 2
+      log.message.format.version: "2.3"
     storage:
       type: ephemeral
   zookeeper:

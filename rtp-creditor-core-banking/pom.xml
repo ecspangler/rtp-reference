@@ -26,7 +26,6 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-
     </dependencies>
   </dependencyManagement>
 
@@ -125,6 +124,7 @@
   </dependencies>
 
   <build>
+    <finalName>ROOT</finalName>
     <defaultGoal>spring-boot:run</defaultGoal>
 
     <plugins>
@@ -156,28 +156,6 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-maven-plugin</artifactId>
-        <version>${fabric8-maven-plugin.version}</version>
-        <executions>
-          <execution>
-            <id>fmp</id>
-            <goals>
-              <goal>resource</goal>
-              <goal>build</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <enricher>
-            <excludes>
-              <exclude>f8-maven-scm</exclude>
-            </excludes>
-            <!-- ADD HEALTH CHECK HERE -->
-          </enricher>
-        </configuration>
       </plugin>
     </plugins>
   </build>

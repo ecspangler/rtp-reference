@@ -76,6 +76,17 @@ public class CompletePaymentStream {
 				if (debitPayment != null) {
 					debitPayment.setStatus(value.getStatus());
 					debitPaymentRepository.updatePayment(debitPayment);
+				} else {
+					LOG.info("Payment not retrieved by key: " + key);
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					debitPayment = debitPaymentRepository.getPaymentByPaymentKey(key);
+					debitPayment.setStatus(value.getStatus());
+					debitPaymentRepository.updatePayment(debitPayment);
 				}
 			});
 

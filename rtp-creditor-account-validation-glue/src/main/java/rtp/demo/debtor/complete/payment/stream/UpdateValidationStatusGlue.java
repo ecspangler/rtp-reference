@@ -99,19 +99,18 @@ public class UpdateValidationStatusGlue {
 		String[] val = value.split("\\|");
 		Payment payment = new Gson().fromJson(val[1], Payment.class);
 
-		String validationStatus = "VALID";
+		String validationStatus = "Valid";
 
 		List<PaymentValidationError> errors = payment.getErrors();
 
 		if (!errors.isEmpty()) {
 			PaymentValidationError error = errors.get(0);
-			validationStatus = error.getErrorCode().toString();
+			validationStatus = error.getErrorCode().getErrorCode().toString();
 		}
 
 		customerProxy.triggerAdhocTask(new Gson().fromJson(val[0], String.class),
 				"{\"caseFile_accountValidationComplete\":" + "true, \"caseFile_isValidated\":"
-						+ payment.getIsValidated() + ", \"caseFile_validationStatus\":\""
-						+ payment.getValidationStatus() + "\"}");
+						+ payment.getIsValidated() + ", \"caseFile_validationStatus\":\"" + validationStatus + "\"}");
 	}
 
 	public void startStream() {
