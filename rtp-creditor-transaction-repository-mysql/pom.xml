@@ -15,7 +15,7 @@
   <name>rtp-creditor-transaction-repository-mysql</name>
 
   <properties>
-    <mysql-connector-java.version>5.1.34</mysql-connector-java.version>
+    <mysql-connector-java.version>8.0.28.redhat-00001</mysql-connector-java.version>
   </properties>
 
   <dependencies>
